@@ -1,0 +1,11 @@
+name: Style Workflow
+on: push
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y -q python-pip
+      - run: pip install --user cpplint
+      - run: make lint

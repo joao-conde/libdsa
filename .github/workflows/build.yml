@@ -4,11 +4,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - run: lsb_release -a
       - uses: actions/checkout@v2
       - run: sudo apt-get update
-      - run: gcc --version
-      - run: make --version
       - run: make
       - run: make usage
       - run: make debug

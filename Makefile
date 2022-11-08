@@ -1,6 +1,8 @@
 NAME = libdsa
 
 CC = gcc
+LINTER=cpplint
+
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = $(shell pkg-config --cflags --libs check)
@@ -24,6 +26,7 @@ usage:
 	@echo make uninstall - uninstall $(NAME)
 	@echo make clean - clean build artifacts
 	@echo make check - run all test suites
+	@echo make lint - run $(LINTER) on source and test files
 
 debug: $(OBJS)
 	$(CC) -shared -o $(NAME).so $(OBJS) $(DEBUG_FLAGS)
@@ -49,3 +52,6 @@ clean:
 check: $(TEST_DIR)/*.c
 	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(TEST_FLAGS) -o $(TEST_RUNNER)
 	./$(TEST_RUNNER)
+
+lint:
+	$(LINTER) src/* test/*

@@ -4,11 +4,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: lsb_release -a
       - uses: actions/checkout@v2
       - run: sudo apt-get update
       - run: sudo apt-get install -y -q pkg-config check
-      - run: gcc --version
-      - run: make --version
-      - run: pkg-config --modversion check
       - run: make check
