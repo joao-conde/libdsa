@@ -39,3 +39,7 @@ uninstall:
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(NAME).so
+
+check: test/main.c
+	$(CC) test/main.c -lcheck -o check
+	./check
