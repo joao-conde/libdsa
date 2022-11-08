@@ -8,7 +8,7 @@ PREFIX = /usr
 SRC_DIR = src
 HDR_DIR = src
 TEST_DIR = test
-TEST_RUNNER = test_runner
+TEST_RUNNER = runner
 
 SRCS = $(shell find $(SRC_DIR) -name "*.c")
 HDRS = $(shell find $(HDR_DIR) -name "*.h")

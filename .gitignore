@@ -1,4 +1,4 @@
 *.so
 *.o
 
-test_runner
+runner
