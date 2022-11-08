@@ -1,1 +1,2 @@
-libdsa.o
+*.so
+*.o
