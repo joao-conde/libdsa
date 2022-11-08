@@ -3,6 +3,7 @@ NAME = libdsa
 CC = gcc
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
+TEST_FLAGS = $(shell pkg-config --cflags --libs check)
 
 PREFIX = /usr
 SRC_DIR = src
@@ -46,5 +47,5 @@ clean:
 
 .PHONY: $(TEST_RUNNER)
 check: $(TEST_DIR)/*.c
-	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c -lcheck -o $(TEST_RUNNER)
+	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(TEST_FLAGS) -o $(TEST_RUNNER)
 	./$(TEST_RUNNER)
