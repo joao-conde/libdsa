@@ -8,7 +8,7 @@
 
 int main(){
     // creates and adds the module test suites to the suite runner
-    SRunner *sr = srunner_create(suite_create(""));
+    SRunner *sr = srunner_create(suite_create("libdsa"));
     srunner_add_suite(sr, test_set_suite());
     srunner_add_suite(sr, test_vector_suite());
 
