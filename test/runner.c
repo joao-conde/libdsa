@@ -6,7 +6,7 @@
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE -1
 
-int main(){
+int main() {
     // creates and adds the module test suites to the suite runner
     SRunner *sr = srunner_create(suite_create("dsa"));
     srunner_add_suite(sr, test_set_suite());

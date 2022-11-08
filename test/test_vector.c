@@ -1,11 +1,11 @@
 #include <check.h>
 
-START_TEST (test_vector_create) {
+START_TEST(test_vector_create) {
     ck_assert_int_eq(1, 1);
 }
 END_TEST
 
-START_TEST (test_vector_remove) {
+START_TEST(test_vector_remove) {
     ck_assert_int_eq(1, 1);
 }
 END_TEST
