@@ -7,6 +7,8 @@ RELEASE_FLAGS = -s -O3 -finline-functions
 PREFIX = /usr
 SRC_DIR = src
 HDR_DIR = src
+TEST_DIR = test
+TEST_RUNNER = test_runner
 
 SRCS = $(shell find $(SRC_DIR) -name "*.c")
 HDRS = $(shell find $(HDR_DIR) -name "*.h")
@@ -20,6 +22,7 @@ usage:
 	@echo make install - install $(NAME) in $(PREFIX)/lib/
 	@echo make uninstall - uninstall $(NAME)
 	@echo make clean - clean build artifacts
+	@echo make check - run all test suites
 
 debug: $(OBJS)
 	$(CC) -shared -o $(NAME).so $(OBJS) $(DEBUG_FLAGS)
@@ -39,7 +42,9 @@ uninstall:
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(NAME).so
+	-@$(RM) $(TEST_RUNNER)
 
-check: test/main.c
-	$(CC) test/main.c -lcheck -o check
-	./check
+.PHONY: $(TEST_RUNNER)
+check: $(TEST_DIR)/*.c
+	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c -lcheck -o $(TEST_RUNNER)
+	./$(TEST_RUNNER)
