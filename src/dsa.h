@@ -1,5 +1,5 @@
-#ifndef _LIBDSA_H
-#define _LIBDSA_H
+#ifndef _DSA_H
+#define _DSA_H
 
 #define VALUE 420
 
