@@ -1,2 +1,3 @@
 # libdsa
-C Lib for Data Structures &amp; Algorithms
+
+C library for Data Structures and Algorithms.
