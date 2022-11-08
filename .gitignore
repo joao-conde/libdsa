@@ -1,4 +1,6 @@
+# build artifacts
 *.so
 *.o
 
+# test artifacts
 runner
