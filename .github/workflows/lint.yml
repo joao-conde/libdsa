@@ -1,7 +1,7 @@
-name: Style Workflow
+name: Lint Workflow
 on: push
 jobs:
-  style:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
