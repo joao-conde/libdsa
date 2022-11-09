@@ -1,13 +1,14 @@
 NAME = libdsa
 
 CC = gcc
-LINTER=cpplint
-COVERAGE=gcov
+LINTER = cpplint
+COVERAGE = gcov
 
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
-TEST_FLAGS = $(shell pkg-config --cflags --libs check)
-COVERAGE_FLAGS = $(TEST_FLAGS) -g -Wall --coverage
+TEST_FLAGS = $(shell pkg-config --cflags --libs check) -g -Wall --coverage
+TEST_ARTIFACTS = *.gcov *.gcno *.gcda
+COVERAGE_FLAGS = --function-summaries --use-hotness-colors --stdout
 
 PREFIX = /usr
 SRC_DIR = src
@@ -51,17 +52,16 @@ clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(NAME).so
 	-@$(RM) $(TEST_RUNNER)
-	-@$(RM) *.gcov *.gcno *.gcda
+	-@$(RM) $(TEST_ARTIFACTS)
 	
 check:
 	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS) $(TEST_FLAGS) -o $(TEST_RUNNER)
 	./$(TEST_RUNNER)
 
 coverage:
-	-@$(RM) *.gcov *.gcno *.gcda
-	$(CC) $(COVERAGE_FLAGS) -o $(TEST_RUNNER) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS)
-	./$(TEST_RUNNER)
-	$(COVERAGE) $(COVS)
+	-@$(RM) $(TEST_ARTIFACTS)
+	$(MAKE) check
+	$(COVERAGE) $(COVERAGE_FLAGS) $(COVS)
 
 lint:
 	$(LINTER) src/* test/*
