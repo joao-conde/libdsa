@@ -26,9 +26,10 @@ usage:
 	@echo make debug - build $(NAME)
 	@echo make release - build optimized $(NAME)
 	@echo make install - install $(NAME) in $(PREFIX)/lib/
-	@echo make uninstall - uninstall $(NAME)
+	@echo make uninstall - uninstall $(NAME) from $(PREFIX)/lib/
 	@echo make clean - clean build artifacts
 	@echo make check - run all test suites
+	@echo make coverage - run all test suites and measure coverage
 	@echo make lint - run $(LINTER) on source and test files
 
 debug: $(OBJS)
