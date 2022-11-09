@@ -4,3 +4,6 @@
 
 # test artifacts
 runner
+*.gcda
+*.gcno
+*.gcov
