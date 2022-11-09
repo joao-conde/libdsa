@@ -2,10 +2,12 @@ NAME = libdsa
 
 CC = gcc
 LINTER=cpplint
+COVERAGE=gcov
 
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = $(shell pkg-config --cflags --libs check)
+COVERAGE_FLAGS = $(TEST_FLAGS) -g -Wall --coverage
 
 PREFIX = /usr
 SRC_DIR = src
@@ -16,6 +18,7 @@ TEST_RUNNER = runner
 SRCS = $(shell find $(SRC_DIR) -name "*.c")
 HDRS = $(shell find $(HDR_DIR) -name "*.h")
 OBJS = $(SRCS:.c=.o)
+COVS = $(SRCS:$(SRC_DIR)/%.c=$(TEST_RUNNER)-%.gcno)
 
 default: usage
 
@@ -47,11 +50,17 @@ clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(NAME).so
 	-@$(RM) $(TEST_RUNNER)
-
-.PHONY: $(TEST_RUNNER)
-check: $(TEST_DIR)/*.c
-	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(TEST_FLAGS) -o $(TEST_RUNNER)
+	-@$(RM) *.gcov *.gcno *.gcda
+	
+check:
+	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS) $(TEST_FLAGS) -o $(TEST_RUNNER)
 	./$(TEST_RUNNER)
+
+coverage:
+	-@$(RM) *.gcov *.gcno *.gcda
+	$(CC) $(COVERAGE_FLAGS) -o $(TEST_RUNNER) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS)
+	./$(TEST_RUNNER)
+	$(COVERAGE) $(COVS)
 
 lint:
 	$(LINTER) src/* test/*
