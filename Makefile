@@ -50,12 +50,12 @@ uninstall:
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(NAME).so
-	-@$(RM) $(COVS)
 	-@$(RM) $(TEST_RUNNER)
+	-@$(RM) *.gcno *.gcda *.gcov
 
 check:
-	-@$(RM) $(COVS)
 	-@$(RM) $(TEST_RUNNER)
+	-@$(RM) *.gcno *.gcda *.gcov
 	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS) $(TEST_FLAGS) -o $(TEST_RUNNER)
 	./$(TEST_RUNNER)
 
