@@ -3,6 +3,8 @@
 
 #define VALUE 420
 
+#include "set.h"
+
 void dsa_hello_world(char *name);
 
 #endif // SRC_DSA_H_
