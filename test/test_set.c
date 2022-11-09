@@ -1,11 +1,14 @@
 #include <check.h>
 
+#include "dsa.h"
+
 START_TEST(test_set_create) {
     ck_assert_int_eq(1, 1);
 }
 END_TEST
 
 START_TEST(test_set_remove) {
+    dsa_hello_world("Ola");
     ck_assert_int_eq(1, 1);
 }
 END_TEST
