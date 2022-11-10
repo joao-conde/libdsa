@@ -9,7 +9,7 @@ START_TEST(test_vector_create) {
 END_TEST
 
 Suite* test_vector_suite() {
-    Suite *suite = suite_create("Vector");
+    Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
     tcase_add_test(test_case, test_vector_create);
     suite_add_tcase(suite, test_case);

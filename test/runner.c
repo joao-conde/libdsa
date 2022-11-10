@@ -2,12 +2,13 @@
 
 #include "test_vector.c"
 
+#define SUITE_NAME "libdsa"
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE -1
 
 int main() {
     // creates and adds the module test suites to the suite runner
-    SRunner *sr = srunner_create(suite_create("dsa"));
+    SRunner *sr = srunner_create(suite_create(SUITE_NAME));
     srunner_add_suite(sr, test_vector_suite());
 
     // runs all test suites and checks for failures
