@@ -1,6 +1,5 @@
 #include <check.h>
 
-#include "test_set.c"
 #include "test_vector.c"
 
 #define EXIT_SUCCESS 0
@@ -9,7 +8,6 @@
 int main() {
     // creates and adds the module test suites to the suite runner
     SRunner *sr = srunner_create(suite_create("dsa"));
-    srunner_add_suite(sr, test_set_suite());
     srunner_add_suite(sr, test_vector_suite());
 
     // runs all test suites and checks for failures
