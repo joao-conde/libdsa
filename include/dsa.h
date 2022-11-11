@@ -3,4 +3,6 @@
 
 #define DSA_VERSION "0.1.0"
 
+#include "vector.h"
+
 #endif // INCLUDE_DSA_H_
