@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "headers/vector.h"
+#include "../include/vector.h"
 
 Vector* vector() {
     Vector *vec = malloc(sizeof(Vector));

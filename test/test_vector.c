@@ -1,6 +1,6 @@
 #include <check.h>
 
-#include "../src/headers/vector.h"
+#include "../include/vector.h"
 
 START_TEST(test_vector_create) {
     Vector *vec = vector();

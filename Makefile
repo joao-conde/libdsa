@@ -1,67 +1,61 @@
-NAME = libdsa
-
-CC = gcc
+LIB = libdsa
+INSTALL_BIN = /usr/lib
+INSTALL_INCLUDE = /usr/include
 
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = $(shell pkg-config --cflags --libs check) -g -Wall --coverage
-COVERAGE_FLAGS = --function-summaries --use-hotness-colors --stdout
 
-BIN_INSTALL = /usr/lib
-INCLUDE_INSTALL = /usr/local/include
+SRC = src
+HDR = include
+TEST = test
 
-SRC_DIR = src
-HDR_DIR = src/headers
-TEST_DIR = test
-TEST_RUNNER = runner
-
-SRCS = $(shell find $(SRC_DIR) -name "*.c")
-HDRS = $(shell find $(HDR_DIR) -name "*.h")
+SRCS = $(shell find $(SRC) -name "*.c")
+HDRS = $(shell find $(HDR) -name "*.h")
 OBJS = $(SRCS:.c=.o)
-COVS = $(SRCS:$(SRC_DIR)/%.c=$(TEST_RUNNER)-%.gcno)
+COVS = $(SRCS:$(SRC)/%.c=runner-%.gcno)
 
 default: usage
 
 usage:
-	@echo make debug - build $(NAME)
-	@echo make release - build optimized $(NAME)
-	@echo make install - install $(NAME) in $(BIN_INSTALL)
-	@echo make uninstall - uninstall $(NAME) from $(BIN_INSTALL)
+	@echo make debug - build $(LIB)
+	@echo make release - build optimized $(LIB)
+	@echo make install - install $(LIB) in \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
+	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make clean - clean build artifacts
 	@echo make check - run all test suites
 	@echo make coverage - run all test suites and measure coverage
 	@echo make lint - lint source and test files
 
 debug: $(OBJS)
-	$(CC) -shared -o $(NAME).so $(OBJS) $(DEBUG_FLAGS)
+	gcc -shared -o $(LIB).so $(OBJS) $(DEBUG_FLAGS)
 
 release: $(OBJS)
-	$(CC) -shared -o $(NAME).so $(OBJS) $(RELEASE_FLAGS)
+	gcc -shared -o $(LIB).so $(OBJS) $(RELEASE_FLAGS)
 
 install:
-	cp $(NAME).so $(BIN_INSTALL)
-	cp $(HDRS) $(INCLUDE_INSTALL)
+	cp $(LIB).so $(INSTALL_BIN)
+	cp $(HDRS) $(INSTALL_INCLUDE)
 	ldconfig
 
 uninstall:
-	-@$(RM) $(BIN_INSTALL)/$(NAME).so
-	-@$(RM) $(INCLUDE_INSTALL)/$(NAME)*.h
+	-@$(RM) $(INSTALL_BIN)/$(LIB).so
+	-@$(RM) $(INSTALL_INCLUDE)/$(patsubst $(HDR)/%.h, "%.h", $(HDRS))
 
 clean:
 	-@$(RM) $(OBJS)
-	-@$(RM) $(NAME).so
-	-@$(RM) $(TEST_RUNNER)
+	-@$(RM) $(LIB).so
+	-@$(RM) runner
 	-@$(RM) *.gcno *.gcda *.gcov
 
 check:
-	-@$(RM) $(TEST_RUNNER)
-	-@$(RM) *.gcno *.gcda *.gcov
-	$(CC) $(TEST_DIR)/$(TEST_RUNNER).c $(SRCS) $(TEST_FLAGS) -o $(TEST_RUNNER)
-	./$(TEST_RUNNER)
+	$(MAKE) clean
+	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
+	./runner
 
 coverage:
 	$(MAKE) check
-	gcov $(COVERAGE_FLAGS) $(COVS)
+	gcov --function-summaries $(COVS)
 
 lint:
-	cpplint --recursive $(HDR_DIR) $(SRC_DIR) $(TEST_DIR) 
+	cpplint --recursive $(HDR) $(SRC) $(TEST) 
