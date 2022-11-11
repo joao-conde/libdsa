@@ -12,6 +12,7 @@ TEST = test
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
+INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
 COVS = $(SRCS:$(SRC)/%.c=runner-%.gcno)
 
@@ -22,10 +23,10 @@ usage:
 	@echo make release - build optimized $(LIB)
 	@echo make install - install $(LIB) in \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
-	@echo make clean - clean build artifacts
 	@echo make check - run all test suites
 	@echo make coverage - run all test suites and measure coverage
-	@echo make lint - lint source and test files
+	@echo make lint - lint headers, source and test files
+	@echo make clean - clean build and test artifacts
 
 debug: $(OBJS)
 	gcc -shared -o $(LIB).so $(OBJS) $(DEBUG_FLAGS)
@@ -40,13 +41,7 @@ install:
 
 uninstall:
 	-@$(RM) $(INSTALL_BIN)/$(LIB).so
-	-@$(RM) $(INSTALL_INCLUDE)/$(patsubst $(HDR)/%.h, "%.h", $(HDRS))
-
-clean:
-	-@$(RM) $(OBJS)
-	-@$(RM) $(LIB).so
-	-@$(RM) runner
-	-@$(RM) *.gcno *.gcda *.gcov
+	-@$(RM) $(INSTALL_HDRS)
 
 check:
 	$(MAKE) clean
@@ -59,3 +54,9 @@ coverage:
 
 lint:
 	cpplint --recursive $(HDR) $(SRC) $(TEST) 
+
+clean:
+	-@$(RM) $(OBJS)
+	-@$(RM) $(LIB).so
+	-@$(RM) runner
+	-@$(RM) *.gcno *.gcda *.gcov
