@@ -4,7 +4,7 @@
 #include "../../include/vector.h"
 
 START_TEST(test_vector) {
-    Vector *vec = vector(ULONG_MAX);
+    Vector *vec = vector(UINT_MAX);
     ck_assert(vec == NULL);
 
     vec = vector(sizeof(int));
@@ -15,7 +15,7 @@ START_TEST(test_vector) {
 END_TEST
 
 START_TEST(test_vector_with_capacity) {
-    Vector *vec = vector_with_capacity(ULONG_MAX, 1);
+    Vector *vec = vector_with_capacity(UINT_MAX, 100);
     ck_assert(vec == NULL);
 
     vec = vector_with_capacity(sizeof(int), 10);
@@ -26,7 +26,7 @@ START_TEST(test_vector_with_capacity) {
 END_TEST
 
 START_TEST(test_vector_from_array) {
-    Vector *vec = vector_from_array(ULONG_MAX, 1, NULL);
+    Vector *vec = vector_from_array(UINT_MAX, 1, NULL);
     ck_assert(vec == NULL);
 
     int array[4] = {15, 21, 30, 69};
