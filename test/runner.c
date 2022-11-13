@@ -1,6 +1,6 @@
 #include <check.h>
 
-#include "test_vector.c"
+#include "structures/test_vector.c"
 
 #define SUITE_NAME "libdsa"
 #define SUITE_SUCCESS 0
