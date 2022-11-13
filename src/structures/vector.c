@@ -21,6 +21,11 @@ Vector* vector(size_t type_size, unsigned int capacity) {
     return vector;
 }
 
+void vector_free(Vector* vector) {
+    free(vector->data);
+    free(vector);
+}
+
 unsigned int vector_length(Vector* vector) {
     return vector->length;
 }

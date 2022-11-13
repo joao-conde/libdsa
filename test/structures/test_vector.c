@@ -8,18 +8,21 @@ START_TEST(test_vector) {
     Vector *vec = vector(sizeof(int), 10);
     ck_assert(vector_length(vec) == 0);
     ck_assert(vector_capacity(vec) == 10);
+    vector_free(vec);
 }
 END_TEST
 
 START_TEST(test_vector_length) {
     Vector *vec = vector(sizeof(int), 10);
     ck_assert(vector_length(vec) == 0);
+    vector_free(vec);
 }
 END_TEST
 
 START_TEST(test_vector_capacity) {
     Vector *vec = vector(sizeof(int), 10);
     ck_assert(vector_capacity(vec) == 10);
+    vector_free(vec);
 }
 END_TEST
 
@@ -34,6 +37,7 @@ START_TEST(test_vector_get) {
 
     result = vector_get(vec, 0);
     ck_assert(*result == 3);
+    vector_free(vec);
 }
 END_TEST
 
