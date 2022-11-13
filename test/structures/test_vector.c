@@ -1,7 +1,5 @@
 #include <check.h>
 
-#include <stdio.h>
-
 #include "../../include/vector.h"
 
 START_TEST(test_vector) {
