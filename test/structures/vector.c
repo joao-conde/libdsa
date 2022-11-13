@@ -1,9 +1,13 @@
 #include <check.h>
+#include <limits.h>
 
 #include "../../include/vector.h"
 
 START_TEST(test_vector) {
-    Vector *vec = vector(sizeof(int));
+    Vector *vec = vector(ULONG_MAX);
+    ck_assert(vec == NULL);
+
+    vec = vector(sizeof(int));
     ck_assert(vector_length(vec) == 0);
     ck_assert(vector_capacity(vec) == 256);
     vector_free(vec);
@@ -11,7 +15,10 @@ START_TEST(test_vector) {
 END_TEST
 
 START_TEST(test_vector_with_capacity) {
-    Vector *vec = vector_with_capacity(sizeof(int), 10);
+    Vector *vec = vector_with_capacity(ULONG_MAX, 1);
+    ck_assert(vec == NULL);
+
+    vec = vector_with_capacity(sizeof(int), 10);
     ck_assert(vector_length(vec) == 0);
     ck_assert(vector_capacity(vec) == 10);
     vector_free(vec);
@@ -19,8 +26,11 @@ START_TEST(test_vector_with_capacity) {
 END_TEST
 
 START_TEST(test_vector_from_array) {
+    Vector *vec = vector_from_array(ULONG_MAX, 1, NULL);
+    ck_assert(vec == NULL);
+
     int array[4] = {15, 21, 30, 69};
-    Vector *vec = vector_from_array(sizeof(int), 4, array);
+    vec = vector_from_array(sizeof(int), 4, array);
     ck_assert(vector_length(vec) == 4);
     ck_assert(vector_capacity(vec) == 256);
 

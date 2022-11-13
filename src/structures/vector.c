@@ -16,28 +16,51 @@ struct Vector {
 
 Vector* vector(size_t type_size) {
     Vector* vector = malloc(sizeof(Vector));
+    void* data = malloc(type_size * CAPACITY);
+    if (vector == NULL || data == NULL) {
+        free(data);
+        free(vector);
+        return NULL;
+    }
+
     vector->length = 0;
     vector->capacity = CAPACITY;
     vector->type_size = type_size;
-    vector->data = malloc(type_size * CAPACITY);
+    vector->data = data;
     return vector;
 }
 
 Vector* vector_with_capacity(size_t type_size, unsigned int capacity) {
     Vector* vector = malloc(sizeof(Vector));
+    void* data = malloc(type_size * capacity);
+    if (vector == NULL || data == NULL) {
+        free(data);
+        free(vector);
+        return NULL;
+    }
+
     vector->length = 0;
     vector->capacity = capacity;
     vector->type_size = type_size;
-    vector->data = malloc(type_size * capacity);
+    vector->data = data;
     return vector;
 }
 
 Vector* vector_from_array(size_t type_size, unsigned int length, void* array) {
+    unsigned int capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
+
     Vector* vector = malloc(sizeof(Vector));
+    void* data = malloc(type_size * capacity);
+    if (vector == NULL || data == NULL) {
+        free(data);
+        free(vector);
+        return NULL;
+    }
+
     vector->length = length;
-    vector->capacity = CAPACITY >= length ? CAPACITY : length * ALLOC_FACTOR;
+    vector->capacity = capacity;
     vector->type_size = type_size;
-    vector->data = malloc(type_size * vector->capacity);
+    vector->data = data;
     for (int i = 0; i < length; i++) {
         uint8_t *dest = (uint8_t*) vector->data + i * type_size;
         uint8_t *src = (uint8_t*) array + i * type_size;
@@ -65,6 +88,7 @@ void* vector_at(Vector* vector, unsigned int index) {
 }
 
 void* vector_push(Vector* vector, void* value) {
+    // @TODO implement resizing for push
     uint8_t *dest = (uint8_t*) vector->data + vector->length * vector->type_size;
     memcpy(dest, value, vector->type_size);
     vector->length += 1;
