@@ -26,7 +26,7 @@ START_TEST(test_vector_from_array) {
     ck_assert(vector_length(vec) == 4);
     ck_assert(vector_capacity(vec) == 256);
 
-    for(int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         int *at = vector_at(vec, i);
         ck_assert(*at == array[i]);
     }
@@ -67,7 +67,7 @@ START_TEST(test_vector_at) {
 
     int array[4] = {15, 21, 30, 69};
     vec = vector_from_array(sizeof(int), 4, array);
-    for(int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         int *at = vector_at(vec, i);
         ck_assert(*at == array[i]);
     }

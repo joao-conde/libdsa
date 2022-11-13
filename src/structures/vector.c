@@ -40,7 +40,9 @@ Vector* vector_from_array(size_t type_size, unsigned int length, void* array) {
     vector->type_size = type_size;
     vector->data = malloc(type_size * vector->capacity);
     for (int i = 0; i < length; i++) {
-        memcpy((uint8_t*) vector->data + i * type_size, (uint8_t*) array + i * type_size, type_size);
+        uint8_t *dest = (uint8_t*) vector->data + i * type_size;
+        uint8_t *src = (uint8_t*) array + i * type_size;
+        memcpy(dest, src, type_size);
     }
     return vector;
 }
@@ -65,6 +67,7 @@ void* vector_at(Vector* vector, unsigned int index) {
 
 void* vector_push(Vector* vector, void* value) {
     vector->length += 1;
-    memcpy((uint8_t*) vector->data + vector->length * vector->type_size, value, vector->type_size);
+    uint8_t *dest = (uint8_t*) vector->data + vector->length * vector->type_size;
+    memcpy(dest, value, vector->type_size);
     return value;
 }
