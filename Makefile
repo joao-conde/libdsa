@@ -55,6 +55,10 @@ coverage:
 lint:
 	cpplint --recursive $(HDR) $(SRC) $(TEST) 
 
+valgrind:
+	$(MAKE) check
+	CK_FORK=no valgrind --leak-check=full -s ./runner
+
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(LIB).so
