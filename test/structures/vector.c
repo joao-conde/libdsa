@@ -74,7 +74,7 @@ END_TEST
 
 START_TEST(test_vector_at) {
     Vector *vec = vector(sizeof(int));
-    int* result = vector_at(vec, 0);
+    int *result = vector_at(vec, 0);
     ck_assert(result == NULL);
     vector_free(vec);
 
@@ -91,7 +91,7 @@ END_TEST
 START_TEST(test_vector_push) {
     Vector *vec = vector(sizeof(int));
 
-    int* result = vector_at(vec, 0);
+    int *result = vector_at(vec, 0);
     ck_assert(result == NULL);
 
     int values[5] = {51, 12, -123, 1000, -1};
