@@ -65,8 +65,8 @@ void* vector_at(Vector* vector, unsigned int index) {
 }
 
 void* vector_push(Vector* vector, void* value) {
-    vector->length += 1;
     uint8_t *dest = (uint8_t*) vector->data + vector->length * vector->type_size;
     memcpy(dest, value, vector->type_size);
+    vector->length += 1;
     return value;
 }
