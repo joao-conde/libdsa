@@ -53,7 +53,7 @@ coverage:
 	gcov --function-summaries $(COVS)
 
 lint:
-	cpplint --recursive $(HDR) $(SRC) $(TEST) 
+	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) 
 
 valgrind:
 	$(MAKE) check
