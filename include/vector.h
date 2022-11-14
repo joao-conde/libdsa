@@ -3,8 +3,6 @@
 
 #include <stdlib.h>
 
-#define OUT_OF_BOUNDS -1
-
 typedef struct Vector Vector;
 
 Vector* vector(size_t type_size);
