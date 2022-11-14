@@ -55,7 +55,7 @@ coverage:
 lint:
 	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) 
 
-valgrind:
+memcheck:
 	$(MAKE) check
 	CK_FORK=no valgrind --leak-check=full -s ./runner
 
