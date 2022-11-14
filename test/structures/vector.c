@@ -35,13 +35,20 @@ END_TEST
 
 START_TEST(test_from_array) {
     int array[4] = {15, 21, 30, 69};
-    Vector *vec = vector_from_array(sizeof(int), 4, array);
+    Vector *vec;
+
+    vec = vector_from_array(sizeof(int), 4, array);
     ck_assert(vector_length(vec) == 4);
     ck_assert(vector_capacity(vec) == 256);
     for (int i = 0; i < 4; i++) {
         int *at = vector_at(vec, i);
         ck_assert(*at == array[i]);
     }
+    vector_free(vec);
+
+    vec = vector_from_array(sizeof(int), 260, array);
+    ck_assert(vector_length(vec) == 260);
+    ck_assert(vector_capacity(vec) == 520);
     vector_free(vec);
 }
 END_TEST
@@ -193,14 +200,6 @@ START_TEST(test_resize) {
 }
 END_TEST
 
-START_TEST(test_resize_fail) {
-    Vector *vec = vector(sizeof(int));
-    void* result = vector_resize(vec, UINT_MAX);
-    ck_assert(result != NULL);
-    vector_free(vec);
-}
-END_TEST
-
 Suite* suite_vector() {
     Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
@@ -218,7 +217,6 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_push);
     tcase_add_test(test_case, test_push_resize);
     tcase_add_test(test_case, test_resize);
-    tcase_add_test(test_case, test_resize_fail);
     suite_add_tcase(suite, test_case);
     return suite;
 }
