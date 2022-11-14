@@ -46,7 +46,7 @@ Vector* vector_with_capacity(size_t type_size, unsigned int capacity) {
     return vec;
 }
 
-Vector* vector_from_array(size_t type_size, unsigned int length, void *array) {
+Vector* vector_from_array(size_t type_size, unsigned int length, const void *array) {
     unsigned int capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
     Vector *vec = malloc(sizeof(Vector));
@@ -82,15 +82,28 @@ unsigned int vector_capacity(const Vector *vec) {
     return vec->capacity;
 }
 
-void* vector_at(Vector *vec, unsigned int index) {
+void* vector_at(const Vector *vec, unsigned int index) {
     if (index >= vec->length) return NULL;
     return (uint8_t*) vec->data + index * vec->type_size;
 }
 
 void* vector_push(Vector *vec, void *value) {
-    // @TODO implement resizing for push
+    if (vec->length >= vec->capacity) {
+        void *result = vector_resize(vec, vec->capacity * ALLOC_FACTOR);
+        if (result == NULL) return NULL;
+    }
+
     uint8_t *dest = (uint8_t*) vec->data + vec->length * vec->type_size;
     memcpy(dest, value, vec->type_size);
     vec->length += 1;
     return value;
+}
+
+void* vector_resize(Vector *vec, unsigned int capacity) {
+    void *data = realloc(vec->data, vec->type_size * capacity);
+    if (data != NULL) vec->data = data;
+
+    vec->length = vec->length > capacity ? capacity : vec->length;
+    vec->capacity = capacity;
+    return data;
 }
