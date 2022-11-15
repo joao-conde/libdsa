@@ -26,7 +26,7 @@ START_TEST(test_with_capacity) {
 END_TEST
 
 START_TEST(test_with_capacity_fail) {
-    vector *v = vec_with_capacity(UINT_MAX, 1);
+    vector *v = vec_with_capacity(UINT_MAX, 1000);
     ck_assert(v == NULL);
 }
 END_TEST
