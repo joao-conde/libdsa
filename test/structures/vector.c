@@ -26,7 +26,7 @@ START_TEST(test_with_capacity) {
 END_TEST
 
 START_TEST(test_with_capacity_fail) {
-    vector *v = vec_with_capacity(ULONG_MAX, UINT_MAX);
+    vector *v = vec_with_capacity(UINT_MAX, 1);
     ck_assert(v == NULL);
 }
 END_TEST
@@ -56,7 +56,7 @@ START_TEST(test_from_array_resize) {
 END_TEST
 
 START_TEST(test_from_array_fail) {
-    vector *v = vec_from_array(ULONG_MAX, UINT_MAX, NULL);
+    vector *v = vec_from_array(UINT_MAX, 1, NULL);
     ck_assert(v == NULL);
 }
 END_TEST
