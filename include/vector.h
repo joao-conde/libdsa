@@ -22,6 +22,10 @@ bool vector_empty(const Vector *vec);
 
 void* vector_at(const Vector *vector, unsigned int index);
 
+void* vector_begin(const Vector *vec);
+
+void* vector_end(const Vector *vec);
+
 void* vector_push(Vector *vector, void *value);
 
 void* vector_resize(Vector *vec, unsigned int capacity);

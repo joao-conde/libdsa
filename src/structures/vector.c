@@ -85,6 +85,14 @@ bool vector_empty(const Vector *vec) {
     return vec->length == 0;
 }
 
+void* vector_begin(const Vector *vec) {
+    return vec->data;
+}
+
+void* vector_end(const Vector *vec) {
+    return (uint8_t*) vec->data + vec->length * vec->type_size;
+}
+
 void* vector_at(const Vector *vec, unsigned int index) {
     if (index >= vec->length) return NULL;
     return (uint8_t*) vec->data + index * vec->type_size;

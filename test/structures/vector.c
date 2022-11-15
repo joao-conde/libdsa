@@ -118,6 +118,22 @@ START_TEST(test_at_fail) {
 }
 END_TEST
 
+START_TEST(test_begin) {
+    int array[4] = {15, 21, 30, 69};
+    Vector *vec = vector_from_array(sizeof(int), 4, array);
+    ck_assert(vector_begin(vec) == vector_at(vec, 0));
+    vector_free(vec);
+}
+END_TEST
+
+START_TEST(test_end) {
+    int array[4] = {15, 21, 30, 69};
+    Vector *vec = vector_from_array(sizeof(int), 4, array);
+    ck_assert(vector_end(vec) == vector_at(vec, 3) + sizeof(int));
+    vector_free(vec);
+}
+END_TEST
+
 START_TEST(test_push) {
     int *at;
     Vector *vec = vector(sizeof(int));
@@ -228,6 +244,8 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_empty);
     tcase_add_test(test_case, test_at);
     tcase_add_test(test_case, test_at_fail);
+    tcase_add_test(test_case, test_begin);
+    tcase_add_test(test_case, test_end);
     tcase_add_test(test_case, test_push);
     tcase_add_test(test_case, test_push_resize);
     tcase_add_test(test_case, test_resize);
