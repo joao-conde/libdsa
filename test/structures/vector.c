@@ -270,7 +270,7 @@ START_TEST(test_pop) {
 END_TEST
 
 START_TEST(test_insert) {
-    int *inserted, values[4] = {15, 21, 30, 69};
+    int *result, values[4] = {15, 21, 30, 69};
     vector *v = vec_from_array(sizeof(int), 4, values);
     ck_assert(vec_length(v) == 4);
     ck_assert(*(int*)vec_at(v, 0) == 15);
@@ -278,8 +278,8 @@ START_TEST(test_insert) {
     ck_assert(*(int*)vec_at(v, 2) == 30);
     ck_assert(*(int*)vec_at(v, 3) == 69);
 
-    inserted = vec_insert(v, 2, &values[3]);
-    ck_assert(*inserted == values[3]);
+    result = vec_insert(v, 2, &values[3]);
+    ck_assert(*result == values[3]);
     ck_assert(vec_length(v) == 5);
     ck_assert(*(int*)vec_at(v, 0) == 15);
     ck_assert(*(int*)vec_at(v, 1) == 21);
@@ -287,8 +287,8 @@ START_TEST(test_insert) {
     ck_assert(*(int*)vec_at(v, 3) == 30);
     ck_assert(*(int*)vec_at(v, 4) == 69);
 
-    inserted = vec_insert(v, 0, &values[2]);
-    ck_assert(*inserted == values[2]);
+    result = vec_insert(v, 0, &values[2]);
+    ck_assert(*result == values[2]);
     ck_assert(vec_length(v) == 6);
     ck_assert(*(int*)vec_at(v, 0) == 30);
     ck_assert(*(int*)vec_at(v, 1) == 15);
@@ -297,8 +297,8 @@ START_TEST(test_insert) {
     ck_assert(*(int*)vec_at(v, 4) == 30);
     ck_assert(*(int*)vec_at(v, 5) == 69);
 
-    inserted = vec_insert(v, 6, &values[0]);
-    ck_assert(*inserted == values[0]);
+    result = vec_insert(v, 6, &values[0]);
+    ck_assert(*result == values[0]);
     ck_assert(vec_length(v) == 7);
     ck_assert(*(int*)vec_at(v, 0) == 30);
     ck_assert(*(int*)vec_at(v, 1) == 15);
@@ -308,8 +308,8 @@ START_TEST(test_insert) {
     ck_assert(*(int*)vec_at(v, 5) == 69);
     ck_assert(*(int*)vec_at(v, 6) == 15);
 
-    inserted = vec_insert(v, 1000, &values[0]);
-    ck_assert(inserted == NULL);
+    result = vec_insert(v, 1000, &values[0]);
+    ck_assert(result == NULL);
     ck_assert(vec_length(v) == 7);
     ck_assert(*(int*)vec_at(v, 0) == 30);
     ck_assert(*(int*)vec_at(v, 1) == 15);
@@ -360,7 +360,7 @@ START_TEST(test_insert_resize) {
 END_TEST
 
 START_TEST(test_erase) {
-    int *new, values[7] = {15, 21, 30, 69, -1, 10, 28};
+    int *result, values[7] = {15, 21, 30, 69, -1, 10, 28};
     vector *v = vec_from_array(sizeof(int), 7, values);
     ck_assert(vec_length(v) == 7);
     ck_assert(*(int*)vec_at(v, 0) == 15);
@@ -371,8 +371,8 @@ START_TEST(test_erase) {
     ck_assert(*(int*)vec_at(v, 5) == 10);
     ck_assert(*(int*)vec_at(v, 6) == 28);
 
-    new = vec_erase(v, 3);
-    ck_assert(*new == -1);
+    result = vec_erase(v, 3);
+    ck_assert(*result == -1);
     ck_assert(vec_length(v) == 6);
     ck_assert(*(int*)vec_at(v, 0) == 15);
     ck_assert(*(int*)vec_at(v, 1) == 21);
@@ -382,8 +382,8 @@ START_TEST(test_erase) {
     ck_assert(*(int*)vec_at(v, 5) == 28);
     ck_assert(vec_at(v, 6) == NULL);
 
-    new = vec_erase(v, 4);
-    ck_assert(*new == 28);
+    result = vec_erase(v, 4);
+    ck_assert(*result == 28);
     ck_assert(vec_length(v) == 5);
     ck_assert(*(int*)vec_at(v, 0) == 15);
     ck_assert(*(int*)vec_at(v, 1) == 21);
@@ -393,8 +393,8 @@ START_TEST(test_erase) {
     ck_assert(vec_at(v, 5) == NULL);
     ck_assert(vec_at(v, 6) == NULL);
 
-    new = vec_erase(v, 0);
-    ck_assert(*new == 21);
+    result = vec_erase(v, 0);
+    ck_assert(*result == 21);
     ck_assert(vec_length(v) == 4);
     ck_assert(*(int*)vec_at(v, 0) == 21);
     ck_assert(*(int*)vec_at(v, 1) == 30);
@@ -404,8 +404,8 @@ START_TEST(test_erase) {
     ck_assert(vec_at(v, 5) == NULL);
     ck_assert(vec_at(v, 6) == NULL);
 
-    new = vec_erase(v, 3);
-    ck_assert(new != NULL);
+    result = vec_erase(v, 3);
+    ck_assert(result != NULL);
     ck_assert(vec_length(v) == 3);
     ck_assert(*(int*)vec_at(v, 0) == 21);
     ck_assert(*(int*)vec_at(v, 1) == 30);
@@ -415,8 +415,8 @@ START_TEST(test_erase) {
     ck_assert(vec_at(v, 5) == NULL);
     ck_assert(vec_at(v, 6) == NULL);
 
-    new = vec_erase(v, 1000);
-    ck_assert(new == NULL);
+    result = vec_erase(v, 1000);
+    ck_assert(result == NULL);
     ck_assert(vec_length(v) == 3);
     ck_assert(*(int*)vec_at(v, 0) == 21);
     ck_assert(*(int*)vec_at(v, 1) == 30);
@@ -426,14 +426,14 @@ START_TEST(test_erase) {
     ck_assert(vec_at(v, 5) == NULL);
     ck_assert(vec_at(v, 6) == NULL);
 
-    new = vec_erase(v, 0);
-    ck_assert(*new == 30);
+    result = vec_erase(v, 0);
+    ck_assert(*result == 30);
 
-    new = vec_erase(v, 0);
-    ck_assert(*new == -1);
+    result = vec_erase(v, 0);
+    ck_assert(*result == -1);
 
-    new = vec_erase(v, 0);
-    ck_assert(new != NULL);
+    result = vec_erase(v, 0);
+    ck_assert(result != NULL);
 
     ck_assert(vec_length(v) == 0);
     ck_assert(vec_at(v, 0) == NULL);
