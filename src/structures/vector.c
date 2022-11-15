@@ -128,6 +128,10 @@ void* vector_insert(Vector *vec, unsigned int index, void *value) {
     return value;
 }
 
+void* vector_erase(Vector *vector) {
+    return 0;
+}
+
 void* vector_resize(Vector *vec, unsigned int capacity) {
     void *data = realloc(vec->data, vec->type_size * capacity);
     if (data != NULL) vec->data = data;
