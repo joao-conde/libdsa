@@ -26,11 +26,11 @@ void* vec_begin(const vector *v);
 
 void* vec_end(const vector *v);
 
-void* vec_push(vector *v, void *value);
+void* vec_push(vector *v, const void *value);
 
 void* vec_pop(vector *v);
 
-void* vec_insert(vector *v, unsigned int index, void *value);
+void* vec_insert(vector *v, unsigned int index, const void *value);
 
 void* vec_erase(vector *v, unsigned int index);
 

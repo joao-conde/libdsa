@@ -95,7 +95,7 @@ void* vec_at(const vector *v, unsigned int index) {
     return (uint8_t*) v->data + index * v->type_size;
 }
 
-void* vec_push(vector *v, void *value) {
+void* vec_push(vector *v, const void *value) {
     if (v->length >= v->capacity) {
         void *result = vec_resize(v, v->capacity * ALLOC_FACTOR);
         if (result == NULL) return NULL;
@@ -113,7 +113,7 @@ void* vec_pop(vector *v) {
     return popped;
 }
 
-void* vec_insert(vector *v, unsigned int index, void *value) {
+void* vec_insert(vector *v, unsigned int index, const void *value) {
     if (index > v->length) return NULL;
     if (v->length >= v->capacity) {
         void *result = vec_resize(v, v->capacity * ALLOC_FACTOR);
