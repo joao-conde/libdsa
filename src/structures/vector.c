@@ -56,15 +56,12 @@ Vector* vector_from_array(size_t type_size, unsigned int length, const void *arr
         return NULL;
     }
 
+    memcpy(data, array, length * type_size);
+
     vec->length = length;
     vec->capacity = capacity;
     vec->type_size = type_size;
     vec->data = data;
-    for (int i = 0; i < length; i++) {
-        uint8_t *dest = (uint8_t*) vec->data + i * type_size;
-        uint8_t *src = (uint8_t*) array + i * type_size;
-        memcpy(dest, src, type_size);
-    }
     return vec;
 }
 
@@ -115,6 +112,20 @@ void* vector_pop(Vector *vec) {
     void *popped = (uint8_t*) vec->data + (vec->length - 1) * vec->type_size;
     vec->length -= 1;
     return popped;
+}
+
+void* vector_insert(Vector *vec, unsigned int index, void *value) {
+    if (vec->length >= vec->capacity) {
+        void *result = vector_resize(vec, vec->capacity * ALLOC_FACTOR);
+        if (result == NULL) return NULL;
+    }
+    index = index > vec->length ? vec->length : index;
+    void *pos = (uint8_t*) vec->data + index * vec->type_size;
+    unsigned int to_copy = vec->length - index;
+    memmove(pos + vec->type_size, pos, to_copy * vec->type_size);
+    memcpy(pos, value, vec->type_size);
+    vec->length += 1;
+    return value;
 }
 
 void* vector_resize(Vector *vec, unsigned int capacity) {

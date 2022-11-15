@@ -254,6 +254,77 @@ START_TEST(test_pop) {
 }
 END_TEST
 
+START_TEST(test_insert) {
+    int *inserted, values[4] = {15, 21, 30, 69};
+    Vector *vec = vector_from_array(sizeof(int), 4, values);
+    ck_assert(*(int*)vector_at(vec, 0) == 15);
+    ck_assert(*(int*)vector_at(vec, 1) == 21);
+    ck_assert(*(int*)vector_at(vec, 2) == 30);
+    ck_assert(*(int*)vector_at(vec, 3) == 69);
+
+    inserted = vector_insert(vec, 2, &values[3]);
+    ck_assert(*inserted == values[3]);
+    ck_assert(*(int*)vector_at(vec, 0) == 15);
+    ck_assert(*(int*)vector_at(vec, 1) == 21);
+    ck_assert(*(int*)vector_at(vec, 2) == 69);
+    ck_assert(*(int*)vector_at(vec, 3) == 30);
+    ck_assert(*(int*)vector_at(vec, 4) == 69);
+
+    inserted = vector_insert(vec, 0, &values[2]);
+    ck_assert(*inserted == values[2]);
+    ck_assert(*(int*)vector_at(vec, 0) == 30);
+    ck_assert(*(int*)vector_at(vec, 1) == 15);
+    ck_assert(*(int*)vector_at(vec, 2) == 21);
+    ck_assert(*(int*)vector_at(vec, 3) == 69);
+    ck_assert(*(int*)vector_at(vec, 4) == 30);
+    ck_assert(*(int*)vector_at(vec, 5) == 69);
+
+    inserted = vector_insert(vec, 1000, &values[0]);
+    ck_assert(*inserted == values[0]);
+    ck_assert(*(int*)vector_at(vec, 0) == 30);
+    ck_assert(*(int*)vector_at(vec, 1) == 15);
+    ck_assert(*(int*)vector_at(vec, 2) == 21);
+    ck_assert(*(int*)vector_at(vec, 3) == 69);
+    ck_assert(*(int*)vector_at(vec, 4) == 30);
+    ck_assert(*(int*)vector_at(vec, 5) == 69);
+    ck_assert(*(int*)vector_at(vec, 6) == 15);
+}
+END_TEST
+
+START_TEST(test_insert_resize) {
+    int values[4] = {15, 21, 30, 69};
+    Vector *vec = vector_with_capacity(sizeof(int), 1);
+    ck_assert(vector_length(vec) == 0);
+    ck_assert(vector_capacity(vec) == 1);
+
+    vector_insert(vec, 0, &values[0]);
+    ck_assert(vector_length(vec) == 1);
+    ck_assert(vector_capacity(vec) == 1);
+
+    vector_insert(vec, 0, &values[1]);
+    ck_assert(vector_length(vec) == 2);
+    ck_assert(vector_capacity(vec) == 2);
+
+    vector_insert(vec, 0, &values[2]);
+    ck_assert(vector_length(vec) == 3);
+    ck_assert(vector_capacity(vec) == 4);
+
+    vector_insert(vec, 0, &values[3]);
+    ck_assert(vector_length(vec) == 4);
+    ck_assert(vector_capacity(vec) == 4);
+
+    vector_insert(vec, 0, &values[0]);
+    ck_assert(vector_length(vec) == 5);
+    ck_assert(vector_capacity(vec) == 8);
+
+    ck_assert(*(int*)vector_at(vec, 0) == values[0]);
+    ck_assert(*(int*)vector_at(vec, 1) == values[3]);
+    ck_assert(*(int*)vector_at(vec, 2) == values[2]);
+    ck_assert(*(int*)vector_at(vec, 3) == values[1]);
+    ck_assert(*(int*)vector_at(vec, 4) == values[0]);
+}
+END_TEST
+
 START_TEST(test_resize) {
     int values[4] = {15, 21, 30, 69};
     Vector *vec = vector_from_array(sizeof(int), 4, values);
@@ -302,6 +373,8 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_push);
     tcase_add_test(test_case, test_push_resize);
     tcase_add_test(test_case, test_pop);
+    tcase_add_test(test_case, test_insert);
+    tcase_add_test(test_case, test_insert_resize);
     tcase_add_test(test_case, test_resize);
     // double free, realloc(0) is freeing old pointer and returning NULL
     // tcase_add_test(test_case, test_resize_fail);
