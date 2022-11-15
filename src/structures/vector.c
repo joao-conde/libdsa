@@ -6,139 +6,139 @@
 #define CAPACITY 256
 #define ALLOC_FACTOR 2
 
-struct Vector {
+struct vector {
     unsigned int length;
     unsigned int capacity;
     size_t type_size;
     void *data;
 };
 
-Vector* vector(size_t type_size) {
-    Vector *vec = malloc(sizeof(Vector));
+vector* vec(size_t type_size) {
+    vector *v = malloc(sizeof(vector));
     void *data = malloc(type_size * CAPACITY);
-    if (vec == NULL || data == NULL) {
+    if (v == NULL || data == NULL) {
         free(data);
-        free(vec);
+        free(v);
         return NULL;
     }
 
-    vec->length = 0;
-    vec->capacity = CAPACITY;
-    vec->type_size = type_size;
-    vec->data = data;
-    return vec;
+    v->length = 0;
+    v->capacity = CAPACITY;
+    v->type_size = type_size;
+    v->data = data;
+    return v;
 }
 
-Vector* vector_with_capacity(size_t type_size, unsigned int capacity) {
-    Vector *vec = malloc(sizeof(Vector));
+vector* vec_with_capacity(size_t type_size, unsigned int capacity) {
+    vector *v = malloc(sizeof(vector));
     void *data = malloc(type_size * capacity);
-    if (vec == NULL || data == NULL) {
+    if (v == NULL || data == NULL) {
         free(data);
-        free(vec);
+        free(v);
         return NULL;
     }
 
-    vec->length = 0;
-    vec->capacity = capacity;
-    vec->type_size = type_size;
-    vec->data = data;
-    return vec;
+    v->length = 0;
+    v->capacity = capacity;
+    v->type_size = type_size;
+    v->data = data;
+    return v;
 }
 
-Vector* vector_from_array(size_t type_size, unsigned int length, const void *array) {
+vector* vec_from_array(size_t type_size, unsigned int length, const void *array) {
     unsigned int capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
-    Vector *vec = malloc(sizeof(Vector));
+    vector *v = malloc(sizeof(vector));
     void *data = malloc(type_size * capacity);
-    if (vec == NULL || data == NULL) {
+    if (v == NULL || data == NULL) {
         free(data);
-        free(vec);
+        free(v);
         return NULL;
     }
 
     memcpy(data, array, length * type_size);
 
-    vec->length = length;
-    vec->capacity = capacity;
-    vec->type_size = type_size;
-    vec->data = data;
-    return vec;
+    v->length = length;
+    v->capacity = capacity;
+    v->type_size = type_size;
+    v->data = data;
+    return v;
 }
 
-void vector_free(Vector *vec) {
-    free(vec->data);
-    free(vec);
+void vec_free(vector *v) {
+    free(v->data);
+    free(v);
 }
 
-unsigned int vector_length(const Vector *vec) {
-    return vec->length;
+unsigned int vec_length(const vector *v) {
+    return v->length;
 }
 
-unsigned int vector_capacity(const Vector *vec) {
-    return vec->capacity;
+unsigned int vec_capacity(const vector *v) {
+    return v->capacity;
 }
 
-bool vector_empty(const Vector *vec) {
-    return vec->length == 0;
+bool vec_empty(const vector *v) {
+    return v->length == 0;
 }
 
-void* vector_begin(const Vector *vec) {
-    return vec->data;
+void* vec_begin(const vector *v) {
+    return v->data;
 }
 
-void* vector_end(const Vector *vec) {
-    return (uint8_t*) vec->data + vec->length * vec->type_size;
+void* vec_end(const vector *v) {
+    return (uint8_t*) v->data + v->length * v->type_size;
 }
 
-void* vector_at(const Vector *vec, unsigned int index) {
-    if (index >= vec->length) return NULL;
-    return (uint8_t*) vec->data + index * vec->type_size;
+void* vec_at(const vector *v, unsigned int index) {
+    if (index >= v->length) return NULL;
+    return (uint8_t*) v->data + index * v->type_size;
 }
 
-void* vector_push(Vector *vec, void *value) {
-    if (vec->length >= vec->capacity) {
-        void *result = vector_resize(vec, vec->capacity * ALLOC_FACTOR);
+void* vec_push(vector *v, void *value) {
+    if (v->length >= v->capacity) {
+        void *result = vec_resize(v, v->capacity * ALLOC_FACTOR);
         if (result == NULL) return NULL;
     }
 
-    uint8_t *dest = (uint8_t*) vec->data + vec->length * vec->type_size;
-    vec->length += 1;
-    return memcpy(dest, value, vec->type_size);
+    uint8_t *dest = (uint8_t*) v->data + v->length * v->type_size;
+    v->length += 1;
+    return memcpy(dest, value, v->type_size);
 }
 
-void* vector_pop(Vector *vec) {
-    if (vec->length == 0) return NULL;
-    void *popped = (uint8_t*) vec->data + (vec->length - 1) * vec->type_size;
-    vec->length -= 1;
+void* vec_pop(vector *v) {
+    if (v->length == 0) return NULL;
+    void *popped = (uint8_t*) v->data + (v->length - 1) * v->type_size;
+    v->length -= 1;
     return popped;
 }
 
-void* vector_insert(Vector *vec, unsigned int index, void *value) {
-    if (index > vec->length) return NULL;
-    if (vec->length >= vec->capacity) {
-        void *result = vector_resize(vec, vec->capacity * ALLOC_FACTOR);
+void* vec_insert(vector *v, unsigned int index, void *value) {
+    if (index > v->length) return NULL;
+    if (v->length >= v->capacity) {
+        void *result = vec_resize(v, v->capacity * ALLOC_FACTOR);
         if (result == NULL) return NULL;
     }
-    void *pos = (uint8_t*) vec->data + index * vec->type_size;
-    unsigned int to_copy = vec->length - index;
-    memmove(pos + vec->type_size, pos, to_copy * vec->type_size);
-    vec->length += 1;
-    return memcpy(pos, value, vec->type_size);
+    void *pos = (uint8_t*) v->data + index * v->type_size;
+    unsigned int to_copy = v->length - index;
+    memmove(pos + v->type_size, pos, to_copy * v->type_size);
+    v->length += 1;
+    return memcpy(pos, value, v->type_size);
 }
 
-void* vector_erase(Vector *vec, unsigned int index) {
-    if (index > vec->length) return NULL;
-    void *pos = (uint8_t*) vec->data + index * vec->type_size;
-    unsigned int to_copy = vec->length - index;
-    vec->length -= 1;
-    return memmove(pos, pos + vec->type_size, to_copy * vec->type_size);
+void* vec_erase(vector *v, unsigned int index) {
+    if (index > v->length) return NULL;
+    void *pos = (uint8_t*) v->data + index * v->type_size;
+    unsigned int to_copy = v->length - index;
+    v->length -= 1;
+    return memmove(pos, pos + v->type_size, to_copy * v->type_size);
 }
 
-void* vector_resize(Vector *vec, unsigned int capacity) {
-    void *data = realloc(vec->data, vec->type_size * capacity);
-    if (data != NULL) vec->data = data;
+void* vec_resize(vector *v, unsigned int capacity) {
+    void *data = realloc(v->data, v->type_size * capacity);
+    if (data != NULL) v->data = data;
 
-    vec->length = vec->length > capacity ? capacity : vec->length;
-    vec->capacity = capacity;
+    v->length = v->length > capacity ? capacity : v->length;
+    v->capacity = capacity;
     return data;
 }

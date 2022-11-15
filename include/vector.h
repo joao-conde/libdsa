@@ -4,36 +4,36 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-typedef struct Vector Vector;
+typedef struct vector vector;
 
-Vector* vector(size_t type_size);
+vector* vec(size_t type_size);
 
-Vector* vector_with_capacity(size_t type_size, unsigned int capacity);
+vector* vec_with_capacity(size_t type_size, unsigned int capacity);
 
-Vector* vector_from_array(size_t type_size, unsigned int length, const void *array);
+vector* vec_from_array(size_t type_size, unsigned int length, const void *array);
 
-void vector_free(Vector *vector);
+void vec_free(vector *vector);
 
-unsigned int vector_length(const Vector *vector);
+unsigned int vec_length(const vector *vector);
 
-unsigned int vector_capacity(const Vector *vector);
+unsigned int vec_capacity(const vector *vector);
 
-bool vector_empty(const Vector *vec);
+bool vec_empty(const vector *v);
 
-void* vector_at(const Vector *vector, unsigned int index);
+void* vec_at(const vector *vector, unsigned int index);
 
-void* vector_begin(const Vector *vec);
+void* vec_begin(const vector *v);
 
-void* vector_end(const Vector *vec);
+void* vec_end(const vector *v);
 
-void* vector_push(Vector *vector, void *value);
+void* vec_push(vector *vector, void *value);
 
-void* vector_pop(Vector *vector);
+void* vec_pop(vector *vector);
 
-void* vector_insert(Vector *vector, unsigned int index, void *value);
+void* vec_insert(vector *vector, unsigned int index, void *value);
 
-void* vector_erase(Vector *vector, unsigned int index);
+void* vec_erase(vector *vector, unsigned int index);
 
-void* vector_resize(Vector *vec, unsigned int capacity);
+void* vec_resize(vector *v, unsigned int capacity);
 
 #endif // INCLUDE_VECTOR_H_
