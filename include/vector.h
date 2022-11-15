@@ -18,6 +18,8 @@ unsigned int vector_length(const Vector *vector);
 
 unsigned int vector_capacity(const Vector *vector);
 
+bool vector_empty(const Vector *vec);
+
 void* vector_at(const Vector *vector, unsigned int index);
 
 void* vector_push(Vector *vector, void *value);

@@ -81,6 +81,10 @@ unsigned int vector_capacity(const Vector *vec) {
     return vec->capacity;
 }
 
+bool vector_empty(const Vector *vec) {
+    return vec->length == 0;
+}
+
 void* vector_at(const Vector *vec, unsigned int index) {
     if (index >= vec->length) return NULL;
     return (uint8_t*) vec->data + index * vec->type_size;

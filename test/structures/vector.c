@@ -3,8 +3,6 @@
 
 #include "../../include/vector.h"
 
-#include <stdio.h>
-
 START_TEST(test_vector) {
     Vector *vec = vector(sizeof(int));
     ck_assert(vector_length(vec) == 0);
@@ -85,6 +83,18 @@ END_TEST
 START_TEST(test_capacity) {
     Vector *vec = vector_with_capacity(sizeof(int), 10);
     ck_assert(vector_capacity(vec) == 10);
+    vector_free(vec);
+}
+END_TEST
+
+START_TEST(test_empty) {
+    Vector *vec = vector(sizeof(int));
+    ck_assert(vector_empty(vec) == true);
+
+    int value = -10;
+    vector_push(vec, &value);
+    ck_assert(vector_empty(vec) == false);
+
     vector_free(vec);
 }
 END_TEST
@@ -215,6 +225,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_free);
     tcase_add_test(test_case, test_length);
     tcase_add_test(test_case, test_capacity);
+    tcase_add_test(test_case, test_empty);
     tcase_add_test(test_case, test_at);
     tcase_add_test(test_case, test_at_fail);
     tcase_add_test(test_case, test_push);
