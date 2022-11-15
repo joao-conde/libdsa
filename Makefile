@@ -26,7 +26,9 @@ usage:
 	@echo make check - run all test suites
 	@echo make coverage - run all test suites and measure coverage
 	@echo make lint - lint headers, source and test files
+	@echo make memcheck - analyze memory usage and report memory leaks
 	@echo make clean - clean build and test artifacts
+	@echo make docs - generate project documentation
 
 debug: $(OBJS)
 	gcc -shared -o $(LIB).so $(OBJS) $(DEBUG_FLAGS)
@@ -64,3 +66,6 @@ clean:
 	-@$(RM) $(LIB).so
 	-@$(RM) runner
 	-@$(RM) *.gcno *.gcda *.gcov
+
+docs:
+	doxygen DOXYGEN.cfg
