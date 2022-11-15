@@ -288,6 +288,8 @@ START_TEST(test_insert) {
     ck_assert(*(int*)vector_at(vec, 4) == 30);
     ck_assert(*(int*)vector_at(vec, 5) == 69);
     ck_assert(*(int*)vector_at(vec, 6) == 15);
+
+    vector_free(vec);
 }
 END_TEST
 
@@ -322,6 +324,8 @@ START_TEST(test_insert_resize) {
     ck_assert(*(int*)vector_at(vec, 2) == values[2]);
     ck_assert(*(int*)vector_at(vec, 3) == values[1]);
     ck_assert(*(int*)vector_at(vec, 4) == values[0]);
+
+    vector_free(vec);
 }
 END_TEST
 
