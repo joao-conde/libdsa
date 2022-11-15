@@ -35,9 +35,7 @@ END_TEST
 
 START_TEST(test_from_array) {
     int array[4] = {15, 21, 30, 69};
-    Vector *vec;
-
-    vec = vector_from_array(sizeof(int), 4, array);
+    Vector *vec = vector_from_array(sizeof(int), 4, array);
     ck_assert(vector_length(vec) == 4);
     ck_assert(vector_capacity(vec) == 256);
     for (int i = 0; i < 4; i++) {
@@ -45,11 +43,16 @@ START_TEST(test_from_array) {
         ck_assert(*at == array[i]);
     }
     vector_free(vec);
+}
+END_TEST
 
-    vec = vector_from_array(sizeof(int), 260, array);
+START_TEST(test_from_array_resize) {
+    int *array = calloc(260, sizeof(int));
+    Vector *vec = vector_from_array(sizeof(int), 260, array);
     ck_assert(vector_length(vec) == 260);
     ck_assert(vector_capacity(vec) == 520);
     vector_free(vec);
+    free(array);
 }
 END_TEST
 
@@ -208,6 +211,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_with_capacity);
     tcase_add_test(test_case, test_with_capacity_fail);
     tcase_add_test(test_case, test_from_array);
+    tcase_add_test(test_case, test_from_array_resize);
     tcase_add_test(test_case, test_from_array_fail);
     tcase_add_test(test_case, test_free);
     tcase_add_test(test_case, test_length);
