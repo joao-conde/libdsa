@@ -110,6 +110,13 @@ void* vector_push(Vector *vec, void *value) {
     return value;
 }
 
+void* vector_pop(Vector *vec) {
+    if (vec->length == 0) return NULL;
+    void *popped = (uint8_t*) vec->data + (vec->length - 1) * vec->type_size;
+    vec->length -= 1;
+    return popped;
+}
+
 void* vector_resize(Vector *vec, unsigned int capacity) {
     void *data = realloc(vec->data, vec->type_size * capacity);
     if (data != NULL) vec->data = data;
