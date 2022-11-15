@@ -452,14 +452,6 @@ START_TEST(test_resize) {
 }
 END_TEST
 
-START_TEST(test_resize_fail) {
-    vector *v = vec(sizeof(int));
-    void *result = vec_resize(v, 0);
-    ck_assert(result == NULL);
-    vec_free(v);
-}
-END_TEST
-
 Suite* suite_vector() {
     Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
@@ -485,10 +477,6 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_insert_resize);
     tcase_add_test(test_case, test_erase);
     tcase_add_test(test_case, test_resize);
-
-    // double free, realloc(0) is freeing old pointer and returning NULL
-    // tcase_add_test(test_case, test_resize_fail);
-
     suite_add_tcase(suite, test_case);
     return suite;
 }
