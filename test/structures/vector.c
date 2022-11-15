@@ -3,7 +3,7 @@
 
 #include "../../include/vector.h"
 
-START_TEST(test_vector) {
+START_TEST(test_vec) {
     vector *v = vec(sizeof(int));
     ck_assert(vec_length(v) == 0);
     ck_assert(vec_capacity(v) == 256);
@@ -11,7 +11,7 @@ START_TEST(test_vector) {
 }
 END_TEST
 
-START_TEST(test_vector_fail) {
+START_TEST(test_vec_fail) {
     vector *v = vec(UINT_MAX);
     ck_assert(v == NULL);
 }
@@ -455,8 +455,8 @@ END_TEST
 Suite* suite_vector() {
     Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
-    tcase_add_test(test_case, test_vector);
-    tcase_add_test(test_case, test_vector_fail);
+    tcase_add_test(test_case, test_vec);
+    tcase_add_test(test_case, test_vec_fail);
     tcase_add_test(test_case, test_with_capacity);
     tcase_add_test(test_case, test_with_capacity_fail);
     tcase_add_test(test_case, test_from_array);
