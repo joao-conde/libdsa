@@ -102,9 +102,8 @@ void* vector_push(Vector *vec, void *value) {
     }
 
     uint8_t *dest = (uint8_t*) vec->data + vec->length * vec->type_size;
-    memcpy(dest, value, vec->type_size);
     vec->length += 1;
-    return value;
+    return memcpy(dest, value, vec->type_size);
 }
 
 void* vector_pop(Vector *vec) {
@@ -115,21 +114,24 @@ void* vector_pop(Vector *vec) {
 }
 
 void* vector_insert(Vector *vec, unsigned int index, void *value) {
+    if (index > vec->length) return NULL;
     if (vec->length >= vec->capacity) {
         void *result = vector_resize(vec, vec->capacity * ALLOC_FACTOR);
         if (result == NULL) return NULL;
     }
-    index = index > vec->length ? vec->length : index;
     void *pos = (uint8_t*) vec->data + index * vec->type_size;
     unsigned int to_copy = vec->length - index;
     memmove(pos + vec->type_size, pos, to_copy * vec->type_size);
-    memcpy(pos, value, vec->type_size);
     vec->length += 1;
-    return value;
+    return memcpy(pos, value, vec->type_size);
 }
 
-void* vector_erase(Vector *vector) {
-    return 0;
+void* vector_erase(Vector *vec, unsigned int index) {
+    if (index > vec->length) return NULL;
+    void *pos = (uint8_t*) vec->data + index * vec->type_size;
+    unsigned int to_copy = vec->length - index;
+    vec->length -= 1;
+    return memmove(pos, pos + vec->type_size, to_copy * vec->type_size);
 }
 
 void* vector_resize(Vector *vec, unsigned int capacity) {

@@ -32,7 +32,7 @@ void* vector_pop(Vector *vector);
 
 void* vector_insert(Vector *vector, unsigned int index, void *value);
 
-void* vector_erase(Vector *vector);
+void* vector_erase(Vector *vector, unsigned int index);
 
 void* vector_resize(Vector *vec, unsigned int capacity);
 
