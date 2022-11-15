@@ -1,6 +1,7 @@
 #ifndef INCLUDE_VECTOR_H_
 #define INCLUDE_VECTOR_H_
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 typedef struct Vector Vector;
@@ -22,5 +23,13 @@ void* vector_at(const Vector *vector, unsigned int index);
 void* vector_push(Vector *vector, void *value);
 
 void* vector_resize(Vector *vec, unsigned int capacity);
+
+// TODO(joao-conde):
+void* vector_begin(const Vector *vec);
+void* vector_end(const Vector *vec);
+bool vector_empty(const Vector *vec);
+void* vector_pop(Vector *vector);
+void* vector_insert(Vector *vector);
+void* vector_erase(Vector *vector);
 
 #endif // INCLUDE_VECTOR_H_
