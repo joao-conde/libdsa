@@ -83,13 +83,7 @@ START_TEST(test_length) {
 END_TEST
 
 START_TEST(test_capacity) {
-    Vector *vec;
-
-    vec = vector(sizeof(int));
-    ck_assert(vector_capacity(vec) == 256);
-    vector_free(vec);
-
-    vec = vector_with_capacity(sizeof(int), 10);
+    Vector *vec = vector_with_capacity(sizeof(int), 10);
     ck_assert(vector_capacity(vec) == 10);
     vector_free(vec);
 }
