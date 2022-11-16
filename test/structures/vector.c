@@ -89,16 +89,16 @@ START_TEST(test_vector_capacity) {
 }
 END_TEST
 
-START_TEST(test_vector_empty) {
+START_TEST(test_vector_is_empty) {
     vector *v = vector_init(sizeof(int));
-    ck_assert(vector_empty(v) == true);
+    ck_assert(vector_is_empty(v) == true);
 
     int value = -10;
     vector_push(v, &value);
-    ck_assert(vector_empty(v) == false);
+    ck_assert(vector_is_empty(v) == false);
 
     vector_pop(v);
-    ck_assert(vector_empty(v) == true);
+    ck_assert(vector_is_empty(v) == true);
 
     vector_free(v);
 }
@@ -497,12 +497,12 @@ END_TEST
 START_TEST(test_vector_clear) {
     double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
     vector *v = vector_from_array(sizeof(double), 7, values);
-    ck_assert(!vector_empty(v));
+    ck_assert(!vector_is_empty(v));
     ck_assert(vector_length(v) == 7);
     ck_assert(vector_capacity(v) == 256);
 
     vector_clear(v);
-    ck_assert(vector_empty(v));
+    ck_assert(vector_is_empty(v));
     ck_assert(vector_length(v) == 0);
     ck_assert(vector_capacity(v) == 256);
 
@@ -557,7 +557,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_free);
     tcase_add_test(test_case, test_vector_length);
     tcase_add_test(test_case, test_vector_capacity);
-    tcase_add_test(test_case, test_vector_empty);
+    tcase_add_test(test_case, test_vector_is_empty);
     tcase_add_test(test_case, test_vector_at);
     tcase_add_test(test_case, test_vector_at_fail);
     tcase_add_test(test_case, test_vector_set);

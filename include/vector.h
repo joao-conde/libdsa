@@ -18,7 +18,7 @@ size_t vector_length(const vector *v);
 
 size_t vector_capacity(const vector *v);
 
-bool vector_empty(const vector *v);
+bool vector_is_empty(const vector *v);
 
 void* vector_at(const vector *v, size_t index);
 

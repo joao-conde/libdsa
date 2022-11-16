@@ -82,7 +82,7 @@ size_t vector_capacity(const vector *v) {
     return v->capacity;
 }
 
-bool vector_empty(const vector *v) {
+bool vector_is_empty(const vector *v) {
     return v->length == 0;
 }
 
