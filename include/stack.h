@@ -16,8 +16,8 @@ bool stack_is_empty(const stack *s);
 
 void* stack_top(const stack *s);
 
-void* stack_push(const stack *s);
+void* stack_push(stack *s, void *value);
 
-void* stack_pop(const stack *s);
+void* stack_pop(stack *s);
 
 #endif // INCLUDE_STACK_H_
