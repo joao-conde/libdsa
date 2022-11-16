@@ -47,7 +47,7 @@ uninstall:
 check:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
-	./runner
+	CK_FORK=no ./runner
 
 coverage:
 	$(MAKE) check
@@ -58,7 +58,7 @@ lint:
 
 memcheck:
 	$(MAKE) check
-	CK_FORK=no valgrind --leak-check=full -s ./runner
+	CK_FORK=no valgrind --error-exitcode=1 --leak-check=full -s ./runner
 
 clean:
 	-@$(RM) $(OBJS)
