@@ -463,6 +463,16 @@ START_TEST(test_resize) {
     ck_assert(strcmp(vec_at(v, 0), "world"));
     ck_assert(vec_at(v, 2) == NULL);
 
+    result = vec_resize(v, 0);
+    ck_assert(result == NULL);
+    ck_assert(vec_capacity(v) == 0);
+    ck_assert(vec_length(v) == 0);
+
+    result = vec_resize(v, 256);
+    ck_assert(result != NULL);
+    ck_assert(vec_capacity(v) == 256);
+    ck_assert(vec_length(v) == 0);
+
     vec_free(v);
 }
 END_TEST

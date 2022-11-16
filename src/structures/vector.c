@@ -136,9 +136,10 @@ void* vec_erase(vector *v, unsigned int index) {
 
 void* vec_resize(vector *v, unsigned int capacity) {
     void *data = realloc(v->data, v->type_size * capacity);
-    if (data != NULL) v->data = data;
+    if (capacity != 0 && data == NULL) return NULL;
 
     v->length = v->length > capacity ? capacity : v->length;
     v->capacity = capacity;
+    v->data = data;
     return data;
 }
