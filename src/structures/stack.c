@@ -19,6 +19,6 @@ stack* stack_init(size_t type_size) {
 }
 
 void stack_free(stack *s) {
-    vector_free(s->data);
+    if (s != NULL) vector_free(s->data);
     free(s);
 }
