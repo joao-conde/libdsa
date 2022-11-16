@@ -70,7 +70,7 @@ vector* vector_from_array(size_t type_size, size_t length, const void *array) {
 }
 
 void vector_free(vector *v) {
-    free(v->data);
+    if (v != NULL) free(v->data);
     free(v);
 }
 
