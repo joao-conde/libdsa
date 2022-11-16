@@ -185,6 +185,14 @@ START_TEST(test_vector_end) {
 }
 END_TEST
 
+START_TEST(test_vector_pointers) {
+    vector *v = vector_init(sizeof(int));
+    ck_assert(vector_begin(v) == vector_back(v));
+    ck_assert(vector_begin(v) == vector_end(v));
+    vector_free(v);
+}
+END_TEST
+
 START_TEST(test_vector_push) {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     vector *v = vector_init(sizeof(int));
@@ -565,6 +573,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_begin);
     tcase_add_test(test_case, test_vector_back);
     tcase_add_test(test_case, test_vector_end);
+    tcase_add_test(test_case, test_vector_pointers);
     tcase_add_test(test_case, test_vector_push);
     tcase_add_test(test_case, test_vector_push_resize);
     tcase_add_test(test_case, test_vector_pop);
