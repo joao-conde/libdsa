@@ -1,5 +1,6 @@
 #include <check.h>
 
+#include "structures/stack.c"
 #include "structures/vector.c"
 
 #define SUITE_NAME "libdsa"
@@ -9,6 +10,7 @@
 int main() {
     // creates and adds the module test suites to the suite runner
     SRunner *sr = srunner_create(suite_create(SUITE_NAME));
+    srunner_add_suite(sr, suite_stack());
     srunner_add_suite(sr, suite_vector());
 
     // runs all test suites and checks for failures
