@@ -7,8 +7,8 @@
 #define ALLOC_FACTOR 2
 
 struct vector {
-    unsigned int length;
-    unsigned int capacity;
+    size_t length;
+    size_t capacity;
     size_t type_size;
     void *data;
 };
@@ -29,7 +29,7 @@ vector* vec(size_t type_size) {
     return v;
 }
 
-vector* vec_with_capacity(size_t type_size, unsigned int capacity) {
+vector* vec_with_capacity(size_t type_size, size_t capacity) {
     vector *v = malloc(sizeof(vector));
     void *data = calloc(capacity, type_size);
     if (v == NULL || data == NULL) {
@@ -45,11 +45,11 @@ vector* vec_with_capacity(size_t type_size, unsigned int capacity) {
     return v;
 }
 
-vector* vec_from_array(size_t type_size, unsigned int length, const void *array) {
+vector* vec_from_array(size_t type_size, size_t length, const void *array) {
     // computes vector capacity based on the array to copy length
     // if the vector would be at capacity by copying the original
     // array then we allocate a bigger one
-    unsigned int capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
+    size_t capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
     vector *v = malloc(sizeof(vector));
     void *data = calloc(capacity, type_size);
@@ -74,11 +74,11 @@ void vec_free(vector *v) {
     free(v);
 }
 
-unsigned int vec_length(const vector *v) {
+size_t vec_length(const vector *v) {
     return v->length;
 }
 
-unsigned int vec_capacity(const vector *v) {
+size_t vec_capacity(const vector *v) {
     return v->capacity;
 }
 
@@ -94,7 +94,7 @@ void* vec_end(const vector *v) {
     return (uint8_t*) v->data + v->length * v->type_size;
 }
 
-void* vec_at(const vector *v, unsigned int index) {
+void* vec_at(const vector *v, size_t index) {
     if (index >= v->length) return NULL;
     return (uint8_t*) v->data + index * v->type_size;
 }
@@ -103,7 +103,7 @@ void* vec_push(vector *v, const void *value) {
     // if the vector is at capacity already we resize it
     // if the resizing fails the push operation halts
     if (v->length >= v->capacity) {
-        unsigned int capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
+        size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
         void *resized = vec_resize(v, capacity);
         if (resized == NULL) return NULL;
     }
@@ -126,20 +126,20 @@ void* vec_pop(vector *v) {
     return popped;
 }
 
-void* vec_insert(vector *v, unsigned int index, const void *value) {
+void* vec_insert(vector *v, size_t index, const void *value) {
     if (index > v->length) return NULL;
 
     // if the vector is at capacity already we resize it
     // if the resizing fails the insert operation halts
     if (v->length >= v->capacity) {
-        unsigned int capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
+        size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
         void *resized = vec_resize(v, capacity);
         if (resized == NULL) return NULL;
     }
 
     // computes the number of elements to copy and the
     // position of insertion
-    unsigned int to_copy = v->length - index;
+    size_t to_copy = v->length - index;
     void *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements right from the insertion position forward
@@ -155,12 +155,12 @@ void* vec_insert(vector *v, unsigned int index, const void *value) {
     return inserted;
 }
 
-void* vec_erase(vector *v, unsigned int index) {
+void* vec_erase(vector *v, size_t index) {
     if (index > v->length) return NULL;
 
     // computes the number of elements to copy and the
     // position of deletion
-    unsigned int to_copy = v->length - index;
+    size_t to_copy = v->length - index;
     void *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements left from the deletion position forward
@@ -175,7 +175,7 @@ void* vec_erase(vector *v, unsigned int index) {
     return moved;
 }
 
-void* vec_resize(vector *v, unsigned int capacity) {
+void* vec_resize(vector *v, size_t capacity) {
     // attempts to resize the internal data buffer
     // failure is detected if a NULL pointer is returned
     // and the resizing was not of zero bytes
