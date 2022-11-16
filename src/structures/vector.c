@@ -90,6 +90,10 @@ void* vec_begin(const vector *v) {
     return v->data;
 }
 
+void* vec_back(const vector *v) {
+    return (uint8_t*) v->data + (v->length - 1) * v->type_size;
+}
+
 void* vec_end(const vector *v) {
     return (uint8_t*) v->data + v->length * v->type_size;
 }
@@ -180,6 +184,10 @@ void* vec_erase(vector *v, size_t index) {
     // returns a pointer to the position of the erased
     // element where a new vector element resides
     return moved;
+}
+
+void vec_clear(vector *v) {
+    v->length = 0;
 }
 
 void* vec_resize(vector *v, size_t capacity) {

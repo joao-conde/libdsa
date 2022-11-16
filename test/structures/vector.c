@@ -169,6 +169,14 @@ START_TEST(test_begin) {
 }
 END_TEST
 
+START_TEST(test_back) {
+    int values[4] = {15, 21, 30, 69};
+    vector *v = vec_from_array(sizeof(int), 4, values);
+    ck_assert(vec_back(v) == vec_at(v, 3));
+    vec_free(v);
+}
+END_TEST
+
 START_TEST(test_end) {
     int values[4] = {15, 21, 30, 69};
     vector *v = vec_from_array(sizeof(int), 4, values);
@@ -486,6 +494,22 @@ START_TEST(test_erase) {
 }
 END_TEST
 
+START_TEST(test_clear) {
+    double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
+    vector *v = vec_from_array(sizeof(double), 7, values);
+    ck_assert(!vec_empty(v));
+    ck_assert(vec_length(v) == 7);
+    ck_assert(vec_capacity(v) == 256);
+
+    vec_clear(v);
+    ck_assert(vec_empty(v));
+    ck_assert(vec_length(v) == 0);
+    ck_assert(vec_capacity(v) == 256);
+
+    vec_free(v);
+}
+END_TEST
+
 START_TEST(test_resize) {
     char* values[4] = {"hello", "world", "welcome", "all"};
     vector *v = vec_from_array(sizeof(char*), 4, values);
@@ -539,6 +563,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_set);
     tcase_add_test(test_case, test_set_fail);
     tcase_add_test(test_case, test_begin);
+    tcase_add_test(test_case, test_back);
     tcase_add_test(test_case, test_end);
     tcase_add_test(test_case, test_push);
     tcase_add_test(test_case, test_push_resize);
@@ -546,6 +571,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_insert);
     tcase_add_test(test_case, test_insert_resize);
     tcase_add_test(test_case, test_erase);
+    tcase_add_test(test_case, test_clear);
     tcase_add_test(test_case, test_resize);
     suite_add_tcase(suite, test_case);
     return suite;

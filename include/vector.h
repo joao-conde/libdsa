@@ -26,6 +26,8 @@ void* vec_set(const vector *v, size_t index, const void *value);
 
 void* vec_begin(const vector *v);
 
+void* vec_back(const vector *v);
+
 void* vec_end(const vector *v);
 
 void* vec_push(vector *v, const void *value);
@@ -35,6 +37,8 @@ void* vec_pop(vector *v);
 void* vec_insert(vector *v, size_t index, const void *value);
 
 void* vec_erase(vector *v, size_t index);
+
+void vec_clear(vector *v);
 
 void* vec_resize(vector *v, size_t capacity);
 
