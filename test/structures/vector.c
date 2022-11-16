@@ -473,6 +473,12 @@ START_TEST(test_resize) {
     ck_assert(vec_capacity(v) == 256);
     ck_assert(vec_length(v) == 0);
 
+    result = vec_push(v, &values[0]);
+    ck_assert(vec_capacity(v) == 256);
+    ck_assert(vec_length(v) == 1);
+    ck_assert(strcmp(result, "hello"));
+    ck_assert(strcmp(vec_at(v, 0), "hello"));
+
     vec_free(v);
 }
 END_TEST
