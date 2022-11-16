@@ -15,7 +15,7 @@ struct vector {
 
 vector* vec(size_t type_size) {
     vector *v = malloc(sizeof(vector));
-    void *data = malloc(type_size * CAPACITY);
+    void *data = calloc(CAPACITY, type_size);
     if (v == NULL || data == NULL) {
         free(data);
         free(v);
@@ -31,7 +31,7 @@ vector* vec(size_t type_size) {
 
 vector* vec_with_capacity(size_t type_size, unsigned int capacity) {
     vector *v = malloc(sizeof(vector));
-    void *data = malloc(type_size * capacity);
+    void *data = calloc(capacity, type_size);
     if (v == NULL || data == NULL) {
         free(data);
         free(v);
@@ -49,7 +49,7 @@ vector* vec_from_array(size_t type_size, unsigned int length, const void *array)
     unsigned int capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
     vector *v = malloc(sizeof(vector));
-    void *data = malloc(type_size * capacity);
+    void *data = calloc(capacity, type_size);
     if (v == NULL || data == NULL) {
         free(data);
         free(v);
