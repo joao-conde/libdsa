@@ -63,6 +63,8 @@ START_TEST(test_vector_from_array_fail) {
 END_TEST
 
 START_TEST(test_vector_free) {
+    vector_free(NULL);
+
     vector *v = vector_init(sizeof(int));
     vector_free(v);
 }
