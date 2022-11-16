@@ -1,5 +1,5 @@
 #include <check.h>
-#include <limits.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "../../include/vector.h"
@@ -13,7 +13,7 @@ START_TEST(test_vec) {
 END_TEST
 
 START_TEST(test_vec_fail) {
-    vector *v = vec(UINT_MAX);
+    vector *v = vec(SIZE_MAX);
     ck_assert(v == NULL);
 }
 END_TEST
@@ -27,7 +27,7 @@ START_TEST(test_with_capacity) {
 END_TEST
 
 START_TEST(test_with_capacity_fail) {
-    vector *v = vec_with_capacity(UINT_MAX, 1000);
+    vector *v = vec_with_capacity(SIZE_MAX, 1000);
     ck_assert(v == NULL);
 }
 END_TEST
@@ -57,7 +57,7 @@ START_TEST(test_from_array_resize) {
 END_TEST
 
 START_TEST(test_from_array_fail) {
-    vector *v = vec_from_array(UINT_MAX, 1, NULL);
+    vector *v = vec_from_array(SIZE_MAX, 1, NULL);
     ck_assert(v == NULL);
 }
 END_TEST
