@@ -13,7 +13,7 @@ struct vector {
     void *data;
 };
 
-vector* vec(size_t type_size) {
+vector* vector_init(size_t type_size) {
     vector *v = malloc(sizeof(vector));
     void *data = calloc(CAPACITY, type_size);
     if (v == NULL || data == NULL) {
@@ -29,7 +29,7 @@ vector* vec(size_t type_size) {
     return v;
 }
 
-vector* vec_with_capacity(size_t type_size, size_t capacity) {
+vector* vector_with_capacity(size_t type_size, size_t capacity) {
     vector *v = malloc(sizeof(vector));
     void *data = calloc(capacity, type_size);
     if (v == NULL || data == NULL) {
@@ -45,7 +45,7 @@ vector* vec_with_capacity(size_t type_size, size_t capacity) {
     return v;
 }
 
-vector* vec_from_array(size_t type_size, size_t length, const void *array) {
+vector* vector_from_array(size_t type_size, size_t length, const void *array) {
     // computes vector capacity based on the array to copy length
     // if the vector would be at capacity by copying the original
     // array then we allocate a bigger one
@@ -69,53 +69,53 @@ vector* vec_from_array(size_t type_size, size_t length, const void *array) {
     return v;
 }
 
-void vec_free(vector *v) {
+void vector_free(vector *v) {
     free(v->data);
     free(v);
 }
 
-size_t vec_length(const vector *v) {
+size_t vector_length(const vector *v) {
     return v->length;
 }
 
-size_t vec_capacity(const vector *v) {
+size_t vector_capacity(const vector *v) {
     return v->capacity;
 }
 
-bool vec_empty(const vector *v) {
+bool vector_empty(const vector *v) {
     return v->length == 0;
 }
 
-void* vec_begin(const vector *v) {
+void* vector_begin(const vector *v) {
     return v->data;
 }
 
-void* vec_back(const vector *v) {
+void* vector_back(const vector *v) {
     return (uint8_t*) v->data + (v->length - 1) * v->type_size;
 }
 
-void* vec_end(const vector *v) {
+void* vector_end(const vector *v) {
     return (uint8_t*) v->data + v->length * v->type_size;
 }
 
-void* vec_at(const vector *v, size_t index) {
+void* vector_at(const vector *v, size_t index) {
     if (index >= v->length) return NULL;
     return (uint8_t*) v->data + index * v->type_size;
 }
 
-void* vec_set(const vector *v, size_t index, const void *value) {
+void* vector_set(const vector *v, size_t index, const void *value) {
     if (index >= v->length) return NULL;
     uint8_t *dst = (uint8_t*) v->data + index * v->type_size;
     void *set = memcpy(dst, value, v->type_size);
     return set;
 }
 
-void* vec_push(vector *v, const void *value) {
+void* vector_push(vector *v, const void *value) {
     // if the vector is at capacity already we resize it
     // if the resizing fails the push operation halts
     if (v->length >= v->capacity) {
         size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
-        void *resized = vec_resize(v, capacity);
+        void *resized = vector_resize(v, capacity);
         if (resized == NULL) return NULL;
     }
 
@@ -127,7 +127,7 @@ void* vec_push(vector *v, const void *value) {
     return pushed;
 }
 
-void* vec_pop(vector *v) {
+void* vector_pop(vector *v) {
     if (v->length == 0) return NULL;
 
     v->length -= 1;
@@ -137,14 +137,14 @@ void* vec_pop(vector *v) {
     return popped;
 }
 
-void* vec_insert(vector *v, size_t index, const void *value) {
+void* vector_insert(vector *v, size_t index, const void *value) {
     if (index > v->length) return NULL;
 
     // if the vector is at capacity already we resize it
     // if the resizing fails the insert operation halts
     if (v->length >= v->capacity) {
         size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
-        void *resized = vec_resize(v, capacity);
+        void *resized = vector_resize(v, capacity);
         if (resized == NULL) return NULL;
     }
 
@@ -166,7 +166,7 @@ void* vec_insert(vector *v, size_t index, const void *value) {
     return inserted;
 }
 
-void* vec_erase(vector *v, size_t index) {
+void* vector_erase(vector *v, size_t index) {
     if (index > v->length) return NULL;
 
     // computes the number of elements to copy and the
@@ -186,11 +186,11 @@ void* vec_erase(vector *v, size_t index) {
     return moved;
 }
 
-void vec_clear(vector *v) {
+void vector_clear(vector *v) {
     v->length = 0;
 }
 
-void* vec_resize(vector *v, size_t capacity) {
+void* vector_resize(vector *v, size_t capacity) {
     // attempts to resize the internal data buffer
     // failure is detected if a NULL pointer is returned
     // and the resizing was not of zero bytes
