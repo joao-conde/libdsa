@@ -93,14 +93,14 @@ END_TEST
 
 START_TEST(test_vector_is_empty) {
     vector *v = vector_init(sizeof(int));
-    ck_assert(vector_is_empty(v) == true);
+    ck_assert(vector_is_empty(v));
 
     int value = -10;
     vector_push(v, &value);
-    ck_assert(vector_is_empty(v) == false);
+    ck_assert(!vector_is_empty(v));
 
     vector_pop(v);
-    ck_assert(vector_is_empty(v) == true);
+    ck_assert(vector_is_empty(v));
 
     vector_free(v);
 }

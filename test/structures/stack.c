@@ -5,7 +5,7 @@
 
 START_TEST(test_stack_init) {
     stack *s = stack_init(sizeof(int));
-    ck_assert(s != NULL);
+    ck_assert(stack_is_empty(s));
     stack_free(s);
 }
 END_TEST
@@ -40,14 +40,14 @@ END_TEST
 
 START_TEST(test_stack_is_empty) {
     stack *s = stack_init(sizeof(int));
-    ck_assert(stack_is_empty(s) == true);
+    ck_assert(stack_is_empty(s));
 
     int value = -10;
     stack_push(s, &value);
-    ck_assert(stack_is_empty(s) == false);
+    ck_assert(!stack_is_empty(s));
 
     stack_pop(s);
-    ck_assert(stack_is_empty(s) == true);
+    ck_assert(stack_is_empty(s));
 
     stack_free(s);
 }
