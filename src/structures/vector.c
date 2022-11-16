@@ -99,6 +99,13 @@ void* vec_at(const vector *v, size_t index) {
     return (uint8_t*) v->data + index * v->type_size;
 }
 
+void* vec_set(const vector *v, size_t index, const void *value) {
+    if (index >= v->length) return NULL;
+    uint8_t *dst = (uint8_t*) v->data + index * v->type_size;
+    void *set = memcpy(dst, value, v->type_size);
+    return set;
+}
+
 void* vec_push(vector *v, const void *value) {
     // if the vector is at capacity already we resize it
     // if the resizing fails the push operation halts
@@ -108,11 +115,11 @@ void* vec_push(vector *v, const void *value) {
         if (resized == NULL) return NULL;
     }
 
-    uint8_t *dest = (uint8_t*) v->data + v->length * v->type_size;
+    uint8_t *dst = (uint8_t*) v->data + v->length * v->type_size;
     v->length += 1;
 
     // returns a pointer to the pushed value
-    void *pushed = memcpy(dest, value, v->type_size);
+    void *pushed = memcpy(dst, value, v->type_size);
     return pushed;
 }
 

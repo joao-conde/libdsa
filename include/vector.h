@@ -22,6 +22,8 @@ bool vec_empty(const vector *v);
 
 void* vec_at(const vector *v, size_t index);
 
+void* vec_set(const vector *v, size_t index, const void *value);
+
 void* vec_begin(const vector *v);
 
 void* vec_end(const vector *v);

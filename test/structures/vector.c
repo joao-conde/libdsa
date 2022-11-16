@@ -123,6 +123,43 @@ START_TEST(test_at_fail) {
 }
 END_TEST
 
+START_TEST(test_set) {
+    unsigned int values[4] = {15, 21, 30, 69};
+    vector *v = vec_from_array(sizeof(unsigned int), 4, values);
+    ck_assert(*(unsigned int*)vec_at(v, 0) == 15);
+    ck_assert(*(unsigned int*)vec_at(v, 1) == 21);
+    ck_assert(*(unsigned int*)vec_at(v, 2) == 30);
+    ck_assert(*(unsigned int*)vec_at(v, 3) == 69);
+
+    void *result = vec_set(v, 0, &values[3]);
+    ck_assert(*(unsigned int*)result == 69);
+
+    result = vec_set(v, 1, &values[0]);
+    ck_assert(*(unsigned int*)result == 15);
+
+    result = vec_set(v, 2, &values[2]);
+    ck_assert(*(unsigned int*)result == 30);
+
+    result = vec_set(v, 3, &values[1]);
+    ck_assert(*(unsigned int*)result == 21);
+
+    ck_assert(*(unsigned int*)vec_at(v, 0) == 69);
+    ck_assert(*(unsigned int*)vec_at(v, 1) == 15);
+    ck_assert(*(unsigned int*)vec_at(v, 2) == 30);
+    ck_assert(*(unsigned int*)vec_at(v, 3) == 21);
+
+    vec_free(v);
+}
+END_TEST
+
+START_TEST(test_set_fail) {
+    int value = 3;
+    vector *v = vec(sizeof(int));
+    ck_assert(vec_set(v, 0, &value) == NULL);
+    vec_free(v);
+}
+END_TEST
+
 START_TEST(test_begin) {
     int values[4] = {15, 21, 30, 69};
     vector *v = vec_from_array(sizeof(int), 4, values);
@@ -499,6 +536,8 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_empty);
     tcase_add_test(test_case, test_at);
     tcase_add_test(test_case, test_at_fail);
+    tcase_add_test(test_case, test_set);
+    tcase_add_test(test_case, test_set_fail);
     tcase_add_test(test_case, test_begin);
     tcase_add_test(test_case, test_end);
     tcase_add_test(test_case, test_push);
