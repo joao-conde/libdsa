@@ -14,35 +14,35 @@ struct vector {
 };
 
 vector* vector_init(size_t type_size) {
-    vector *v = malloc(sizeof(vector));
+    vector *self = malloc(sizeof(vector));
     void *data = calloc(CAPACITY, type_size);
-    if (v == NULL || data == NULL) {
+    if (self == NULL || data == NULL) {
         free(data);
-        free(v);
+        free(self);
         return NULL;
     }
 
-    v->length = 0;
-    v->capacity = CAPACITY;
-    v->type_size = type_size;
-    v->data = data;
-    return v;
+    self->length = 0;
+    self->capacity = CAPACITY;
+    self->type_size = type_size;
+    self->data = data;
+    return self;
 }
 
 vector* vector_with_capacity(size_t type_size, size_t capacity) {
-    vector *v = malloc(sizeof(vector));
+    vector *self = malloc(sizeof(vector));
     void *data = calloc(capacity, type_size);
-    if (v == NULL || data == NULL) {
+    if (self == NULL || data == NULL) {
         free(data);
-        free(v);
+        free(self);
         return NULL;
     }
 
-    v->length = 0;
-    v->capacity = capacity;
-    v->type_size = type_size;
-    v->data = data;
-    return v;
+    self->length = 0;
+    self->capacity = capacity;
+    self->type_size = type_size;
+    self->data = data;
+    return self;
 }
 
 vector* vector_from_array(size_t type_size, size_t length, const void *array) {
@@ -51,22 +51,22 @@ vector* vector_from_array(size_t type_size, size_t length, const void *array) {
     // array then we allocate a bigger one
     size_t capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
-    vector *v = malloc(sizeof(vector));
+    vector *self = malloc(sizeof(vector));
     void *data = calloc(capacity, type_size);
-    if (v == NULL || data == NULL) {
+    if (self == NULL || data == NULL) {
         free(data);
-        free(v);
+        free(self);
         return NULL;
     }
 
     // copies the array to copy contents to internal data buffer
     memcpy(data, array, length * type_size);
 
-    v->length = length;
-    v->capacity = capacity;
-    v->type_size = type_size;
-    v->data = data;
-    return v;
+    self->length = length;
+    self->capacity = capacity;
+    self->type_size = type_size;
+    self->data = data;
+    return self;
 }
 
 void vector_free(vector *v) {
