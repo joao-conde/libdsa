@@ -25,6 +25,7 @@ usage:
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make check - run all test suites
 	@echo make coverage - run all test suites and measure coverage
+	@echo make coverage-report - run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
 	@echo make memcheck - analyze memory usage and report memory leaks
 	@echo make clean - clean build and test artifacts
@@ -51,7 +52,11 @@ check:
 
 coverage:
 	$(MAKE) check
-	gcov --function-summaries $(COVS)
+	gcov $(COVS)
+
+coverage-report:
+	$(MAKE) check
+	gcov --function-summaries --use-colors --stdout $(COVS)
 
 lint:
 	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) 
