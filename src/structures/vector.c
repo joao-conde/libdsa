@@ -201,6 +201,9 @@ void vector_clear(vector *v) {
 }
 
 void* vector_resize(vector *v, size_t capacity) {
+    // checks for overflow of amount of requested memory
+    if (v->type_size && CAPACITY > SIZE_MAX / v->type_size) return NULL;
+
     // attempts to resize the internal data buffer
     // failure is detected if a NULL pointer is returned
     // and the resizing was not of zero bytes
