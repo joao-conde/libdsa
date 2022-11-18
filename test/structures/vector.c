@@ -16,7 +16,7 @@ START_TEST(test_vector_init_fail) {
     vector *v = vector_init(SIZE_MAX);
     ck_assert(v == NULL);
 
-    v = vector_init(SIZE_MAX / 256);
+    v = vector_init(SIZE_MAX / 1000);
     ck_assert(v == NULL);
 }
 END_TEST
@@ -33,7 +33,7 @@ START_TEST(test_vector_with_capacity_fail) {
     vector *v = vector_with_capacity(SIZE_MAX, 1000);
     ck_assert(v == NULL);
 
-    v = vector_with_capacity(SIZE_MAX / 256, 256);
+    v = vector_with_capacity(SIZE_MAX / 1000, 256);
     ck_assert(v == NULL);
 }
 END_TEST
@@ -66,7 +66,7 @@ START_TEST(test_vector_from_array_fail) {
     vector *v = vector_from_array(SIZE_MAX, 1, NULL);
     ck_assert(v == NULL);
 
-    v = vector_from_array(SIZE_MAX / 256, 1, NULL);
+    v = vector_from_array(SIZE_MAX / 1000, 1, NULL);
     ck_assert(v == NULL);
 }
 END_TEST
