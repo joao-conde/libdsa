@@ -14,8 +14,11 @@ struct vector {
 };
 
 vector* vector_init(size_t type_size) {
+    // checks for overflow of amount of requested memory
+    if (type_size && CAPACITY > SIZE_MAX / type_size) return NULL;
+
     vector *self = malloc(sizeof(vector));
-    void *data = calloc(CAPACITY, type_size);
+    void *data = malloc(CAPACITY * type_size);
     if (self == NULL || data == NULL) {
         free(data);
         free(self);
@@ -30,8 +33,11 @@ vector* vector_init(size_t type_size) {
 }
 
 vector* vector_with_capacity(size_t type_size, size_t capacity) {
+    // checks for overflow of amount of requested memory
+    if (type_size && capacity > SIZE_MAX / type_size) return NULL;
+
     vector *self = malloc(sizeof(vector));
-    void *data = calloc(capacity, type_size);
+    void *data = malloc(capacity * type_size);
     if (self == NULL || data == NULL) {
         free(data);
         free(self);
@@ -51,8 +57,11 @@ vector* vector_from_array(size_t type_size, size_t length, const void *array) {
     // array then we allocate a bigger one
     size_t capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
+    // checks for overflow of amount of requested memory
+    if (type_size && capacity > SIZE_MAX / type_size) return NULL;
+
     vector *self = malloc(sizeof(vector));
-    void *data = calloc(capacity, type_size);
+    void *data = malloc(capacity * type_size);
     if (self == NULL || data == NULL) {
         free(data);
         free(self);
