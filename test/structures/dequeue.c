@@ -249,7 +249,7 @@ START_TEST(test_dequeue_pop_front) {
 }
 END_TEST
 
-Suite* suite_stack() {
+Suite* suite_dequeue() {
     Suite *suite = suite_create("dequeue");
     TCase *test_case = tcase_create("");
     tcase_add_test(test_case, test_dequeue_init);
