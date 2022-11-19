@@ -8,22 +8,22 @@ typedef struct dequeue dequeue;
 
 dequeue* dequeue_init(size_t type_size);
 
-void dequeue_free(dequeue *d);
+void dequeue_free(dequeue *dq);
 
-size_t dequeue_length(const dequeue *d);
+size_t dequeue_length(const dequeue *dq);
 
-bool dequeue_is_empty(const dequeue *d);
+bool dequeue_is_empty(const dequeue *dq);
 
-void* dequeue_front(const dequeue *d);
+void* dequeue_front(const dequeue *dq);
 
-void* dequeue_back(const dequeue *d);
+void* dequeue_back(const dequeue *dq);
 
-void* dequeue_push_back(dequeue *d, const void *value);
+void* dequeue_push_back(dequeue *dq, const void *value);
 
-void* dequeue_push_front(dequeue *d, const void *value);
+void* dequeue_push_front(dequeue *dq, const void *value);
 
-void* dequeue_pop_back(dequeue *d);
+void* dequeue_pop_back(dequeue *dq);
 
-void* dequeue_pop_front(dequeue *d);
+void* dequeue_pop_front(dequeue *dq);
 
 #endif // INCLUDE_DEQUEUE_H_
