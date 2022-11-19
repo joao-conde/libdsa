@@ -192,7 +192,7 @@ void* vector_erase(vector *v, size_t index) {
     v->length -= 1;
 
     // returns a pointer to the position of the erased
-    // element where a new vector element resides
+    // element where a new element resides
     return moved;
 }
 
