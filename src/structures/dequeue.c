@@ -27,7 +27,7 @@ bool decrement_front(dequeue *dq) {
         return true;
     }
 
-    void *chunk = calloc(CHUNK_CAPACITY, dq->type_size);
+    void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
     if (chunk == NULL) return false;
 
     vector_insert(dq->chunks, 0, chunk);
@@ -51,7 +51,7 @@ bool increment_back(dequeue *dq) {
     dq->back += 1;
     if (dq->back < CHUNK_CAPACITY) return true;
 
-    void *chunk = calloc(CHUNK_CAPACITY, dq->type_size);
+    void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
     if (chunk == NULL) return false;
 
     vector_push(dq->chunks, chunk);
@@ -73,9 +73,12 @@ void* decrement_back(dequeue *dq) {
 }
 
 dequeue* dequeue_init(size_t type_size) {
+    // checks for overflow of amount of requested memory
+    if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
+
     dequeue *self = malloc(sizeof(dequeue));
     void *chunks = vector_init(sizeof(void*));
-    void *chunk = calloc(CHUNK_CAPACITY, type_size);
+    void *chunk = malloc(CHUNK_CAPACITY * type_size);
     if (self == NULL || chunks == NULL || chunk == NULL) {
         free(chunk);
         vector_free(chunks);
@@ -96,7 +99,8 @@ dequeue* dequeue_init(size_t type_size) {
 }
 
 void dequeue_free(dequeue *dq) {
-    // free(dq);
+    if (dq != NULL) vector_free(dq->chunks);
+    free(dq);
 }
 
 size_t dequeue_length(const dequeue *dq) {
