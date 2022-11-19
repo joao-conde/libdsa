@@ -13,6 +13,9 @@ END_TEST
 START_TEST(test_stack_init_fail) {
     stack *s = stack_init(SIZE_MAX);
     ck_assert(s == NULL);
+
+    s = stack_init(SIZE_MAX / 1000);
+    ck_assert(s == NULL);
 }
 END_TEST
 

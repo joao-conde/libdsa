@@ -13,6 +13,9 @@ END_TEST
 START_TEST(test_dequeue_init_fail) {
     dequeue *dq = dequeue_init(SIZE_MAX);
     ck_assert(dq == NULL);
+
+    dq = dequeue_init(SIZE_MAX / 1000);
+    ck_assert(dq == NULL);
 }
 END_TEST
 
