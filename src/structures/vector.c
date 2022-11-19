@@ -100,7 +100,7 @@ void* vector_begin(const vector *v) {
 }
 
 void* vector_back(const vector *v) {
-    if (v->length == 0) return vector_begin(v);
+    if (vector_is_empty(v)) return vector_begin(v);
     return (uint8_t*) v->data + (v->length - 1) * v->type_size;
 }
 
@@ -138,7 +138,7 @@ void* vector_push(vector *v, const void *value) {
 }
 
 void* vector_pop(vector *v) {
-    if (v->length == 0) return NULL;
+    if (vector_is_empty(v)) return NULL;
 
     v->length -= 1;
 
