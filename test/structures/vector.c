@@ -563,6 +563,19 @@ START_TEST(test_vector_resize) {
 }
 END_TEST
 
+START_TEST(test_vector_of_void_ptrs) {
+    void *d1 = malloc(10 * sizeof(void*));
+    void *d2 = malloc(10 * sizeof(void*));
+    void *d3 = malloc(10 * sizeof(void*));
+    void* values[3] = {d1, d2, d3};
+    vector *v = vector_from_array(sizeof(void*), 3, values);
+    ck_assert(*(void**)vector_at(v, 0) == d1);
+    ck_assert(*(void**)vector_at(v, 1) == d2);
+    ck_assert(*(void**)vector_at(v, 2) == d3);
+    vector_free(v);
+}
+END_TEST
+
 Suite* suite_vector() {
     Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
@@ -593,6 +606,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_erase);
     tcase_add_test(test_case, test_vector_clear);
     tcase_add_test(test_case, test_vector_resize);
+    tcase_add_test(test_case, test_vector_of_void_ptrs);
     suite_add_tcase(suite, test_case);
     return suite;
 }

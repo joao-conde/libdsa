@@ -115,7 +115,7 @@ void* vector_at(const vector *v, size_t index) {
 
 void* vector_set(const vector *v, size_t index, const void *value) {
     if (index >= v->length) return NULL;
-    uint8_t *dst = (uint8_t*) v->data + index * v->type_size;
+    void *dst = (uint8_t*) v->data + index * v->type_size;
     void *set = memcpy(dst, value, v->type_size);
     return set;
 }
@@ -129,7 +129,7 @@ void* vector_push(vector *v, const void *value) {
         if (resized == NULL) return NULL;
     }
 
-    uint8_t *dst = (uint8_t*) v->data + v->length * v->type_size;
+    void *dst = (uint8_t*) v->data + v->length * v->type_size;
     v->length += 1;
 
     // returns a pointer to the pushed value
