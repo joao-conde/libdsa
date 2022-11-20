@@ -248,7 +248,6 @@ START_TEST(test_vector_push) {
 }
 END_TEST
 
-
 START_TEST(test_vector_push_void_ptrs) {
     vector *v = vector_init(sizeof(void*));
     void *d1 = malloc(10 * sizeof(void*));

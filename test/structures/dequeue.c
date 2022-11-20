@@ -124,6 +124,24 @@ START_TEST(test_dequeue_back) {
 }
 END_TEST
 
+START_TEST(test_dequeue_pointers) {
+    dequeue *dq = dequeue_init(sizeof(int));
+    ck_assert(dequeue_front(dq) == dequeue_back(dq));
+
+    int value = 3;
+    dequeue_push_front(dq, &value);
+    ck_assert(dequeue_front(dq) == dequeue_back(dq));
+
+    dequeue_push_front(dq, &value);
+    ck_assert(dequeue_front(dq) != dequeue_back(dq));
+
+    dequeue_pop_back(dq);
+    ck_assert(dequeue_front(dq) == dequeue_back(dq));
+
+    dequeue_free(dq);
+}
+END_TEST
+
 START_TEST(test_dequeue_push_back) {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     dequeue *dq = dequeue_init(sizeof(int));
@@ -262,6 +280,7 @@ Suite* suite_dequeue() {
     tcase_add_test(test_case, test_dequeue_is_empty);
     tcase_add_test(test_case, test_dequeue_front);
     tcase_add_test(test_case, test_dequeue_back);
+    tcase_add_test(test_case, test_dequeue_pointers);
     tcase_add_test(test_case, test_dequeue_push_back);
     tcase_add_test(test_case, test_dequeue_push_front);
     tcase_add_test(test_case, test_dequeue_pop_back);

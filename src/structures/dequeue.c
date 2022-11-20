@@ -111,6 +111,14 @@ bool dequeue_is_empty(const dequeue *dq) {
     return dq->length == 0;
 }
 
+void* dequeue_at(const dequeue *dq, size_t index) {
+    if (index >= dq->length) return NULL;
+    size_t chunk_i = index / CHUNK_CAPACITY;
+    size_t value_i = index % CHUNK_CAPACITY;
+    void *chunk = vector_at(dq->chunks, chunk_i);
+    return (uint8_t*) chunk + value_i * dq->type_size;
+}
+
 void* dequeue_front(const dequeue *dq) {
     if (dequeue_is_empty(dq)) return NULL;
     void *chunk = vector_at(dq->chunks, dq->front_chunk);
