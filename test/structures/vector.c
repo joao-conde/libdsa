@@ -253,12 +253,14 @@ START_TEST(test_vector_push_void_ptrs) {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
     void *d3 = malloc(10 * sizeof(void*));
-    vector_push(v, d1);
-    vector_push(v, d2);
-    vector_push(v, d3);
+
+    vector_push(v, &d1);
+    vector_push(v, &d2);
+    vector_push(v, &d3);
     ck_assert(*(void**)vector_at(v, 0) == d1);
     ck_assert(*(void**)vector_at(v, 1) == d2);
     ck_assert(*(void**)vector_at(v, 2) == d3);
+
     vector_free(v);
 }
 END_TEST
@@ -421,12 +423,14 @@ START_TEST(test_vector_insert_void_ptrs) {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
     void *d3 = malloc(10 * sizeof(void*));
-    vector_insert(v, 0, d1);
-    vector_insert(v, 0, d2);
-    vector_insert(v, 0, d3);
+
+    vector_insert(v, 0, &d1);
+    vector_insert(v, 0, &d2);
+    vector_insert(v, 0, &d3);
     ck_assert(*(void**)vector_at(v, 0) == d3);
     ck_assert(*(void**)vector_at(v, 1) == d2);
     ck_assert(*(void**)vector_at(v, 2) == d1);
+
     vector_free(v);
 }
 END_TEST
