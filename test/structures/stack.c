@@ -115,6 +115,23 @@ START_TEST(test_stack_push) {
 }
 END_TEST
 
+START_TEST(test_stack_push_void_ptrs) {
+    stack *s = stack_init(sizeof(void*));
+    void *d1 = malloc(10 * sizeof(void*));
+    void *d2 = malloc(10 * sizeof(void*));
+    void *d3 = malloc(10 * sizeof(void*));
+
+    stack_push(s, &d1);
+    stack_push(s, &d2);
+    stack_push(s, &d3);
+    ck_assert(*(void**)stack_pop(s) == d3);
+    ck_assert(*(void**)stack_pop(s) == d2);
+    ck_assert(*(void**)stack_pop(s) == d1);
+
+    stack_free(s);
+}
+END_TEST
+
 START_TEST(test_stack_pop) {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     stack *s = stack_init(sizeof(int));
@@ -164,6 +181,7 @@ Suite* suite_stack() {
     tcase_add_test(test_case, test_stack_is_empty);
     tcase_add_test(test_case, test_stack_top);
     tcase_add_test(test_case, test_stack_push);
+    tcase_add_test(test_case, test_stack_push_void_ptrs);
     tcase_add_test(test_case, test_stack_pop);
     suite_add_tcase(suite, test_case);
     return suite;
