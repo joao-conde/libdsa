@@ -613,7 +613,8 @@ START_TEST(test_vector_resize) {
 END_TEST
 
 START_TEST(test_vector_stress) {
-    int nelements = 100000;
+    unsigned int seed = time(NULL);
+    int random, nelements = 100000;
     bool is_empty;
     size_t length, capacity;
     int *at, *set, *pushed, *popped, *inserted, *erased, *begin, *back, *end;
@@ -672,9 +673,9 @@ START_TEST(test_vector_stress) {
 
     for (int i = 0; i < nelements; i++) {
         length = vector_length(v);
-        int r = rand() % (length > 0 ? length : 1);
+        random = rand_r(&seed) % (length > 0 ? length : 1);
 
-        inserted = vector_insert(v, r, &i);
+        inserted = vector_insert(v, random, &i);
         length = vector_length(v);
         capacity = vector_capacity(v);
         is_empty = vector_is_empty(v);
@@ -693,9 +694,9 @@ START_TEST(test_vector_stress) {
 
     for (int i = 0; i < nelements / 2; i++) {
         length = vector_length(v);
-        int r = rand() % (length > 0 ? length : 1);
+        random = rand_r(&seed) % (length > 0 ? length : 1);
 
-        erased = vector_erase(v, r);
+        erased = vector_erase(v, random);
         length = vector_length(v);
         capacity = vector_capacity(v);
         is_empty = vector_is_empty(v);
