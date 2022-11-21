@@ -63,26 +63,12 @@ bool dequeue_is_empty(const dequeue *dq) {
 
 void* dequeue_at(const dequeue *dq, size_t index) {
     if (index >= dq->length) return NULL;
-    size_t chunk_i = (dq->front + index) / CHUNK_CAPACITY;
-    size_t value_i = (dq->front + index) % CHUNK_CAPACITY;
-    // printf("dqat  %lu %lu\n", chunk_i, value_i);
+    size_t i = dq->front_chunk * CHUNK_CAPACITY + dq->front + index;
+    size_t chunk_i = i / CHUNK_CAPACITY;
+    size_t value_i = i % CHUNK_CAPACITY;
     void *chunk = *(void**)vector_at(dq->chunks, chunk_i);
     void *value = (uint8_t*) chunk + value_i * dq->type_size;
     return value;
-}
-
-void* dequeue_front(const dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
-    void *front = (uint8_t*) chunk + dq->front * dq->type_size;
-    return front;
-}
-
-void* dequeue_back(const dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
-    void *back = (uint8_t*) chunk + dq->back * dq->type_size;
-    return back;
 }
 
 bool decrement_front(dequeue *dq) {
@@ -136,6 +122,20 @@ void* decrement_back(dequeue *dq) {
     dq->back = CHUNK_CAPACITY - 1;
     dq->back_chunk -= 1;
     return popped;
+}
+
+void* dequeue_front(const dequeue *dq) {
+    if (dequeue_is_empty(dq)) return NULL;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
+    void *front = (uint8_t*) chunk + dq->front * dq->type_size;
+    return front;
+}
+
+void* dequeue_back(const dequeue *dq) {
+    if (dequeue_is_empty(dq)) return NULL;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
+    void *back = (uint8_t*) chunk + dq->back * dq->type_size;
+    return back;
 }
 
 void* dequeue_push_back(dequeue *dq, const void *value) {
