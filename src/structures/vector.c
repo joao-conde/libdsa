@@ -69,19 +69,6 @@ bool vector_is_empty(const vector *v) {
     return v->length == 0;
 }
 
-void* vector_begin(const vector *v) {
-    return v->data;
-}
-
-void* vector_back(const vector *v) {
-    if (vector_is_empty(v)) return vector_begin(v);
-    return (uint8_t*) v->data + (v->length - 1) * v->type_size;
-}
-
-void* vector_end(const vector *v) {
-    return (uint8_t*) v->data + v->length * v->type_size;
-}
-
 void* vector_at(const vector *v, size_t index) {
     if (index >= v->length) return NULL;
     return (uint8_t*) v->data + index * v->type_size;
@@ -91,6 +78,19 @@ void* vector_set(const vector *v, size_t index, const void *value) {
     if (index >= v->length) return NULL;
     void *dst = (uint8_t*) v->data + index * v->type_size;
     return memcpy(dst, value, v->type_size);
+}
+
+void* vector_begin(const vector *v) {
+    return vector_at(v, 0);
+}
+
+void* vector_back(const vector *v) {
+    if (vector_is_empty(v)) return vector_begin(v);
+    return vector_at(v, v->length - 1);
+}
+
+void* vector_end(const vector *v) {
+    return vector_back(v) + v->type_size;
 }
 
 void* vector_push(vector *v, const void *value) {
