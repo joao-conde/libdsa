@@ -14,21 +14,7 @@ struct vector {
 };
 
 vector* vector_init(size_t type_size) {
-    // checks for overflow of amount of requested memory
-    if (type_size && CAPACITY > (SIZE_MAX / type_size)) return NULL;
-
-    vector *self = malloc(sizeof(vector));
-    void *data = malloc(CAPACITY * type_size);
-    if (self == NULL || data == NULL) {
-        free(data);
-        free(self);
-        return NULL;
-    }
-
-    self->length = 0;
-    self->capacity = CAPACITY;
-    self->type_size = type_size;
-    self->data = data;
+    vector *self = vector_with_capacity(type_size, CAPACITY);
     return self;
 }
 
