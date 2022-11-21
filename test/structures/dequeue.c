@@ -46,7 +46,7 @@ START_TEST(test_dequeue_is_empty) {
     ck_assert(dequeue_is_empty(dq));
 
     int value = -10;
-    dequeue_push_back(dq, &value);
+    dequeue_push_front(dq, &value);
     ck_assert(!dequeue_is_empty(dq));
 
     dequeue_pop_back(dq);
@@ -57,7 +57,7 @@ START_TEST(test_dequeue_is_empty) {
 END_TEST
 
 START_TEST(test_dequeue_at) {
-    int *result, values[5] = {51, 12, -123, 1000, -1};
+    int values[5] = {51, 12, -123, 1000, -1};
     dequeue *dq = dequeue_init(sizeof(int));
     ck_assert(dequeue_at(dq, 0) == NULL);
 

@@ -16,11 +16,6 @@ struct dequeue {
     vector *chunks;
 };
 
-void* get_chunk(const dequeue *dq, size_t index) {
-    void **chunk = *(void**)vector_at(dq->chunks, index);
-    return *chunk;
-}
-
 void *get_element(const dequeue *dq, size_t chunk, size_t offset) {
     return (uint8_t*) *(void**)vector_at(dq->chunks, chunk) + offset * dq->type_size;
 }
