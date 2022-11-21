@@ -116,11 +116,11 @@ START_TEST(test_stack_push) {
 END_TEST
 
 START_TEST(test_stack_push_void_ptrs) {
-    stack *s = stack_init(sizeof(void*));
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
     void *d3 = malloc(10 * sizeof(void*));
 
+    stack *s = stack_init(sizeof(void*));
     stack_push(s, &d1);
     stack_push(s, &d2);
     stack_push(s, &d3);
@@ -129,6 +129,9 @@ START_TEST(test_stack_push_void_ptrs) {
     ck_assert(*(void**)stack_pop(s) == d1);
 
     stack_free(s);
+    free(d3);
+    free(d2);
+    free(d1);
 }
 END_TEST
 
