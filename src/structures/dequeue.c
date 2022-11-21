@@ -20,8 +20,6 @@ void *get_element(const dequeue *dq, size_t chunk, size_t offset) {
     return (uint8_t*) *(void**)vector_at(dq->chunks, chunk) + offset * dq->type_size;
 }
 
-}
-
 bool decrement_front(dequeue *dq) {
     // if it reaches -1 we need to allocate new chunk and set to max
     if (dq->front > 0) {
