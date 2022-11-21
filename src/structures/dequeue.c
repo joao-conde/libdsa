@@ -71,75 +71,27 @@ void* dequeue_at(const dequeue *dq, size_t index) {
     return value;
 }
 
-bool decrement_front(dequeue *dq) {
-    // if it reaches -1 we need to allocate new chunk and set to max
-    if (dq->front > 0) {
-        dq->front -= 1;
-        return true;
-    }
-
-    void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
-    if (chunk == NULL) return false;
-
-    vector_insert(dq->chunks, 0, &chunk);
-    dq->back_chunk += 1;
-    dq->front_chunk = 0;
-    dq->front = CHUNK_CAPACITY - 1;
-    return true;
-}
-
-void* increment_front(dequeue *dq) {
-    void *popped = dequeue_at(dq, 0);
-
-    dq->front += 1;
-    if (dq->front < CHUNK_CAPACITY) return popped;
-
-    dq->front = 0;
-    dq->front_chunk += 1;
-    return popped;
-}
-
-bool increment_back(dequeue *dq) {
-    dq->back += 1;
-    if (dq->back < CHUNK_CAPACITY) return true;
-
-    void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
-    if (chunk == NULL) return false;
-
-    vector_push(dq->chunks, &chunk);
-    dq->back_chunk = vector_length(dq->chunks) - 1;
-    dq->back = 0;
-    return true;
-}
-
-void* decrement_back(dequeue *dq) {
-    void *popped = dequeue_at(dq, dq->length - 1);
-    if (dq->back > 0) {
-        dq->back -= 1;
-        return popped;
-    }
-
-    dq->back = CHUNK_CAPACITY - 1;
-    dq->back_chunk -= 1;
-    return popped;
-}
-
 void* dequeue_front(const dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
-    void *front = (uint8_t*) chunk + dq->front * dq->type_size;
-    return front;
+    return dequeue_at(dq, 0);
 }
 
 void* dequeue_back(const dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
-    void *back = (uint8_t*) chunk + dq->back * dq->type_size;
-    return back;
+    if (dequeue_is_empty(dq)) return dequeue_front(dq);
+    return dequeue_at(dq, dq->length - 1);
 }
 
 void* dequeue_push_back(dequeue *dq, const void *value) {
-    if (!dequeue_is_empty(dq)) increment_back(dq);
+    if (!dequeue_is_empty(dq)) {
+        dq->back += 1;
+        if (dq->back >= CHUNK_CAPACITY) {
+            void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
+            if (chunk == NULL) return false;
+
+            vector_push(dq->chunks, &chunk);
+            dq->back_chunk = vector_length(dq->chunks) - 1;
+            dq->back = 0;
+        }
+    }
 
     dq->length += 1;
     void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
@@ -149,7 +101,18 @@ void* dequeue_push_back(dequeue *dq, const void *value) {
 }
 
 void* dequeue_push_front(dequeue *dq, const void *value) {
-    if (!dequeue_is_empty(dq)) decrement_front(dq);
+    if (!dequeue_is_empty(dq)) {
+        if (dq->front == 0) {
+            void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
+            if (chunk == NULL) return NULL;
+
+            vector_insert(dq->chunks, 0, &chunk);
+            dq->back_chunk += 1;
+            dq->front_chunk = 0;
+            dq->front = CHUNK_CAPACITY;
+        }
+        dq->front -= 1;
+    }
 
     dq->length += 1;
     void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
@@ -160,14 +123,30 @@ void* dequeue_push_front(dequeue *dq, const void *value) {
 
 void* dequeue_pop_back(dequeue *dq) {
     if (dequeue_is_empty(dq)) return NULL;
-    void *popped = decrement_back(dq);
+
+    void *popped = dequeue_at(dq, dq->length - 1);
+
+    if (dq->back == 0) {
+        dq->back = CHUNK_CAPACITY;
+        dq->back_chunk -= 1;
+    }
+
+    dq->back -= 1;
     dq->length -= 1;
     return popped;
 }
 
 void* dequeue_pop_front(dequeue *dq) {
     if (dequeue_is_empty(dq)) return NULL;
-    void *popped = increment_front(dq);
+
+    void *popped = dequeue_at(dq, 0);
+
+    dq->front += 1;
+    if (dq->front >= CHUNK_CAPACITY) {
+        dq->front = 0;
+        dq->front_chunk += 1;
+    }
+
     dq->length -= 1;
     return popped;
 }
