@@ -77,7 +77,7 @@ dequeue* dequeue_init(size_t type_size) {
     if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
 
     dequeue *self = malloc(sizeof(dequeue));
-    void *chunks = vector_init(8);
+    void *chunks = vector_init(sizeof(void*));
     void *chunk = malloc(CHUNK_CAPACITY * type_size);
     if (self == NULL || chunks == NULL || chunk == NULL) {
         free(chunk);
@@ -98,8 +98,18 @@ dequeue* dequeue_init(size_t type_size) {
     return self;
 }
 
+void free_chunks(dequeue *dq) {
+    for (int i = 0; i < vector_length(dq->chunks); i++) {
+        void *chunk = *(void**)vector_at(dq->chunks, i);
+        free(chunk);
+    }
+}
+
 void dequeue_free(dequeue *dq) {
-    if (dq != NULL) vector_free(dq->chunks);
+    if (dq != NULL && dq->chunks != NULL) {
+        free_chunks(dq);
+        vector_free(dq->chunks);
+    }
     free(dq);
 }
 
