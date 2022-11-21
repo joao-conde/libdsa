@@ -62,7 +62,8 @@ lint:
 	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) 
 
 memcheck:
-	$(MAKE) check
+	$(MAKE) clean
+	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
 	CK_FORK=no valgrind --error-exitcode=1 --leak-check=full -s ./runner
 
 clean:
