@@ -14,8 +14,7 @@ struct vector {
 };
 
 vector* vector_init(size_t type_size) {
-    vector *self = vector_with_capacity(type_size, CAPACITY);
-    return self;
+    return vector_with_capacity(type_size, CAPACITY);
 }
 
 vector* vector_with_capacity(size_t type_size, size_t capacity) {
@@ -91,8 +90,7 @@ void* vector_at(const vector *v, size_t index) {
 void* vector_set(const vector *v, size_t index, const void *value) {
     if (index >= v->length) return NULL;
     void *dst = (uint8_t*) v->data + index * v->type_size;
-    void *set = memcpy(dst, value, v->type_size);
-    return set;
+    return memcpy(dst, value, v->type_size);
 }
 
 void* vector_push(vector *v, const void *value) {
@@ -106,20 +104,13 @@ void* vector_push(vector *v, const void *value) {
 
     void *dst = (uint8_t*) v->data + v->length * v->type_size;
     v->length += 1;
-
-    // returns a pointer to the pushed value
-    void *pushed = memcpy(dst, value, v->type_size);
-    return pushed;
+    return memcpy(dst, value, v->type_size);
 }
 
 void* vector_pop(vector *v) {
     if (vector_is_empty(v)) return NULL;
-
     v->length -= 1;
-
-    // returns a pointer to the popped element
-    void *popped = (uint8_t*) v->data + v->length * v->type_size;
-    return popped;
+    return (uint8_t*) v->data + v->length * v->type_size;
 }
 
 void* vector_insert(vector *v, size_t index, const void *value) {
@@ -145,10 +136,7 @@ void* vector_insert(vector *v, size_t index, const void *value) {
     if (moved == NULL) return NULL;
 
     v->length += 1;
-
-    // returns a pointer to the inserted value
-    void *inserted = memcpy(pos, value, v->type_size);
-    return inserted;
+    return memcpy(pos, value, v->type_size);
 }
 
 void* vector_erase(vector *v, size_t index) {
