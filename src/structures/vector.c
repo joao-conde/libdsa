@@ -19,7 +19,7 @@ vector* vector_init(size_t type_size) {
 
 vector* vector_with_capacity(size_t type_size, size_t capacity) {
     // checks for overflow of amount of requested memory
-    if (type_size && capacity > (SIZE_MAX / type_size)) return NULL;
+    if (type_size && capacity > SIZE_MAX / type_size) return NULL;
 
     vector *self = malloc(sizeof(vector));
     void *data = malloc(capacity * type_size);
@@ -165,7 +165,7 @@ void vector_clear(vector *v) {
 
 void* vector_resize(vector *v, size_t capacity) {
     // checks for overflow of amount of requested memory
-    if (v->type_size && CAPACITY > SIZE_MAX / v->type_size) return NULL;
+    if (v->type_size && capacity > SIZE_MAX / v->type_size) return NULL;
 
     // attempts to resize the internal data buffer
     // failure is detected if a NULL pointer is returned

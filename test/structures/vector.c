@@ -1,6 +1,8 @@
 #include <check.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 #include "../../include/vector.h"
 
@@ -610,6 +612,142 @@ START_TEST(test_vector_resize) {
 }
 END_TEST
 
+START_TEST(test_vector_stress) {
+    int nelements = 100000;
+    bool is_empty;
+    size_t length, capacity;
+    int *at, *set, *pushed, *popped, *inserted, *erased, *begin, *back, *end;
+
+    vector *v = vector_init(sizeof(int));
+
+    for (int i = 0; i < nelements; i++) {
+        pushed = vector_push(v, &i);
+        length = vector_length(v);
+        capacity = vector_capacity(v);
+        is_empty = vector_is_empty(v);
+        at = vector_at(v, i);
+        set = vector_set(v, i, &i);
+        begin = vector_begin(v);
+        back = vector_back(v);
+        end = vector_end(v);
+        ck_assert(*pushed == i);
+        ck_assert(length == i + 1);
+        ck_assert(capacity >= 256);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*set == i);
+        ck_assert(*begin == 0);
+        ck_assert(*back == i);
+        ck_assert(end == back + 1);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        popped = vector_pop(v);
+        length = vector_length(v);
+        capacity = vector_capacity(v);
+        is_empty = vector_is_empty(v);
+        at = vector_at(v, i);
+        set = vector_set(v, i, &i);
+        begin = vector_begin(v);
+        back = vector_back(v);
+        end = vector_end(v);
+        ck_assert(*popped == nelements - i - 1);
+        ck_assert(length == nelements - i - 1);
+        ck_assert(capacity >= 256);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*set == i);
+        ck_assert(*begin == 0);
+        ck_assert(*back == nelements - i - 2);
+        ck_assert(end == back + 1);
+    }
+
+    vector_clear(v);
+    length = vector_length(v);
+    is_empty = vector_is_empty(v);
+    capacity = vector_capacity(v);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
+    ck_assert(capacity == 131072);
+
+    for (int i = 0; i < nelements; i++) {
+        length = vector_length(v);
+        int r = rand() % (length > 0 ? length : 1);
+
+        inserted = vector_insert(v, r, &i);
+        length = vector_length(v);
+        capacity = vector_capacity(v);
+        is_empty = vector_is_empty(v);
+        at = vector_at(v, i);
+        set = vector_set(v, i, &i);
+        back = vector_back(v);
+        end = vector_end(v);
+        ck_assert(*inserted == i);
+        ck_assert(length == i + 1);
+        ck_assert(capacity == 131072);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*set == i);
+        ck_assert(end == back + 1);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        length = vector_length(v);
+        int r = rand() % (length > 0 ? length : 1);
+
+        erased = vector_erase(v, r);
+        length = vector_length(v);
+        capacity = vector_capacity(v);
+        is_empty = vector_is_empty(v);
+        at = vector_at(v, i);
+        set = vector_set(v, i, &i);
+        back = vector_back(v);
+        end = vector_end(v);
+        ck_assert(erased != NULL);
+        ck_assert(length == nelements - i - 1);
+        ck_assert(capacity == 131072);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*set == i);
+        ck_assert(end == back + 1);
+    }
+
+    vector_resize(v, 100000);
+    length = vector_length(v);
+    is_empty = vector_is_empty(v);
+    capacity = vector_capacity(v);
+    ck_assert(length == nelements / 2);
+    ck_assert(!is_empty);
+    ck_assert(capacity == 100000);
+
+    vector_resize(v, 1000);
+    length = vector_length(v);
+    is_empty = vector_is_empty(v);
+    capacity = vector_capacity(v);
+    ck_assert(length == 1000);
+    ck_assert(!is_empty);
+    ck_assert(capacity == 1000);
+
+    vector_resize(v, 1);
+    length = vector_length(v);
+    is_empty = vector_is_empty(v);
+    capacity = vector_capacity(v);
+    ck_assert(length == 1);
+    ck_assert(!is_empty);
+    ck_assert(capacity == 1);
+
+    vector_resize(v, 0);
+    length = vector_length(v);
+    is_empty = vector_is_empty(v);
+    capacity = vector_capacity(v);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
+    ck_assert(capacity == 0);
+
+    vector_free(v);
+}
+END_TEST
+
 Suite* suite_vector() {
     Suite *suite = suite_create("vector");
     TCase *test_case = tcase_create("");
@@ -643,6 +781,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_erase);
     tcase_add_test(test_case, test_vector_clear);
     tcase_add_test(test_case, test_vector_resize);
+    tcase_add_test(test_case, test_vector_stress);
     suite_add_tcase(suite, test_case);
     return suite;
 }
