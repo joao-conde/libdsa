@@ -56,6 +56,44 @@ START_TEST(test_dequeue_is_empty) {
 }
 END_TEST
 
+START_TEST(test_dequeue_at) {
+    int *result, values[5] = {51, 12, -123, 1000, -1};
+    dequeue *dq = dequeue_init(sizeof(int));
+    ck_assert(dequeue_at(dq, 0) == NULL);
+
+    dequeue_push_back(dq, &values[0]);
+    dequeue_push_back(dq, &values[1]);
+    dequeue_push_back(dq, &values[2]);
+    dequeue_push_back(dq, &values[3]);
+    dequeue_push_back(dq, &values[4]);
+    ck_assert(*(int*)dequeue_at(dq, 0) == 51);
+    ck_assert(*(int*)dequeue_at(dq, 1) == 12);
+    ck_assert(*(int*)dequeue_at(dq, 2) == -123);
+    ck_assert(*(int*)dequeue_at(dq, 3) == 1000);
+    ck_assert(*(int*)dequeue_at(dq, 4) == -1);
+    ck_assert(dequeue_at(dq, 5) == NULL);
+
+    dequeue_push_front(dq, &values[4]);
+    dequeue_push_back(dq, &values[3]);
+    dequeue_push_front(dq, &values[2]);
+    dequeue_push_back(dq, &values[1]);
+    dequeue_push_front(dq, &values[0]);
+    ck_assert(*(int*)dequeue_at(dq, 0) == 51);
+    ck_assert(*(int*)dequeue_at(dq, 1) == -123);
+    ck_assert(*(int*)dequeue_at(dq, 2) == -1);
+    ck_assert(*(int*)dequeue_at(dq, 3) == 51);
+    ck_assert(*(int*)dequeue_at(dq, 4) == 12);
+    ck_assert(*(int*)dequeue_at(dq, 5) == -123);
+    ck_assert(*(int*)dequeue_at(dq, 6) == 1000);
+    ck_assert(*(int*)dequeue_at(dq, 7) == -1);
+    ck_assert(*(int*)dequeue_at(dq, 8) == 1000);
+    ck_assert(*(int*)dequeue_at(dq, 9) == 12);
+    ck_assert(dequeue_at(dq, 10) == NULL);
+
+    dequeue_free(dq);
+}
+END_TEST
+
 START_TEST(test_dequeue_front) {
     int values[4] = { -1, 10, 24, 59 };
     dequeue *dq = dequeue_init(sizeof(int));
@@ -278,6 +316,7 @@ Suite* suite_dequeue() {
     tcase_add_test(test_case, test_dequeue_free);
     tcase_add_test(test_case, test_dequeue_length);
     tcase_add_test(test_case, test_dequeue_is_empty);
+    tcase_add_test(test_case, test_dequeue_at);
     tcase_add_test(test_case, test_dequeue_front);
     tcase_add_test(test_case, test_dequeue_back);
     tcase_add_test(test_case, test_dequeue_pointers);

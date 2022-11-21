@@ -16,8 +16,15 @@ struct dequeue {
     vector *chunks;
 };
 
-void *get_element(dequeue *dq, size_t chunk, size_t offset) {
-    return vector_at(dq->chunks, chunk) + offset * dq->type_size;
+void* get_chunk(const dequeue *dq, size_t index) {
+    void **chunk = *(void**)vector_at(dq->chunks, index);
+    return *chunk;
+}
+
+void *get_element(const dequeue *dq, size_t chunk, size_t offset) {
+    return (uint8_t*) *(void**)vector_at(dq->chunks, chunk) + offset * dq->type_size;
+}
+
 }
 
 bool decrement_front(dequeue *dq) {
@@ -30,7 +37,7 @@ bool decrement_front(dequeue *dq) {
     void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
     if (chunk == NULL) return false;
 
-    vector_insert(dq->chunks, 0, chunk);
+    vector_insert(dq->chunks, 0, &chunk);
     dq->back_chunk += 1;
     dq->front_chunk = 0;
     dq->front = CHUNK_CAPACITY - 1;
@@ -54,7 +61,7 @@ bool increment_back(dequeue *dq) {
     void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
     if (chunk == NULL) return false;
 
-    vector_push(dq->chunks, chunk);
+    vector_push(dq->chunks, &chunk);
     dq->back_chunk = vector_length(dq->chunks) - 1;
     dq->back = 0;
     return true;
@@ -77,7 +84,7 @@ dequeue* dequeue_init(size_t type_size) {
     if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
 
     dequeue *self = malloc(sizeof(dequeue));
-    void *chunks = vector_init(sizeof(void*));
+    void *chunks = vector_init(8);
     void *chunk = malloc(CHUNK_CAPACITY * type_size);
     if (self == NULL || chunks == NULL || chunk == NULL) {
         free(chunk);
@@ -86,7 +93,7 @@ dequeue* dequeue_init(size_t type_size) {
         return NULL;
     }
 
-    vector_push(chunks, chunk);
+    vector_push(chunks, &chunk);
 
     self->length = 0;
     self->type_size = type_size;
@@ -113,55 +120,41 @@ bool dequeue_is_empty(const dequeue *dq) {
 
 void* dequeue_at(const dequeue *dq, size_t index) {
     if (index >= dq->length) return NULL;
-    size_t chunk_i = index / CHUNK_CAPACITY;
-    size_t value_i = index % CHUNK_CAPACITY;
-    void *chunk = vector_at(dq->chunks, chunk_i);
-    return (uint8_t*) chunk + value_i * dq->type_size;
+    size_t chunk_i = (dq->front + index) / CHUNK_CAPACITY;
+    size_t value_i = (dq->front + index) % CHUNK_CAPACITY;
+    return get_element(dq, chunk_i, value_i);
 }
 
 void* dequeue_front(const dequeue *dq) {
     if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = vector_at(dq->chunks, dq->front_chunk);
-    void *front = chunk + dq->front * dq->type_size;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
+    void *front = (uint8_t*) chunk + dq->front * dq->type_size;
     return front;
 }
 
 void* dequeue_back(const dequeue *dq) {
     if (dequeue_is_empty(dq)) return NULL;
-    void *chunk = vector_at(dq->chunks, dq->back_chunk);
-    void *back = chunk + dq->back * dq->type_size;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
+    void *back = (uint8_t*) chunk + dq->back * dq->type_size;
     return back;
 }
 
 void* dequeue_push_back(dequeue *dq, const void *value) {
-    if (dequeue_is_empty(dq)) {
-        dq->front = 0;
-        dq->back = 0;
-    } else {
-        increment_back(dq);
-    }
+    if (!dequeue_is_empty(dq)) increment_back(dq);
 
     dq->length += 1;
-
-    void *chunk = vector_at(dq->chunks, dq->back_chunk);
-    void *dst = chunk + dq->back * dq->type_size;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
+    void *dst = (uint8_t*) chunk + dq->back * dq->type_size;
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
 
 void* dequeue_push_front(dequeue *dq, const void *value) {
-    if (dequeue_is_empty(dq)) {
-        dq->front = 0;
-        dq->back = 0;
-    } else {
-        decrement_front(dq);
-    }
+    if (!dequeue_is_empty(dq)) decrement_front(dq);
 
     dq->length += 1;
-
-
-    uint8_t *chunk = vector_at(dq->chunks, dq->front_chunk);
-    uint8_t *dst = chunk + dq->front * dq->type_size;
+    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
+    void *dst = (uint8_t*) chunk + dq->front * dq->type_size;
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
