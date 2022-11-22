@@ -135,6 +135,22 @@ START_TEST(test_vector_is_empty) {
 }
 END_TEST
 
+START_TEST(test_vector_clear) {
+    double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
+    vector *v = vector_from_array(sizeof(double), 7, values);
+    ck_assert(!vector_is_empty(v));
+    ck_assert(vector_length(v) == 7);
+    ck_assert(vector_capacity(v) == 256);
+
+    vector_clear(v);
+    ck_assert(vector_is_empty(v));
+    ck_assert(vector_length(v) == 0);
+    ck_assert(vector_capacity(v) == 256);
+
+    vector_free(v);
+}
+END_TEST
+
 START_TEST(test_vector_at) {
     unsigned int values[4] = {15, 21, 30, 69};
     vector *v = vector_from_array(sizeof(unsigned int), 4, values);
@@ -573,22 +589,6 @@ START_TEST(test_vector_erase) {
 }
 END_TEST
 
-START_TEST(test_vector_clear) {
-    double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
-    vector *v = vector_from_array(sizeof(double), 7, values);
-    ck_assert(!vector_is_empty(v));
-    ck_assert(vector_length(v) == 7);
-    ck_assert(vector_capacity(v) == 256);
-
-    vector_clear(v);
-    ck_assert(vector_is_empty(v));
-    ck_assert(vector_length(v) == 0);
-    ck_assert(vector_capacity(v) == 256);
-
-    vector_free(v);
-}
-END_TEST
-
 START_TEST(test_vector_resize) {
     char* values[4] = {"hello", "world", "welcome", "all"};
     vector *v = vector_from_array(sizeof(char*), 4, values);
@@ -775,6 +775,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_length);
     tcase_add_test(test_case, test_vector_capacity);
     tcase_add_test(test_case, test_vector_is_empty);
+    tcase_add_test(test_case, test_vector_clear);
     tcase_add_test(test_case, test_vector_at);
     tcase_add_test(test_case, test_vector_at_fail);
     tcase_add_test(test_case, test_vector_set);
@@ -791,7 +792,6 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_insert_void_ptrs);
     tcase_add_test(test_case, test_vector_insert_resize);
     tcase_add_test(test_case, test_vector_erase);
-    tcase_add_test(test_case, test_vector_clear);
     tcase_add_test(test_case, test_vector_resize);
     tcase_add_test(test_case, test_vector_stress);
     suite_add_tcase(suite, test_case);

@@ -69,6 +69,10 @@ bool vector_is_empty(const vector *v) {
     return v->length == 0;
 }
 
+void vector_clear(vector *v) {
+    v->length = 0;
+}
+
 void* vector_at(const vector *v, size_t index) {
     if (index >= v->length) return NULL;
     return (uint8_t*) v->data + index * v->type_size;
@@ -157,10 +161,6 @@ void* vector_erase(vector *v, size_t index) {
     // returns a pointer to the position of the erased
     // element where a new element resides
     return moved;
-}
-
-void vector_clear(vector *v) {
-    v->length = 0;
 }
 
 void* vector_resize(vector *v, size_t capacity) {
