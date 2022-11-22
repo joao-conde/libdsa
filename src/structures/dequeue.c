@@ -30,6 +30,7 @@ dequeue* dequeue_init(size_t type_size) {
         return NULL;
     }
 
+    // saves the first and only chunk pointer for now
     vector_push(chunks, &chunk);
 
     self->length = 0;
@@ -44,12 +45,16 @@ dequeue* dequeue_init(size_t type_size) {
 
 void dequeue_free(dequeue *dq) {
     if (dq != NULL && dq->chunks != NULL) {
+        // free each allocated chunk
         for (int i = 0; i < vector_length(dq->chunks); i++) {
             void *chunk = *(void**)vector_at(dq->chunks, i);
             free(chunk);
         }
+
+        // free the chunks container
         vector_free(dq->chunks);
     }
+
     free(dq);
 }
 
@@ -91,6 +96,10 @@ void* dequeue_back(const dequeue *dq) {
 void* dequeue_push_back(dequeue *dq, const void *value) {
     if (!dequeue_is_empty(dq)) {
         dq->back += 1;
+
+        // if current back chunk capacity has been reached
+        // allocate a new one in the back and update back
+        // and back chunk indexes accordingly
         if (dq->back >= CHUNK_CAPACITY) {
             void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
             if (chunk == NULL) return NULL;
@@ -102,14 +111,16 @@ void* dequeue_push_back(dequeue *dq, const void *value) {
     }
 
     dq->length += 1;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->back_chunk);
-    void *dst = (uint8_t*) chunk + dq->back * dq->type_size;
+    void *dst = dequeue_at(dq, dq->length - 1);
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
 
 void* dequeue_push_front(dequeue *dq, const void *value) {
     if (!dequeue_is_empty(dq)) {
+        // if current front chunk capacity has been reached
+        // allocate a new one in the front and update front,
+        // front chunk and back chunk indexes accordingly
         if (dq->front == 0) {
             void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
             if (chunk == NULL) return NULL;
@@ -119,12 +130,12 @@ void* dequeue_push_front(dequeue *dq, const void *value) {
             dq->front_chunk = 0;
             dq->front = CHUNK_CAPACITY;
         }
+
         dq->front -= 1;
     }
 
     dq->length += 1;
-    void *chunk = *(void**)vector_at(dq->chunks, dq->front_chunk);
-    void *dst = (uint8_t*) chunk + dq->front * dq->type_size;
+    void *dst = dequeue_at(dq, 0);
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
@@ -134,6 +145,8 @@ void* dequeue_pop_back(dequeue *dq) {
 
     void *popped = dequeue_at(dq, dq->length - 1);
 
+    // if the current back chunk is empty after the pop, update
+    // indexes to point to the last element of the next previous chunk
     if (dq->back == 0) {
         dq->back = CHUNK_CAPACITY;
         dq->back_chunk -= 1;
@@ -149,6 +162,8 @@ void* dequeue_pop_front(dequeue *dq) {
 
     void *popped = dequeue_at(dq, 0);
 
+    // if the current front chunk is empty after the pop, update
+    // indexes to point to the first element of the next chunk
     dq->front += 1;
     if (dq->front >= CHUNK_CAPACITY) {
         dq->front = 0;
