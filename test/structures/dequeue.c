@@ -56,6 +56,21 @@ START_TEST(test_dequeue_is_empty) {
 }
 END_TEST
 
+START_TEST(test_dequeue_clear) {
+    float value = 3.5;
+    dequeue *dq = dequeue_init(sizeof(float));
+    dequeue_push_back(dq, &value);
+    dequeue_push_back(dq, &value);
+    dequeue_push_back(dq, &value);
+    ck_assert(dequeue_length(dq) == 3);
+
+    dequeue_clear(dq);
+    ck_assert(dequeue_length(dq) == 0);
+
+    dequeue_free(dq);
+}
+END_TEST
+
 START_TEST(test_dequeue_at) {
     int values[5] = {51, 12, -123, 1000, -1};
     dequeue *dq = dequeue_init(sizeof(int));
@@ -308,6 +323,76 @@ START_TEST(test_dequeue_pop_front) {
 }
 END_TEST
 
+START_TEST(test_dequeue_stress) {
+    int nelements = 100000;
+    bool is_empty;
+    size_t length;
+    int *at, *pushed, *popped, *front, *back;
+
+    dequeue *dq = dequeue_init(sizeof(int));
+
+    for (int i = 0; i < nelements; i++) {
+        pushed = dequeue_push_back(dq, &i);
+        length = dequeue_length(dq);
+        is_empty = dequeue_is_empty(dq);
+        at = dequeue_at(dq, i);
+        front = dequeue_front(dq);
+        back = dequeue_back(dq);
+        ck_assert(*pushed == i);
+        ck_assert(length == i + 1);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*front == 0);
+        ck_assert(*back == i);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        popped = dequeue_pop_back(dq);
+        length = dequeue_length(dq);
+        is_empty = dequeue_is_empty(dq);
+        at = dequeue_at(dq, i);
+        front = dequeue_front(dq);
+        back = dequeue_back(dq);
+        ck_assert(*popped == nelements - i - 1);
+        ck_assert(length == nelements - i - 1);
+        ck_assert(!is_empty);
+        ck_assert(*at == i);
+        ck_assert(*front == 0);
+        ck_assert(*back == nelements - i - 2);
+    }
+
+    dequeue_clear(dq);
+    length = dequeue_length(dq);
+    is_empty = dequeue_is_empty(dq);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
+
+    for (int i = 0; i < nelements; i++) {
+        pushed = dequeue_push_front(dq, &i);
+        length = dequeue_length(dq);
+        is_empty = dequeue_is_empty(dq);
+        at = dequeue_at(dq, i);
+        back = dequeue_back(dq);
+        ck_assert(*pushed == i);
+        ck_assert(length == i + 1);
+        ck_assert(!is_empty);
+        ck_assert(*at == 0);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        popped = dequeue_pop_front(dq);
+        length = dequeue_length(dq);
+        is_empty = dequeue_is_empty(dq);
+        back = dequeue_back(dq);
+        ck_assert(*popped == nelements - i - 1);
+        ck_assert(length == nelements - i - 1);
+        ck_assert(!is_empty);
+    }
+
+    dequeue_free(dq);
+}
+END_TEST
+
 Suite* suite_dequeue() {
     Suite *suite = suite_create("dequeue");
     TCase *test_case = tcase_create("");
@@ -316,6 +401,7 @@ Suite* suite_dequeue() {
     tcase_add_test(test_case, test_dequeue_free);
     tcase_add_test(test_case, test_dequeue_length);
     tcase_add_test(test_case, test_dequeue_is_empty);
+    tcase_add_test(test_case, test_dequeue_clear);
     tcase_add_test(test_case, test_dequeue_at);
     tcase_add_test(test_case, test_dequeue_front);
     tcase_add_test(test_case, test_dequeue_back);
@@ -324,6 +410,7 @@ Suite* suite_dequeue() {
     tcase_add_test(test_case, test_dequeue_push_front);
     tcase_add_test(test_case, test_dequeue_pop_back);
     tcase_add_test(test_case, test_dequeue_pop_front);
+    tcase_add_test(test_case, test_dequeue_stress);
     suite_add_tcase(suite, test_case);
     return suite;
 }
