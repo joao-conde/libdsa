@@ -1,9 +1,9 @@
 #include <check.h>
 
-#include "structures/dequeue.c"
-#include "structures/queue.c"
-#include "structures/stack.c"
-#include "structures/vector.c"
+#include "dequeue.c"
+#include "queue.c"
+#include "stack.c"
+#include "vector.c"
 
 #define SUITE_NAME "libdsa"
 #define SUITE_SUCCESS 0

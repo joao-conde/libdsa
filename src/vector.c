@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../../include/vector.h"
+#include "../include/vector.h"
 
 #define CAPACITY 256
 #define ALLOC_FACTOR 2

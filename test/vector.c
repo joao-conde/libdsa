@@ -4,7 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "../../include/vector.h"
+#include "../include/vector.h"
 
 START_TEST(test_vector_init) {
     vector *v = vector_init(sizeof(int));

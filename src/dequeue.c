@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../../include/dequeue.h"
-#include "../../include/vector.h"
+#include "../include/dequeue.h"
+#include "../include/vector.h"
 
 #define CHUNK_CAPACITY 256
 

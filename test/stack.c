@@ -1,7 +1,7 @@
 #include <check.h>
 #include <stdint.h>
 
-#include "../../include/stack.h"
+#include "../include/stack.h"
 
 START_TEST(test_stack_init) {
     stack *s = stack_init(sizeof(int));

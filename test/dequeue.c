@@ -1,7 +1,7 @@
 #include <check.h>
 #include <stdint.h>
 
-#include "../../include/dequeue.h"
+#include "../include/dequeue.h"
 
 START_TEST(test_dequeue_init) {
     dequeue *dq = dequeue_init(sizeof(int));

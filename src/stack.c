@@ -1,5 +1,5 @@
-#include "../../include/stack.h"
-#include "../../include/vector.h"
+#include "../include/stack.h"
+#include "../include/vector.h"
 
 struct stack {
     vector *data;

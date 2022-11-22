@@ -1,5 +1,5 @@
-#include "../../include/dequeue.h"
-#include "../../include/queue.h"
+#include "../include/dequeue.h"
+#include "../include/queue.h"
 
 struct queue {
     dequeue *data;

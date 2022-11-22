@@ -1,7 +1,7 @@
 #include <check.h>
 #include <stdint.h>
 
-#include "../../include/queue.h"
+#include "../include/queue.h"
 
 START_TEST(test_queue_init) {
     queue *q = queue_init(sizeof(int));
