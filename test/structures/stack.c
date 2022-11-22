@@ -56,6 +56,21 @@ START_TEST(test_stack_is_empty) {
 }
 END_TEST
 
+START_TEST(test_stack_clear) {
+    float value = 3.5;
+    stack *s = stack_init(sizeof(float));
+    stack_push(s, &value);
+    stack_push(s, &value);
+    stack_push(s, &value);
+    ck_assert(stack_length(s) == 3);
+
+    stack_clear(s);
+    ck_assert(stack_length(s) == 0);
+
+    stack_free(s);
+}
+END_TEST
+
 START_TEST(test_stack_top) {
     int values[4] = { -1, 10, 24, 59 };
     stack *s = stack_init(sizeof(int));
@@ -182,6 +197,7 @@ Suite* suite_stack() {
     tcase_add_test(test_case, test_stack_free);
     tcase_add_test(test_case, test_stack_length);
     tcase_add_test(test_case, test_stack_is_empty);
+    tcase_add_test(test_case, test_stack_clear);
     tcase_add_test(test_case, test_stack_top);
     tcase_add_test(test_case, test_stack_push);
     tcase_add_test(test_case, test_stack_push_void_ptrs);

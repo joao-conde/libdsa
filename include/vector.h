@@ -20,6 +20,8 @@ size_t vector_capacity(const vector *v);
 
 bool vector_is_empty(const vector *v);
 
+void vector_clear(vector *v);
+
 void* vector_at(const vector *v, size_t index);
 
 void* vector_set(const vector *v, size_t index, const void *value);
@@ -37,8 +39,6 @@ void* vector_pop(vector *v);
 void* vector_insert(vector *v, size_t index, const void *value);
 
 void* vector_erase(vector *v, size_t index);
-
-void vector_clear(vector *v);
 
 void* vector_resize(vector *v, size_t capacity);
 

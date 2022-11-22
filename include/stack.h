@@ -14,6 +14,8 @@ size_t stack_length(const stack *s);
 
 bool stack_is_empty(const stack *s);
 
+void stack_clear(stack *s);
+
 void* stack_top(const stack *s);
 
 void* stack_push(stack *s, void *value);
