@@ -379,7 +379,7 @@ START_TEST(test_dequeue_stress) {
         ck_assert(*at == 0);
     }
 
-    for (int i = 0; i < nelements; i++) {
+    for (int i = 0; i < nelements - 1; i++) {
         popped = dequeue_pop_front(dq);
         length = dequeue_length(dq);
         is_empty = dequeue_is_empty(dq);
@@ -388,6 +388,12 @@ START_TEST(test_dequeue_stress) {
         ck_assert(length == nelements - i - 1);
         ck_assert(!is_empty);
     }
+
+    dequeue_clear(dq);
+    length = dequeue_length(dq);
+    is_empty = dequeue_is_empty(dq);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
 
     dequeue_free(dq);
 }
