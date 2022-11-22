@@ -793,7 +793,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_erase);
     tcase_add_test(test_case, test_vector_clear);
     tcase_add_test(test_case, test_vector_resize);
-    // tcase_add_test(test_case, test_vector_stress);
+    tcase_add_test(test_case, test_vector_stress);
     suite_add_tcase(suite, test_case);
     return suite;
 }
