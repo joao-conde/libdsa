@@ -379,7 +379,7 @@ START_TEST(test_dequeue_stress) {
         ck_assert(*at == 0);
     }
 
-    for (int i = 0; i < nelements / 2; i++) {
+    for (int i = 0; i < nelements; i++) {
         popped = dequeue_pop_front(dq);
         length = dequeue_length(dq);
         is_empty = dequeue_is_empty(dq);

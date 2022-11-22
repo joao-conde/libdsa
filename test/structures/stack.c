@@ -189,6 +189,46 @@ START_TEST(test_stack_pop) {
 }
 END_TEST
 
+START_TEST(test_stack_stress) {
+    int nelements = 100000;
+    bool is_empty;
+    size_t length;
+    int *top, *pushed, *popped;
+
+    stack *s = stack_init(sizeof(int));
+
+    for (int i = 0; i < nelements; i++) {
+        pushed = stack_push(s, &i);
+        length = stack_length(s);
+        is_empty = stack_is_empty(s);
+        top = stack_top(s);
+        ck_assert(*pushed == i);
+        ck_assert(length == i + 1);
+        ck_assert(!is_empty);
+        ck_assert(*top == i);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        top = stack_top(s);
+        popped = stack_pop(s);
+        length = stack_length(s);
+        is_empty = stack_is_empty(s);
+        ck_assert(*popped == nelements - i - 1);
+        ck_assert(length == nelements - i - 1);
+        ck_assert(!is_empty);
+        ck_assert(*top == *popped);
+    }
+
+    stack_clear(s);
+    length = stack_length(s);
+    is_empty = stack_is_empty(s);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
+
+    stack_free(s);
+}
+END_TEST
+
 Suite* suite_stack() {
     Suite *suite = suite_create("stack");
     TCase *test_case = tcase_create("");
@@ -202,6 +242,7 @@ Suite* suite_stack() {
     tcase_add_test(test_case, test_stack_push);
     tcase_add_test(test_case, test_stack_push_void_ptrs);
     tcase_add_test(test_case, test_stack_pop);
+    tcase_add_test(test_case, test_stack_stress);
     suite_add_tcase(suite, test_case);
     return suite;
 }
