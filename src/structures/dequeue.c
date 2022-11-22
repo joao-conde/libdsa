@@ -93,7 +93,7 @@ void* dequeue_push_back(dequeue *dq, const void *value) {
         dq->back += 1;
         if (dq->back >= CHUNK_CAPACITY) {
             void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
-            if (chunk == NULL) return false;
+            if (chunk == NULL) return NULL;
 
             vector_push(dq->chunks, &chunk);
             dq->back_chunk = vector_length(dq->chunks) - 1;
