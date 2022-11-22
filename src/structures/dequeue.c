@@ -61,6 +61,14 @@ bool dequeue_is_empty(const dequeue *dq) {
     return dq->length == 0;
 }
 
+void dequeue_clear(dequeue *dq) {
+    dq->length = 0;
+    dq->front_chunk = 0;
+    dq->back_chunk = 0;
+    dq->front = 0;
+    dq->back = 0;
+}
+
 void* dequeue_at(const dequeue *dq, size_t index) {
     if (index >= dq->length) return NULL;
     size_t i = dq->front_chunk * CHUNK_CAPACITY + dq->front + index;

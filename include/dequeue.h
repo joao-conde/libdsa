@@ -14,6 +14,8 @@ size_t dequeue_length(const dequeue *dq);
 
 bool dequeue_is_empty(const dequeue *dq);
 
+void dequeue_clear(dequeue *dq);
+
 void* dequeue_at(const dequeue *dq, size_t index);
 
 void* dequeue_front(const dequeue *dq);
