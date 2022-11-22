@@ -36,7 +36,6 @@ void stack_clear(stack *s) {
 }
 
 void* stack_top(const stack *s) {
-    if (stack_is_empty(s)) return NULL;
     return vector_back(s->data);
 }
 

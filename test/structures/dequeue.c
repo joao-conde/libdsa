@@ -110,7 +110,7 @@ START_TEST(test_dequeue_at) {
 END_TEST
 
 START_TEST(test_dequeue_front) {
-    int values[4] = { -1, 10, 24, 59 };
+    int values[4] = {-1, 10, 24, 59};
     dequeue *dq = dequeue_init(sizeof(int));
 
     ck_assert(dequeue_front(dq) == NULL);
@@ -144,7 +144,7 @@ START_TEST(test_dequeue_front) {
 END_TEST
 
 START_TEST(test_dequeue_back) {
-    int values[4] = { -1, 10, 24, 59 };
+    int values[4] = {-1, 10, 24, 59};
     dequeue *dq = dequeue_init(sizeof(int));
 
     ck_assert(dequeue_back(dq) == NULL);

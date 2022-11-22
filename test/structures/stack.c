@@ -72,7 +72,7 @@ START_TEST(test_stack_clear) {
 END_TEST
 
 START_TEST(test_stack_top) {
-    int values[4] = { -1, 10, 24, 59 };
+    int values[4] = {-1, 10, 24, 59};
     stack *s = stack_init(sizeof(int));
 
     ck_assert(stack_top(s) == NULL);
