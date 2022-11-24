@@ -1,6 +1,6 @@
 #include <check.h>
 
-#include "dequeue.c"
+#include "deque.c"
 #include "list.c"
 #include "queue.c"
 #include "stack.c"
@@ -13,7 +13,7 @@
 int main() {
     // creates and adds the module test suites to the suite runner
     SRunner *sr = srunner_create(suite_create(SUITE_NAME));
-    srunner_add_suite(sr, suite_dequeue());
+    srunner_add_suite(sr, suite_deque());
     srunner_add_suite(sr, suite_list());
     srunner_add_suite(sr, suite_queue());
     srunner_add_suite(sr, suite_stack());

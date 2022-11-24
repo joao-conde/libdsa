@@ -1,12 +1,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../include/dequeue.h"
+#include "../include/deque.h"
 #include "../include/vector.h"
 
 #define CHUNK_CAPACITY 256
 
-struct dequeue {
+struct deque {
     size_t length;
     size_t type_size;
     size_t front_chunk;
@@ -16,11 +16,11 @@ struct dequeue {
     vector *chunks;
 };
 
-dequeue* dequeue_init(size_t type_size) {
+deque* deque_init(size_t type_size) {
     // checks for overflow of amount of requested memory
     if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
 
-    dequeue *dq = malloc(sizeof(dequeue));
+    deque *dq = malloc(sizeof(deque));
     void *chunks = vector_init(sizeof(void*));
     void *chunk = malloc(CHUNK_CAPACITY * type_size);
     if (dq == NULL || chunks == NULL || chunk == NULL) {
@@ -43,7 +43,7 @@ dequeue* dequeue_init(size_t type_size) {
     return dq;
 }
 
-void dequeue_free(dequeue *dq) {
+void deque_free(deque *dq) {
     if (dq != NULL && dq->chunks != NULL) {
         // free each allocated chunk
         for (int i = 0; i < vector_length(dq->chunks); i++) {
@@ -58,15 +58,15 @@ void dequeue_free(dequeue *dq) {
     free(dq);
 }
 
-size_t dequeue_length(const dequeue *dq) {
+size_t deque_length(const deque *dq) {
     return dq->length;
 }
 
-bool dequeue_is_empty(const dequeue *dq) {
+bool deque_is_empty(const deque *dq) {
     return dq->length == 0;
 }
 
-void dequeue_clear(dequeue *dq) {
+void deque_clear(deque *dq) {
     dq->length = 0;
     dq->front_chunk = 0;
     dq->back_chunk = 0;
@@ -74,7 +74,7 @@ void dequeue_clear(dequeue *dq) {
     dq->back = 0;
 }
 
-void* dequeue_at(const dequeue *dq, size_t index) {
+void* deque_at(const deque *dq, size_t index) {
     if (index >= dq->length) return NULL;
     size_t i = dq->front_chunk * CHUNK_CAPACITY + dq->front + index;
     size_t chunk_i = i / CHUNK_CAPACITY;
@@ -84,17 +84,17 @@ void* dequeue_at(const dequeue *dq, size_t index) {
     return value;
 }
 
-void* dequeue_front(const dequeue *dq) {
-    return dequeue_at(dq, 0);
+void* deque_front(const deque *dq) {
+    return deque_at(dq, 0);
 }
 
-void* dequeue_back(const dequeue *dq) {
-    if (dequeue_is_empty(dq)) return dequeue_front(dq);
-    return dequeue_at(dq, dq->length - 1);
+void* deque_back(const deque *dq) {
+    if (deque_is_empty(dq)) return deque_front(dq);
+    return deque_at(dq, dq->length - 1);
 }
 
-void* dequeue_push_back(dequeue *dq, const void *value) {
-    if (!dequeue_is_empty(dq)) {
+void* deque_push_back(deque *dq, const void *value) {
+    if (!deque_is_empty(dq)) {
         dq->back += 1;
 
         // if current back chunk capacity has been reached
@@ -111,13 +111,13 @@ void* dequeue_push_back(dequeue *dq, const void *value) {
     }
 
     dq->length += 1;
-    void *dst = dequeue_at(dq, dq->length - 1);
+    void *dst = deque_at(dq, dq->length - 1);
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
 
-void* dequeue_push_front(dequeue *dq, const void *value) {
-    if (!dequeue_is_empty(dq)) {
+void* deque_push_front(deque *dq, const void *value) {
+    if (!deque_is_empty(dq)) {
         // if current front chunk capacity has been reached
         // allocate a new one in the front and update front,
         // front chunk and back chunk indexes accordingly
@@ -135,15 +135,15 @@ void* dequeue_push_front(dequeue *dq, const void *value) {
     }
 
     dq->length += 1;
-    void *dst = dequeue_at(dq, 0);
+    void *dst = deque_at(dq, 0);
     void *pushed = memcpy(dst, value, dq->type_size);
     return pushed;
 }
 
-void* dequeue_pop_back(dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
+void* deque_pop_back(deque *dq) {
+    if (deque_is_empty(dq)) return NULL;
 
-    void *popped = dequeue_at(dq, dq->length - 1);
+    void *popped = deque_at(dq, dq->length - 1);
 
     // if the current back chunk is empty after the pop, update
     // indexes to point to the last element of the next previous chunk
@@ -157,10 +157,10 @@ void* dequeue_pop_back(dequeue *dq) {
     return popped;
 }
 
-void* dequeue_pop_front(dequeue *dq) {
-    if (dequeue_is_empty(dq)) return NULL;
+void* deque_pop_front(deque *dq) {
+    if (deque_is_empty(dq)) return NULL;
 
-    void *popped = dequeue_at(dq, 0);
+    void *popped = deque_at(dq, 0);
 
     // if the current front chunk is empty after the pop, update
     // indexes to point to the first element of the next chunk

@@ -3,7 +3,7 @@
 
 #define DSA_VERSION "0.4.0"
 
-#include "dequeue.h"
+#include "deque.h"
 #include "queue.h"
 #include "stack.h"
 #include "vector.h"
