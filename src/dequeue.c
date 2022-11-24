@@ -20,27 +20,27 @@ dequeue* dequeue_init(size_t type_size) {
     // checks for overflow of amount of requested memory
     if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
 
-    dequeue *self = malloc(sizeof(dequeue));
+    dequeue *dq = malloc(sizeof(dequeue));
     void *chunks = vector_init(sizeof(void*));
     void *chunk = malloc(CHUNK_CAPACITY * type_size);
-    if (self == NULL || chunks == NULL || chunk == NULL) {
+    if (dq == NULL || chunks == NULL || chunk == NULL) {
         free(chunk);
         vector_free(chunks);
-        free(self);
+        free(dq);
         return NULL;
     }
 
     // saves the first and only chunk pointer for now
     vector_push(chunks, &chunk);
 
-    self->length = 0;
-    self->type_size = type_size;
-    self->front_chunk = 0;
-    self->back_chunk = 0;
-    self->front = 0;
-    self->back = 0;
-    self->chunks = chunks;
-    return self;
+    dq->length = 0;
+    dq->type_size = type_size;
+    dq->front_chunk = 0;
+    dq->back_chunk = 0;
+    dq->front = 0;
+    dq->back = 0;
+    dq->chunks = chunks;
+    return dq;
 }
 
 void dequeue_free(dequeue *dq) {

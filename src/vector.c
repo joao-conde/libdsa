@@ -21,19 +21,19 @@ vector* vector_with_capacity(size_t type_size, size_t capacity) {
     // checks for overflow of amount of requested memory
     if (type_size && capacity > SIZE_MAX / type_size) return NULL;
 
-    vector *self = malloc(sizeof(vector));
+    vector *v = malloc(sizeof(vector));
     void *data = malloc(capacity * type_size);
-    if (self == NULL || data == NULL) {
+    if (v == NULL || data == NULL) {
         free(data);
-        free(self);
+        free(v);
         return NULL;
     }
 
-    self->length = 0;
-    self->capacity = capacity;
-    self->type_size = type_size;
-    self->data = data;
-    return self;
+    v->length = 0;
+    v->capacity = capacity;
+    v->type_size = type_size;
+    v->data = data;
+    return v;
 }
 
 vector* vector_from_array(size_t type_size, size_t length, const void *array) {
@@ -42,14 +42,14 @@ vector* vector_from_array(size_t type_size, size_t length, const void *array) {
     // array then we allocate a bigger one
     size_t capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
 
-    vector *self = vector_with_capacity(type_size, capacity);
-    if (self == NULL) return NULL;
+    vector *v = vector_with_capacity(type_size, capacity);
+    if (v == NULL) return NULL;
 
     // copies the array contents to internal data buffer
-    memcpy(self->data, array, length * type_size);
-    self->length = length;
+    memcpy(v->data, array, length * type_size);
+    v->length = length;
 
-    return self;
+    return v;
 }
 
 void vector_free(vector *v) {

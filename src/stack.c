@@ -6,16 +6,16 @@ struct stack {
 };
 
 stack* stack_init(size_t type_size) {
-    stack *self = malloc(sizeof(stack));
+    stack *s = malloc(sizeof(stack));
     vector *data = vector_init(type_size);
-    if (self == NULL || data == NULL) {
+    if (s == NULL || data == NULL) {
         vector_free(data);
-        free(self);
+        free(s);
         return NULL;
     }
 
-    self->data = data;
-    return self;
+    s->data = data;
+    return s;
 }
 
 void stack_free(stack *s) {

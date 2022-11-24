@@ -6,16 +6,16 @@ struct queue {
 };
 
 queue* queue_init(size_t type_size) {
-    queue *self = malloc(sizeof(queue));
+    queue *q = malloc(sizeof(queue));
     dequeue *data = dequeue_init(type_size);
-    if (self == NULL || data == NULL) {
+    if (q == NULL || data == NULL) {
         dequeue_free(data);
-        free(self);
+        free(q);
         return NULL;
     }
 
-    self->data = data;
-    return self;
+    q->data = data;
+    return q;
 }
 
 void queue_free(queue *q) {
