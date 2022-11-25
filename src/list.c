@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "../include/list.h"
@@ -11,6 +11,9 @@ struct list {
 };
 
 node* node_init(size_t type_size, const void *value) {
+    // checks for overflow of amount of requested memory
+    if (type_size == SIZE_MAX) return NULL;
+
     node *new = malloc(sizeof(node));
     void *data = malloc(type_size);
     if (new == NULL || data == NULL) {
@@ -18,6 +21,7 @@ node* node_init(size_t type_size, const void *value) {
         free(new);
         return NULL;
     }
+
     memcpy(data, value, type_size);
     new->data = data;
     new->prev = NULL;
@@ -26,9 +30,7 @@ node* node_init(size_t type_size, const void *value) {
 }
 
 void node_free(node *n) {
-    if (n != NULL) {
-        free(n->data);
-    }
+    if (n != NULL) free(n->data);
     free(n);
 }
 
