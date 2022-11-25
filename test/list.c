@@ -376,6 +376,51 @@ START_TEST(test_list_erase) {
 }
 END_TEST
 
+START_TEST(test_list_stress) {
+    int nelements = 100000;
+    bool is_empty;
+    size_t length;
+    int *pushed, *front, *back;
+
+    list *l = list_init(sizeof(int));
+
+    for (int i = 0; i < nelements; i++) {
+        pushed = list_push_back(l, &i)->data;
+        length = list_length(l);
+        is_empty = list_is_empty(l);
+        front = list_front(l)->data;
+        back = list_back(l)->data;
+        ck_assert(*pushed == i);
+        ck_assert(length == i + 1);
+        ck_assert(!is_empty);
+        ck_assert(*front == 0);
+        ck_assert(*back == i);
+    }
+
+    for (int i = 0; i < nelements - 1; i++) {
+        list_pop_back(l);
+        length = list_length(l);
+        is_empty = list_is_empty(l);
+        front = list_front(l)->data;
+        back = list_back(l)->data;
+        ck_assert(length == nelements - i - 1);
+        ck_assert(!is_empty);
+        ck_assert(*front == 0);
+        ck_assert(*back == nelements - i - 2);
+    }
+
+    list_pop_back(l);
+    length = list_length(l);
+    is_empty = list_is_empty(l);
+    ck_assert(length == 0);
+    ck_assert(is_empty);
+    ck_assert(list_front(l) == NULL);
+    ck_assert(list_back(l) == NULL);
+
+    list_free(l);
+}
+END_TEST
+
 Suite* suite_list() {
     Suite *suite = suite_create("list");
     TCase *test_case = tcase_create("");
@@ -392,6 +437,7 @@ Suite* suite_list() {
     tcase_add_test(test_case, test_list_pop_front);
     tcase_add_test(test_case, test_list_insert);
     tcase_add_test(test_case, test_list_erase);
+    tcase_add_test(test_case, test_list_stress);
     suite_add_tcase(suite, test_case);
     return suite;
 }
