@@ -1,13 +1,22 @@
-#include "../include/list.h"
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct node node;
-struct node {
-    node *prev;
-    node *next;
-    void *data;
-};
+#include "../include/list.h"
+
+node* node_init(size_t type_size, const void *value) {
+    node *new = malloc(sizeof(node));
+    void *data = malloc(type_size);
+    if (new == NULL || data == NULL) {
+        free(data);
+        free(new);
+        return NULL;
+    }
+    memcpy(data, value, type_size);
+    new->data = data;
+    new->prev = NULL;
+    new->next = NULL;
+    return new;
+}
 
 void node_free(node *n) {
     if (n != NULL) {
@@ -50,28 +59,18 @@ bool list_is_empty(const list *l) {
     return l->length == 0;
 }
 
-void* list_front(const list *l) {
+node* list_front(const list *l) {
     if (list_is_empty(l)) return NULL;
-    return l->front->data;
+    return l->front;
 }
 
-void* list_back(const list *l) {
+node* list_back(const list *l) {
     if (list_is_empty(l)) return NULL;
-    return l->back->data;
+    return l->back;
 }
 
-void* list_push_back(list *l, const void *value) {
-    node *new = malloc(sizeof(node));
-    void *data = malloc(l->type_size);
-    if (new == NULL || data == NULL) {
-        free(data);
-        node_free(new);
-        return NULL;
-    }
-
-    memcpy(data, value, l->type_size);
-
-    new->data = data;
+node* list_push_back(list *l, const void *value) {
+    node *new = node_init(l->type_size, value);
     new->prev = l->back;
     new->next = NULL;
 
@@ -83,21 +82,11 @@ void* list_push_back(list *l, const void *value) {
 
     l->back = new;
     l->length += 1;
-    return new->data;
+    return new;
 }
 
-void* list_push_front(list *l, const void *value) {
-    node *new = malloc(sizeof(node));
-    void *data = malloc(l->type_size);
-    if (new == NULL || data == NULL) {
-        free(data);
-        node_free(new);
-        return NULL;
-    }
-
-    memcpy(data, value, l->type_size);
-
-    new->data = data;
+node* list_push_front(list *l, const void *value) {
+    node *new = node_init(l->type_size, value);
     new->next = l->front;
     new->prev = NULL;
 
@@ -109,7 +98,7 @@ void* list_push_front(list *l, const void *value) {
 
     l->front = new;
     l->length += 1;
-    return new->data;
+    return new;
 }
 
 void list_pop_back(list *l) {
@@ -128,4 +117,27 @@ void list_pop_front(list *l) {
     l->front = next;
     if (next != NULL) next->prev = NULL;
     l->length -= 1;
+}
+
+node* list_insert(list *l, node *prev, const void *value) {
+    node *new = node_init(l->type_size, value);
+
+    node *tmp = prev->next;
+
+    prev->next = new;
+    new->prev = prev;
+
+    if (tmp != NULL) {
+        new->next = tmp;
+        tmp->prev = new;
+    }
+
+    if (l->back == prev) l->back = new;
+
+    l->length += 1;
+    return new;
+}
+
+node* list_erase(list *l, node *node) {
+    return NULL;
 }
