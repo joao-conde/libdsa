@@ -14,8 +14,6 @@ size_t list_length(const list *l);
 
 bool list_is_empty(const list *l);
 
-void list_clear(list *l);
-
 void* list_front(const list *l);
 
 void* list_back(const list *l);
@@ -24,9 +22,9 @@ void* list_push_back(list *l, const void *value);
 
 void* list_push_front(list *l, const void *value);
 
-void* list_pop_back(list *l);
+void list_pop_back(list *l);
 
-void* list_pop_front(list *l);
+void list_pop_front(list *l);
 
 void* list_insert(list *l, size_t index, const void *value);
 

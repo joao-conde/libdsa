@@ -97,6 +97,7 @@ void* deque_push_back(deque *dq, const void *value) {
     if (!deque_is_empty(dq)) {
         dq->back += 1;
 
+        // TODO(@joao-conde): check back_chunk to know if we need to init a new one
         // if current back chunk capacity has been reached
         // allocate a new one in the back and update back
         // and back chunk indexes accordingly
@@ -117,6 +118,7 @@ void* deque_push_back(deque *dq, const void *value) {
 
 void* deque_push_front(deque *dq, const void *value) {
     if (!deque_is_empty(dq)) {
+        // TODO(@joao-conde): check front_chunk to know if we need to init a new one
         // if current front chunk capacity has been reached
         // allocate a new one in the front and update front,
         // front chunk and back chunk indexes accordingly
