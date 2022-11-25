@@ -45,8 +45,12 @@ list* list_init(size_t type_size) {
 
 void list_free(list *l) {
     if (l != NULL) {
-        if (l->back != l->front) node_free(l->back);
-        node_free(l->front);
+        node *front = l->front;
+        while (front != NULL) {
+            node *tmp = front->next;
+            node_free(front);
+            front = tmp;
+        }
     }
     free(l);
 }
@@ -106,8 +110,10 @@ void list_pop_back(list *l) {
     node *back = l->back;
     node *prev = back->prev;
     l->back = prev;
+    if (l->front == back) l->front = l->back;
     if (prev != NULL) prev->next = NULL;
     l->length -= 1;
+    node_free(back);
 }
 
 void list_pop_front(list *l) {
@@ -115,8 +121,10 @@ void list_pop_front(list *l) {
     node *front = l->front;
     node *next = front->next;
     l->front = next;
+    if (l->back == front) l->back = l->front;
     if (next != NULL) next->prev = NULL;
     l->length -= 1;
+    node_free(front);
 }
 
 node* list_insert(list *l, node *pos, const void *value) {
@@ -146,5 +154,6 @@ node* list_erase(list *l, node *pos) {
     if (l->front == pos) l->front = prev != NULL ? prev : next;
     if (l->back == pos) l->back = next != NULL ? next : prev;
     l->length -= 1;
+    node_free(pos);
     return pos;
 }

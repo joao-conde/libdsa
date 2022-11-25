@@ -5,6 +5,8 @@
 START_TEST(test_list_init) {
     list *l = list_init(sizeof(int));
     ck_assert(list_is_empty(l));
+    ck_assert(list_front(l) == NULL);
+    ck_assert(list_back(l) == NULL);
     list_free(l);
 }
 END_TEST
@@ -22,7 +24,11 @@ START_TEST(test_list_length) {
     list *l = list_init(sizeof(float));
     ck_assert(list_length(l) == 0);
 
-    list_push_back(l, &value);
+    node *pushed = list_push_back(l, &value);
+    ck_assert(list_length(l) == 1);
+    ck_assert(list_front(l) == pushed);
+    ck_assert(list_back(l) == pushed);
+
     list_push_back(l, &value);
     list_push_back(l, &value);
     ck_assert(list_length(l) == 3);
