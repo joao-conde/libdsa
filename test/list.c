@@ -1,4 +1,5 @@
 #include <check.h>
+#include <stdint.h>
 
 #include "../include/list.h"
 
@@ -163,6 +164,15 @@ START_TEST(test_list_push_back) {
 }
 END_TEST
 
+START_TEST(test_list_push_back_fail) {
+    node *result;
+    size_t value = SIZE_MAX;
+    list *l = list_init(SIZE_MAX);
+    result = list_push_back(l, &value);
+    ck_assert(result == NULL);
+}
+END_TEST
+
 START_TEST(test_list_push_front) {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     list *l = list_init(sizeof(int));
@@ -185,6 +195,15 @@ START_TEST(test_list_push_front) {
     ck_assert(list_length(l) == 5);
 
     list_free(l);
+}
+END_TEST
+
+START_TEST(test_list_push_front_fail) {
+    node *result;
+    size_t value = SIZE_MAX;
+    list *l = list_init(SIZE_MAX);
+    result = list_push_front(l, &value);
+    ck_assert(result == NULL);
 }
 END_TEST
 
@@ -322,6 +341,15 @@ START_TEST(test_list_insert) {
 }
 END_TEST
 
+START_TEST(test_list_insert_fail) {
+    node *result;
+    size_t value = SIZE_MAX;
+    list *l = list_init(SIZE_MAX);
+    result = list_insert(l, NULL, &value);
+    ck_assert(result == NULL);
+}
+END_TEST
+
 START_TEST(test_list_erase) {
     int values[4] = {15, 21, 30, 69};
     list *l = list_init(sizeof(int));
@@ -432,10 +460,13 @@ Suite* suite_list() {
     tcase_add_test(test_case, test_list_back);
     tcase_add_test(test_case, test_list_pointers);
     tcase_add_test(test_case, test_list_push_back);
+    tcase_add_test(test_case, test_list_push_back_fail);
     tcase_add_test(test_case, test_list_push_front);
+    tcase_add_test(test_case, test_list_push_front_fail);
     tcase_add_test(test_case, test_list_pop_back);
     tcase_add_test(test_case, test_list_pop_front);
     tcase_add_test(test_case, test_list_insert);
+    tcase_add_test(test_case, test_list_insert_fail);
     tcase_add_test(test_case, test_list_erase);
     tcase_add_test(test_case, test_list_stress);
     suite_add_tcase(suite, test_case);

@@ -3,6 +3,13 @@
 
 #include "../include/list.h"
 
+struct list {
+    size_t length;
+    size_t type_size;
+    node *front;
+    node *back;
+};
+
 node* node_init(size_t type_size, const void *value) {
     node *new = malloc(sizeof(node));
     void *data = malloc(type_size);
@@ -24,13 +31,6 @@ void node_free(node *n) {
     }
     free(n);
 }
-
-struct list {
-    size_t length;
-    size_t type_size;
-    node *front;
-    node *back;
-};
 
 list* list_init(size_t type_size) {
     list *l = malloc(sizeof(list));
@@ -75,6 +75,8 @@ node* list_back(const list *l) {
 
 node* list_push_back(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
+    if (new == NULL) return NULL;
+
     new->prev = l->back;
     new->next = NULL;
 
@@ -91,6 +93,8 @@ node* list_push_back(list *l, const void *value) {
 
 node* list_push_front(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
+    if (new == NULL) return NULL;
+
     new->next = l->front;
     new->prev = NULL;
 
@@ -129,6 +133,7 @@ void list_pop_front(list *l) {
 
 node* list_insert(list *l, node *pos, const void *value) {
     node *new = node_init(l->type_size, value);
+    if (new == NULL) return NULL;
 
     node *tmp = pos->next;
 
