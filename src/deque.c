@@ -112,8 +112,7 @@ void* deque_push_back(deque *dq, const void *value) {
 
     dq->length += 1;
     void *dst = deque_at(dq, dq->length - 1);
-    void *pushed = memcpy(dst, value, dq->type_size);
-    return pushed;
+    return memcpy(dst, value, dq->type_size);
 }
 
 void* deque_push_front(deque *dq, const void *value) {
@@ -136,8 +135,7 @@ void* deque_push_front(deque *dq, const void *value) {
 
     dq->length += 1;
     void *dst = deque_at(dq, 0);
-    void *pushed = memcpy(dst, value, dq->type_size);
-    return pushed;
+    return memcpy(dst, value, dq->type_size);
 }
 
 void* deque_pop_back(deque *dq) {

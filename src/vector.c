@@ -47,8 +47,8 @@ vector* vector_from_array(size_t type_size, size_t length, const void *array) {
 
     // copies the array contents to internal data buffer
     memcpy(v->data, array, length * type_size);
-    v->length = length;
 
+    v->length = length;
     return v;
 }
 
@@ -156,10 +156,9 @@ void* vector_erase(vector *v, size_t index) {
     void *moved = memmove(pos, pos + v->type_size, to_copy * v->type_size);
     if (moved == NULL) return NULL;
 
-    v->length -= 1;
-
     // returns a pointer to the position of the erased
     // element where a new element resides
+    v->length -= 1;
     return moved;
 }
 
