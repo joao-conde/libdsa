@@ -273,16 +273,16 @@ START_TEST(test_list_insert) {
     list_push_back(l, &values[3]);
     ck_assert(list_length(l) == 4);
 
-    node *inserted, *prev, *next, *front, *back;
+    node *inserted, *pos, *next, *front, *back;
 
     front = list_front(l);
     back = list_back(l);
-    prev = front;
-    next = prev->next;
-    inserted = list_insert(l, front, &values[0]);
-    ck_assert(prev->next == inserted);
+    pos = front;
+    next = pos->next;
+    inserted = list_insert(l, pos, &values[0]);
+    ck_assert(pos->next == inserted);
     ck_assert(next->prev == inserted);
-    ck_assert(inserted->prev == prev);
+    ck_assert(inserted->prev == pos);
     ck_assert(inserted->next == next);
     ck_assert(list_length(l) == 5);
     ck_assert(list_front(l) == front);
@@ -290,12 +290,12 @@ START_TEST(test_list_insert) {
 
     front = list_front(l);
     back = list_back(l);
-    prev = front->next->next;
-    next = prev->next;
-    inserted = list_insert(l, prev, &values[0]);
-    ck_assert(prev->next == inserted);
+    pos = front->next->next;
+    next = pos->next;
+    inserted = list_insert(l, pos, &values[0]);
+    ck_assert(pos->next == inserted);
     ck_assert(next->prev == inserted);
-    ck_assert(inserted->prev == prev);
+    ck_assert(inserted->prev == pos);
     ck_assert(inserted->next == next);
     ck_assert(list_length(l) == 6);
     ck_assert(list_front(l) == front);
@@ -303,14 +303,68 @@ START_TEST(test_list_insert) {
 
     front = list_front(l);
     back = list_back(l);
-    prev = back;
-    inserted = list_insert(l, prev, &values[0]);
+    pos = back;
+    inserted = list_insert(l, pos, &values[0]);
     ck_assert(back->next == inserted);
-    ck_assert(inserted->prev == prev);
+    ck_assert(inserted->prev == pos);
     ck_assert(inserted->next == NULL);
     ck_assert(list_length(l) == 7);
     ck_assert(list_front(l) == front);
     ck_assert(list_back(l) == inserted);
+
+    list_free(l);
+}
+END_TEST
+
+START_TEST(test_list_erase) {
+    int values[4] = {15, 21, 30, 69};
+    list *l = list_init(sizeof(int));
+    list_push_back(l, &values[0]);
+    list_push_back(l, &values[1]);
+    list_push_back(l, &values[2]);
+    list_push_back(l, &values[3]);
+    list_push_back(l, &values[0]);
+    list_push_back(l, &values[1]);
+    list_push_back(l, &values[2]);
+    list_push_back(l, &values[3]);
+    ck_assert(list_length(l) == 8);
+
+    node *removed, *prev, *pos, *next, *front, *back;
+
+    front = list_front(l);
+    back = list_back(l);
+    pos = front;
+    next = pos->next;
+    removed = list_erase(l, pos);
+    ck_assert(removed == pos);
+    ck_assert(next->prev == NULL);
+    ck_assert(list_length(l) == 7);
+    ck_assert(list_front(l) == next);
+    ck_assert(list_back(l) == back);
+
+    front = list_front(l);
+    back = list_back(l);
+    pos = front->next->next;
+    prev = pos->prev;
+    next = pos->next;
+    removed = list_erase(l, pos);
+    ck_assert(removed == pos);
+    ck_assert(prev->next == next);
+    ck_assert(next->prev == prev);
+    ck_assert(list_length(l) == 6);
+    ck_assert(list_front(l) == front);
+    ck_assert(list_back(l) == back);
+
+    front = list_front(l);
+    back = list_back(l);
+    pos = back;
+    prev = pos->prev;
+    removed = list_erase(l, pos);
+    ck_assert(removed == pos);
+    ck_assert(prev->next == NULL);
+    ck_assert(list_length(l) == 5);
+    ck_assert(list_front(l) == front);
+    ck_assert(list_back(l) == prev);
 
     list_free(l);
 }
@@ -331,6 +385,7 @@ Suite* suite_list() {
     tcase_add_test(test_case, test_list_pop_back);
     tcase_add_test(test_case, test_list_pop_front);
     tcase_add_test(test_case, test_list_insert);
+    tcase_add_test(test_case, test_list_erase);
     suite_add_tcase(suite, test_case);
     return suite;
 }

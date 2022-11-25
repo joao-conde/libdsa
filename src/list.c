@@ -119,25 +119,32 @@ void list_pop_front(list *l) {
     l->length -= 1;
 }
 
-node* list_insert(list *l, node *prev, const void *value) {
+node* list_insert(list *l, node *pos, const void *value) {
     node *new = node_init(l->type_size, value);
 
-    node *tmp = prev->next;
+    node *tmp = pos->next;
 
-    prev->next = new;
-    new->prev = prev;
+    pos->next = new;
+    new->prev = pos;
 
     if (tmp != NULL) {
         new->next = tmp;
         tmp->prev = new;
     }
 
-    if (l->back == prev) l->back = new;
+    if (l->back == pos) l->back = new;
 
     l->length += 1;
     return new;
 }
 
-node* list_erase(list *l, node *node) {
-    return NULL;
+node* list_erase(list *l, node *pos) {
+    node *prev = pos->prev;
+    node *next = pos->next;
+    if (prev != NULL) prev->next = next;
+    if (next != NULL) next->prev = prev;
+    if (l->front == pos) l->front = prev != NULL ? prev : next;
+    if (l->back == pos) l->back = next != NULL ? next : prev;
+    l->length -= 1;
+    return pos;
 }
