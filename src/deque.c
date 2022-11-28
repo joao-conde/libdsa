@@ -119,22 +119,24 @@ void* deque_push_back(deque *dq, const void *value) {
 }
 
 void* deque_push_front(deque *dq, const void *value) {
-    if (!deque_is_empty(dq)) {
-        // TODO(@joao-conde): check front_chunk to know if we need to init a new one
-        // if current front chunk capacity has been reached
-        // allocate a new one in the front and update front,
-        // front chunk and back chunk indexes accordingly
-        if (dq->front == 0) {
-            void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
-            if (chunk == NULL) return NULL;
+    bool next = dq->front == 0;
+    dq->front -= deque_is_empty(dq) ? 0 : 1;
 
-            vector_insert(dq->chunks, 0, &chunk);
-            dq->back_chunk += 1;
-            dq->front_chunk = 0;
-            dq->front = CHUNK_CAPACITY;
-        }
+    // if current front chunk is in use, allocate
+    // a new one in the front
+    if (dq->front_chunk == 0) {
+        void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
+        if (chunk == NULL) return NULL;
+        vector_insert(dq->chunks, 0, &chunk);
+        dq->front_chunk += 1;
+        dq->back_chunk += 1;
+    }
 
-        dq->front -= 1;
+    // if we cross our current front chunk, update front
+    // and front chunk indexes accordingly
+    if (next) {
+        dq->front_chunk -= 1;
+        dq->front = CHUNK_CAPACITY - 1;
     }
 
     dq->length += 1;
