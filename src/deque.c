@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -94,21 +95,22 @@ void* deque_back(const deque *dq) {
 }
 
 void* deque_push_back(deque *dq, const void *value) {
-    if (!deque_is_empty(dq)) {
-        dq->back += 1;
+    bool next = dq->back == CHUNK_CAPACITY - 1;
+    dq->back += deque_is_empty(dq) ? 0 : 1;
 
-        // TODO(@joao-conde): check back_chunk to know if we need to init a new one
-        // if current back chunk capacity has been reached
-        // allocate a new one in the back and update back
-        // and back chunk indexes accordingly
-        if (dq->back >= CHUNK_CAPACITY) {
-            void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
-            if (chunk == NULL) return NULL;
+    // if current back chunk is in use, allocate
+    // a new one in the back
+    if (dq->back_chunk == vector_length(dq->chunks) - 1) {
+        void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
+        if (chunk == NULL) return NULL;
+        vector_push(dq->chunks, &chunk);
+    }
 
-            vector_push(dq->chunks, &chunk);
-            dq->back_chunk = vector_length(dq->chunks) - 1;
-            dq->back = 0;
-        }
+    // if we cross our current back chunk, update back
+    // and back chunk indexes accordingly
+    if (next) {
+        dq->back_chunk += 1;
+        dq->back = 0;
     }
 
     dq->length += 1;
