@@ -79,16 +79,15 @@ node* list_push_back(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 
-    new->prev = l->back;
-    new->next = NULL;
-
     if (list_is_empty(l)) {
         l->front = new;
+        l->back = new;
     } else {
-        l->back->next = new;
+       l->back->next = new;
+       new->prev = l->back;
+       l->back = new;
     }
 
-    l->back = new;
     l->length += 1;
     return new;
 }
@@ -97,38 +96,43 @@ node* list_push_front(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 
-    new->next = l->front;
-    new->prev = NULL;
-
     if (list_is_empty(l)) {
+        l->front = new;
         l->back = new;
     } else {
+        new->next = l->front;
         l->front->prev = new;
+        l->front = new;
     }
 
-    l->front = new;
     l->length += 1;
     return new;
 }
 
 void list_pop_back(list *l) {
     if (list_is_empty(l)) return;
+
     node *back = l->back;
     node *prev = back->prev;
+
     l->back = prev;
-    if (l->front == back) l->front = l->back;
     if (prev != NULL) prev->next = NULL;
+    if (l->front == back) l->front = prev;
+
     l->length -= 1;
     node_free(back);
 }
 
 void list_pop_front(list *l) {
     if (list_is_empty(l)) return;
+
     node *front = l->front;
     node *next = front->next;
+
     l->front = next;
-    if (l->back == front) l->back = l->front;
     if (next != NULL) next->prev = NULL;
+    if (l->back == front) l->back = next;
+
     l->length -= 1;
     node_free(front);
 }
@@ -137,30 +141,31 @@ node* list_insert(list *l, node *pos, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 
-    node *tmp = pos->next;
-
-    pos->next = new;
-    new->prev = pos;
-
-    if (tmp != NULL) {
-        new->next = tmp;
-        tmp->prev = new;
+    if (pos == l->back) {
+        pos->next = new;
+        new->prev = pos;
+        l->back = new;
+    } else {
+        node *next = pos->next;
+        pos->next = new;
+        new->prev = pos;
+        new->next = next;
+        next->prev = new;
     }
-
-    if (l->back == pos) l->back = new;
 
     l->length += 1;
     return new;
 }
 
-node* list_erase(list *l, node *pos) {
-    node *prev = pos->prev;
+void list_erase(list *l, node *pos) {
+    if (l->back == pos) return list_pop_back(l);
+    if (l->front == pos) return list_pop_front(l);
+
     node *next = pos->next;
-    if (prev != NULL) prev->next = next;
-    if (next != NULL) next->prev = prev;
-    if (l->front == pos) l->front = prev != NULL ? prev : next;
-    if (l->back == pos) l->back = next != NULL ? next : prev;
+    node *prev = pos->prev;
+    next->prev = prev;
+    prev->next = next;
+
     l->length -= 1;
     node_free(pos);
-    return pos;
 }

@@ -369,14 +369,13 @@ START_TEST(test_list_erase) {
     list_push_back(l, &values[3]);
     ck_assert(list_length(l) == 8);
 
-    node *removed, *prev, *pos, *next, *front, *back;
+    node *prev, *pos, *next, *front, *back;
 
     front = list_front(l);
     back = list_back(l);
     pos = front;
     next = pos->next;
-    removed = list_erase(l, pos);
-    ck_assert(removed == pos);
+    list_erase(l, pos);
     ck_assert(next->prev == NULL);
     ck_assert(list_length(l) == 7);
     ck_assert(list_front(l) == next);
@@ -387,8 +386,7 @@ START_TEST(test_list_erase) {
     pos = front->next->next;
     prev = pos->prev;
     next = pos->next;
-    removed = list_erase(l, pos);
-    ck_assert(removed == pos);
+    list_erase(l, pos);
     ck_assert(prev->next == next);
     ck_assert(next->prev == prev);
     ck_assert(list_length(l) == 6);
@@ -399,8 +397,7 @@ START_TEST(test_list_erase) {
     back = list_back(l);
     pos = back;
     prev = pos->prev;
-    removed = list_erase(l, pos);
-    ck_assert(removed == pos);
+    list_erase(l, pos);
     ck_assert(prev->next == NULL);
     ck_assert(list_length(l) == 5);
     ck_assert(list_front(l) == front);

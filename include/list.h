@@ -36,6 +36,6 @@ void list_pop_front(list *l);
 
 node* list_insert(list *l, node *pos, const void *value);
 
-node* list_erase(list *l, node *pos);
+void list_erase(list *l, node *pos);
 
 #endif // INCLUDE_LIST_H_
