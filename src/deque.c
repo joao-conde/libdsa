@@ -148,13 +148,14 @@ void* deque_pop_back(deque *dq) {
     void *popped = deque_at(dq, dq->length - 1);
 
     // if the current back chunk is empty after the pop, update
-    // indexes to point to the last element of the next previous chunk
+    // indexes to point to the last element of the previous chunk
     if (dq->back == 0) {
-        dq->back = CHUNK_CAPACITY;
         dq->back_chunk -= 1;
+        dq->back = CHUNK_CAPACITY - 1;
+    } else {
+        dq->back -= 1;
     }
 
-    dq->back -= 1;
     dq->length -= 1;
     return popped;
 }
@@ -166,10 +167,11 @@ void* deque_pop_front(deque *dq) {
 
     // if the current front chunk is empty after the pop, update
     // indexes to point to the first element of the next chunk
-    dq->front += 1;
-    if (dq->front >= CHUNK_CAPACITY) {
-        dq->front = 0;
+    if (dq->front == CHUNK_CAPACITY - 1) {
         dq->front_chunk += 1;
+        dq->front = 0;
+    } else {
+        dq->front += 1;
     }
 
     dq->length -= 1;
