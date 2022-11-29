@@ -19,7 +19,7 @@ struct deque {
 
 deque* deque_init(size_t type_size) {
     // checks for overflow of amount of requested memory
-    if (type_size && CHUNK_CAPACITY > (SIZE_MAX / type_size)) return NULL;
+    if (type_size && CHUNK_CAPACITY > PTRDIFF_MAX / type_size) return NULL;
 
     deque *dq = malloc(sizeof(deque));
     void *chunks = vector_init(sizeof(void*));

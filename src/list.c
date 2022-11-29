@@ -12,7 +12,7 @@ struct list {
 
 node* node_init(size_t type_size, const void *value) {
     // checks for overflow of amount of requested memory
-    if (type_size && type_size > SIZE_MAX) return NULL;
+    if (type_size > PTRDIFF_MAX) return NULL;
 
     node *new = malloc(sizeof(node));
     void *data = malloc(type_size);

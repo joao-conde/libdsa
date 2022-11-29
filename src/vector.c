@@ -19,7 +19,7 @@ vector* vector_init(size_t type_size) {
 
 vector* vector_with_capacity(size_t type_size, size_t capacity) {
     // checks for overflow of amount of requested memory
-    if (type_size && capacity > SIZE_MAX / type_size) return NULL;
+    if (type_size && capacity > PTRDIFF_MAX / type_size) return NULL;
 
     vector *v = malloc(sizeof(vector));
     void *data = malloc(capacity * type_size);
