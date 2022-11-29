@@ -114,7 +114,6 @@ void list_pop_back(list *l) {
 
     node *back = l->back;
     node *prev = back->prev;
-
     l->back = prev;
     if (prev != NULL) prev->next = NULL;
     if (l->front == back) l->front = prev;
@@ -128,7 +127,6 @@ void list_pop_front(list *l) {
 
     node *front = l->front;
     node *next = front->next;
-
     l->front = next;
     if (next != NULL) next->prev = NULL;
     if (l->back == front) l->back = next;
