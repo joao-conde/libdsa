@@ -95,9 +95,6 @@ void* deque_back(const deque *dq) {
 }
 
 void* deque_push_back(deque *dq, const void *value) {
-    bool next = dq->back == CHUNK_CAPACITY - 1;
-    dq->back += deque_is_empty(dq) ? 0 : 1;
-
     // if current back chunk is in use, allocate
     // a new one in the back
     if (dq->back_chunk == vector_length(dq->chunks) - 1) {
@@ -106,11 +103,13 @@ void* deque_push_back(deque *dq, const void *value) {
         vector_push(dq->chunks, &chunk);
     }
 
-    // if we cross our current back chunk, update back
-    // and back chunk indexes accordingly
-    if (next) {
+    // if we reached the end of the current back chunk,
+    // update back and back chunk indexes accordingly
+    if (dq->back == CHUNK_CAPACITY - 1) {
         dq->back_chunk += 1;
         dq->back = 0;
+    } else {
+        dq->back += deque_is_empty(dq) ? 0 : 1;
     }
 
     dq->length += 1;
@@ -119,9 +118,6 @@ void* deque_push_back(deque *dq, const void *value) {
 }
 
 void* deque_push_front(deque *dq, const void *value) {
-    bool next = dq->front == 0;
-    dq->front -= deque_is_empty(dq) ? 0 : 1;
-
     // if current front chunk is in use, allocate
     // a new one in the front
     if (dq->front_chunk == 0) {
@@ -134,9 +130,11 @@ void* deque_push_front(deque *dq, const void *value) {
 
     // if we cross our current front chunk, update front
     // and front chunk indexes accordingly
-    if (next) {
+    if (dq->front == 0) {
         dq->front_chunk -= 1;
         dq->front = CHUNK_CAPACITY - 1;
+    } else {
+        dq->front -= deque_is_empty(dq) ? 0 : 1;
     }
 
     dq->length += 1;
