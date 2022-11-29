@@ -166,10 +166,9 @@ END_TEST
 
 START_TEST(test_list_push_back_fail) {
     node *result;
-    size_t value = SIZE_MAX;
-    list *l = list_init(SIZE_MAX);
+    list *l = list_init(PTRDIFF_MAX);
 
-    result = list_push_back(l, &value);
+    result = list_push_back(l, NULL);
     ck_assert(result == NULL);
 
     list_free(l);
@@ -203,10 +202,9 @@ END_TEST
 
 START_TEST(test_list_push_front_fail) {
     node *result;
-    size_t value = SIZE_MAX;
-    list *l = list_init(SIZE_MAX);
+    list *l = list_init(PTRDIFF_MAX);
 
-    result = list_push_front(l, &value);
+    result = list_push_front(l, NULL);
     ck_assert(result == NULL);
 
     list_free(l);
@@ -349,10 +347,9 @@ END_TEST
 
 START_TEST(test_list_insert_fail) {
     node *result;
-    size_t value = SIZE_MAX;
-    list *l = list_init(SIZE_MAX);
+    list *l = list_init(PTRDIFF_MAX);
 
-    result = list_insert(l, NULL, &value);
+    result = list_insert(l, NULL, NULL);
     ck_assert(result == NULL);
 
     list_free(l);
