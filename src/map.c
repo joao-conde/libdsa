@@ -1,25 +1,57 @@
+#include "../include/list.h"
 #include "../include/map.h"
 
+#define CAPACITY 256
+
 struct map {
+    size_t length;
     size_t key_size;
     size_t value_size;
+    size_t nbuckets;
+    list **buckets;
 };
 
 map* map_init(size_t key_size, size_t value_size) {
     map *m = malloc(sizeof(map));
+    list **buckets = malloc(CAPACITY * sizeof(list*));
+    if (m == NULL || buckets == NULL) {
+        free(buckets);
+        free(m);
+        return NULL;
+    }
+
+    int i = 0;
+    for (i = 0; i < CAPACITY; i++) {
+        buckets[i] = list_init(value_size);
+        if (buckets[i] == NULL) break;
+    }
+    if (i < CAPACITY) {
+        for (int j = 0; j < i; j++) free(buckets[j]);
+        free(buckets);
+        free(m);
+        return NULL; 
+    }
+
+    m->key_size = key_size;
+    m->value_size = value_size;
+    m->nbuckets = CAPACITY;
+    m->buckets = buckets;
     return m;
 }
 
 void map_free(map *m) {
-    return;
+    if (m != NULL) {
+        free(m->buckets);
+    }
+    free(m);
 }
 
 size_t map_length(const map *m) {
-    return 0;
+    return m->length;
 }
 
 bool map_is_empty(const map *m) {
-    return false;
+    return m->length == 0;
 }
 
 bool map_has(const map *m, const void *key) {

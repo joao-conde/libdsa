@@ -2,6 +2,7 @@
 
 #include "deque.c"
 #include "list.c"
+#include "map.c"
 #include "queue.c"
 #include "stack.c"
 #include "vector.c"
@@ -15,6 +16,7 @@ int main() {
     SRunner *sr = srunner_create(suite_create(SUITE_NAME));
     srunner_add_suite(sr, suite_deque());
     srunner_add_suite(sr, suite_list());
+    srunner_add_suite(sr, suite_map());
     srunner_add_suite(sr, suite_queue());
     srunner_add_suite(sr, suite_stack());
     srunner_add_suite(sr, suite_vector());
