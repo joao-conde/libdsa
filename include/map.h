@@ -4,9 +4,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+typedef size_t (hash_fn)(void* key);
+
 typedef struct map map;
 
-map* map_init(size_t key_size, size_t value_size);
+map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn);
 
 void map_free(map *m);
 

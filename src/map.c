@@ -3,15 +3,20 @@
 
 #define CAPACITY 256
 
+size_t hash_size_t(void *key) {
+    return *(size_t*) key % CAPACITY;
+}
+
 struct map {
     size_t length;
     size_t key_size;
     size_t value_size;
     size_t nbuckets;
     list **buckets;
+    hash_fn *hash_fn;
 };
 
-map* map_init(size_t key_size, size_t value_size) {
+map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn) {
     map *m = malloc(sizeof(map));
     list **buckets = malloc(CAPACITY * sizeof(list*));
     if (m == NULL || buckets == NULL) {
@@ -29,13 +34,15 @@ map* map_init(size_t key_size, size_t value_size) {
         for (int j = 0; j < i; j++) free(buckets[j]);
         free(buckets);
         free(m);
-        return NULL; 
+        return NULL;
     }
 
+    m->length = 0;
     m->key_size = key_size;
     m->value_size = value_size;
     m->nbuckets = CAPACITY;
     m->buckets = buckets;
+    m->hash_fn = hash_fn != NULL ? hash_fn : hash_size_t;
     return m;
 }
 
