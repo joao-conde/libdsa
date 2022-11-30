@@ -121,6 +121,29 @@ START_TEST(test_list_back) {
 }
 END_TEST
 
+START_TEST(test_list_find) {
+    list *l = list_init(sizeof(int));
+
+    int values[4] = {15, 21, 30, 69};
+    for (int i = 0; i < 3; i++) list_push_front(l, &values[i]);
+
+    node *found;
+    found = list_find(l, &values[0]);
+    ck_assert(*(int*)found->data == 15);
+
+    found = list_find(l, &values[1]);
+    ck_assert(*(int*)found->data == 21);
+
+    found = list_find(l, &values[2]);
+    ck_assert(*(int*)found->data == 30);
+
+    found = list_find(l, &values[3]);
+    ck_assert(found == NULL);
+
+    list_free(l);
+}
+END_TEST
+
 START_TEST(test_list_pointers) {
     list *l = list_init(sizeof(int));
     ck_assert(list_front(l) == list_back(l));
@@ -531,6 +554,7 @@ Suite* suite_list() {
     tcase_add_test(test_case, test_list_is_empty);
     tcase_add_test(test_case, test_list_front);
     tcase_add_test(test_case, test_list_back);
+    tcase_add_test(test_case, test_list_find);
     tcase_add_test(test_case, test_list_pointers);
     tcase_add_test(test_case, test_list_push_back);
     tcase_add_test(test_case, test_list_push_back_fail);

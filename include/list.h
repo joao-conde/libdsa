@@ -26,6 +26,8 @@ node* list_front(const list *l);
 
 node* list_back(const list *l);
 
+node* list_find(const list *l, const void *value);
+
 node* list_push_back(list *l, const void *value);
 
 node* list_push_front(list *l, const void *value);
