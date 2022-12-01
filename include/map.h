@@ -4,9 +4,13 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-typedef size_t (hash_fn)(void* key);
+typedef size_t (hash_fn)(const void* key);
 
 typedef struct map map;
+
+size_t hash_int(const void *key);
+
+size_t hash_str(const void *key);
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn);
 
@@ -24,7 +28,7 @@ void* map_get(const map *m, const void *key);
 
 void* map_insert(map *m, const void *key, const void *value);
 
-void* map_erase(map *m, const void *key);
+void map_erase(map *m, const void *key);
 
 void rehash(map *m, size_t nbuckets);
 

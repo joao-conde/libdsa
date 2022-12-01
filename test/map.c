@@ -3,6 +3,22 @@
 
 #include "../include/map.h"
 
+START_TEST(test_hash_int) {
+    int key = 3;
+    size_t hash = hash_int(&key);
+    ck_assert(key == hash);
+    ck_assert(hash == hash_int(&key));
+}
+END_TEST
+
+START_TEST(test_hash_str) {
+    char *key = "hello world";
+    size_t hash = hash_str(key);
+    ck_assert(hash == 1116);
+    ck_assert(hash == hash_str(key));
+}
+END_TEST
+
 START_TEST(test_map_init) {
     map *m = map_init(sizeof(int), sizeof(int), NULL);
     ck_assert(map_is_empty(m));
@@ -65,6 +81,8 @@ END_TEST
 Suite* suite_map() {
     Suite *suite = suite_create("map");
     TCase *test_case = tcase_create("");
+    tcase_add_test(test_case, test_hash_int);
+    tcase_add_test(test_case, test_hash_str);
     tcase_add_test(test_case, test_map_init);
     tcase_add_test(test_case, test_map_free);
     tcase_add_test(test_case, test_map_length);
