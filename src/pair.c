@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <string.h>
 
 #include "../include/pair.h"
@@ -17,6 +18,9 @@ pair* pair_init(
     size_t first_size,
     size_t second_size
 ) {
+    // checks for overflow of amount of requested memory
+    if (first_size > PTRDIFF_MAX || second_size > PTRDIFF_MAX) return NULL;
+
     pair *p = malloc(sizeof(pair));
     void *f = malloc(first_size);
     void *s = malloc(second_size);
