@@ -75,15 +75,6 @@ node* list_back(const list *l) {
     return l->back;
 }
 
-node* list_find(const list *l, const void *value) {
-    node* current = l->front;
-    while (current != NULL) {
-        if (memcmp(current->data, value, l->type_size) == 0) break;
-        current = current->next;
-    }
-    return current;
-}
-
 node* list_push_back(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
