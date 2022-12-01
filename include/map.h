@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "./list.h"
 #include "./pair.h"
 
 typedef size_t (hash_fn)(const void* key);
@@ -14,7 +15,7 @@ size_t hash_int(const void *key);
 
 size_t hash_str(const void *key);
 
-map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn);
+map* map_init(size_t key_size, size_t value_size, hash_fn *hash);
 
 void map_free(map *m);
 
@@ -25,6 +26,8 @@ bool map_is_empty(const map *m);
 bool map_has(const map *m, const void *key);
 
 void map_clear(map *m);
+
+node* map_find(const map *m, const void *key);
 
 void* map_get(const map *m, const void *key);
 

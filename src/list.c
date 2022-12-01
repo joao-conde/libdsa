@@ -3,6 +3,9 @@
 
 #include "../include/list.h"
 
+node* node_init(size_t type_size, const void *value);
+void node_free(node *n);
+
 struct list {
     size_t length;
     size_t type_size;
@@ -156,8 +159,11 @@ node* list_insert(list *l, node *pos, const void *value) {
 }
 
 void list_erase(list *l, node *pos) {
-    if (l->back == pos) return list_pop_back(l);
-    if (l->front == pos) return list_pop_front(l);
+    bool is_back = l->back == pos;
+    bool is_front = l->front == pos;
+    if (is_back) list_pop_back(l);
+    if (is_front) list_pop_front(l);
+    if (is_back || is_front) return;
 
     node *next = pos->next;
     node *prev = pos->prev;

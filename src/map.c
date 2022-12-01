@@ -13,7 +13,7 @@ struct map {
     size_t value_size;
     size_t nbuckets;
     list **buckets;
-    hash_fn *hash_fn;
+    hash_fn *hash;
 };
 
 size_t hash_int(const void *key) {
@@ -28,19 +28,7 @@ size_t hash_str(const void *key) {
     return hash;
 }
 
-node* map_find(const map *m, const void *key) {
-    size_t hash = m->hash_fn(key) % m->nbuckets;
-    list *bucket = m->buckets[hash];
-    node* current = list_front(bucket);
-    while (current != NULL) {
-        pair *entry = current->data;
-        if (memcmp(pair_first(entry), key, m->key_size) == 0) break;
-        current = current->next;
-    }
-    return current;
-}
-
-map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn) {
+map* map_init(size_t key_size, size_t value_size, hash_fn *hash) {
     map *m = malloc(sizeof(map));
     list **buckets = malloc(CAPACITY * sizeof(list*));
     if (m == NULL || buckets == NULL) {
@@ -66,7 +54,7 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn) {
     m->value_size = value_size;
     m->nbuckets = CAPACITY;
     m->buckets = buckets;
-    m->hash_fn = hash_fn != NULL ? hash_fn : hash_int;
+    m->hash = hash != NULL ? hash : &hash_int;
     return m;
 }
 
@@ -93,19 +81,31 @@ void map_clear(map *m) {
     m->length = 0;
 }
 
-void* map_get(const map *m, const void *key) {
-    node *node = map_find(m, key);
-    if (node == NULL) return NULL;
+node* map_find(const map *m, const void *key) {
+    size_t bucket_i = m->hash(key) % m->nbuckets;
+    list *bucket = m->buckets[bucket_i];
+    node* current = list_front(bucket);
+    while (current != NULL) {
+        pair *entry = current->data;
+        if (memcmp(pair_first(entry), key, m->key_size) == 0) break;
+        current = current->next;
+    }
+    return current;
+}
 
-    pair *entry = node->data;
+void* map_get(const map *m, const void *key) {
+    node *n = map_find(m, key);
+    if (n == NULL) return NULL;
+
+    pair *entry = n->data;
     if (entry == NULL) return NULL;
 
     return pair_second(entry);
 }
 
 pair* map_insert(map *m, const void *key, const void *value) {
-    size_t hash = m->hash_fn(key) % m->nbuckets;
-    list *bucket = m->buckets[hash];
+    size_t bucket_i = m->hash(key) % m->nbuckets;
+    list *bucket = m->buckets[bucket_i];
     pair *entry = pair_init(key, value, m->key_size, m->value_size);
     if (entry == NULL) return NULL;
 
@@ -117,16 +117,17 @@ pair* map_insert(map *m, const void *key, const void *value) {
 }
 
 void map_erase(map *m, const void *key) {
-    size_t hash = m->hash_fn(key) % m->nbuckets;
-    list *bucket = m->buckets[hash];
+    size_t bucket_i = m->hash(key) % m->nbuckets;
+    list *bucket = m->buckets[bucket_i];
 
-    node *node = map_find(m, key);
-    if (node == NULL) return;
+    node *n = map_find(m, key);
+    if (n == NULL) return;
 
-    list_erase(bucket, node);
+    list_erase(bucket, n);
     m->length -= 1;
 }
 
 void rehash(map *m, size_t nbuckets) {
+    m->nbuckets = nbuckets;
     return;
 }

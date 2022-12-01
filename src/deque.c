@@ -47,7 +47,7 @@ deque* deque_init(size_t type_size) {
 void deque_free(deque *dq) {
     if (dq != NULL && dq->chunks != NULL) {
         // free each allocated chunk
-        for (int i = 0; i < vector_length(dq->chunks); i++) {
+        for (size_t i = 0; i < vector_length(dq->chunks); i++) {
             void *chunk = *(void**)vector_at(dq->chunks, i);
             free(chunk);
         }

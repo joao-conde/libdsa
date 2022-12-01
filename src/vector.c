@@ -78,7 +78,7 @@ void* vector_back(const vector *v) {
 }
 
 void* vector_end(const vector *v) {
-    return vector_back(v) + v->type_size;
+    return (uint8_t*) vector_back(v) + v->type_size;
 }
 
 void* vector_push(vector *v, const void *value) {
@@ -115,7 +115,7 @@ void* vector_insert(vector *v, size_t index, const void *value) {
     // computes the number of elements to copy and the
     // position of insertion
     size_t to_copy = v->length - index;
-    void *pos = (uint8_t*) v->data + index * v->type_size;
+    uint8_t *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements right from the insertion position forward
     // and sets the insertion position to the inserted value
@@ -133,7 +133,7 @@ void* vector_erase(vector *v, size_t index) {
     // computes the number of elements to copy and the
     // position of deletion
     size_t to_copy = v->length - index;
-    void *pos = (uint8_t*) v->data + index * v->type_size;
+    uint8_t *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements left from the deletion position forward
     // halts the insert operation if this shift fails
