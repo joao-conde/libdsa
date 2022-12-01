@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "./pair.h"
+
 typedef size_t (hash_fn)(const void* key);
 
 typedef struct map map;
@@ -26,7 +28,7 @@ void map_clear(map *m);
 
 void* map_get(const map *m, const void *key);
 
-void* map_insert(map *m, const void *key, const void *value);
+pair* map_insert(map *m, const void *key, const void *value);
 
 void map_erase(map *m, const void *key);
 

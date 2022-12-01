@@ -24,7 +24,7 @@ size_t hash_int(const void *key) {
 size_t hash_str(const void *key) {
     size_t hash = 0;
     char *str = (char*) key;
-    for (int i = 0; str[i] != 0; i++) hash += (uint8_t) str[i];
+    for (int i = 0; str[i] != 0; i++) hash += (i + 1) * (uint8_t) str[i];
     return hash;
 }
 
@@ -103,15 +103,17 @@ void* map_get(const map *m, const void *key) {
     return pair_second(entry);
 }
 
-void* map_insert(map *m, const void *key, const void *value) {
+pair* map_insert(map *m, const void *key, const void *value) {
     size_t hash = m->hash_fn(key) % m->nbuckets;
     list *bucket = m->buckets[hash];
     pair *entry = pair_init(key, value, m->key_size, m->value_size);
+    if (entry == NULL) return NULL;
+
     node *pushed = list_push_back(bucket, entry);
     if (pushed == NULL) return NULL;
 
     m->length += 1;
-    return pushed->data;
+    return entry;
 }
 
 void map_erase(map *m, const void *key) {

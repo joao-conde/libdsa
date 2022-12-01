@@ -2,6 +2,7 @@
 #include <stdint.h>
 
 #include "../include/map.h"
+#include "../include/pair.h"
 
 START_TEST(test_hash_int) {
     int key = 3;
@@ -14,7 +15,7 @@ END_TEST
 START_TEST(test_hash_str) {
     char *key = "hello world";
     size_t hash = hash_str(key);
-    ck_assert(hash == 1116);
+    ck_assert(hash == 6736);
     ck_assert(hash == hash_str(key));
 }
 END_TEST
@@ -63,6 +64,21 @@ START_TEST(test_map_is_empty) {
 }
 END_TEST
 
+START_TEST(test_map_has) {
+    map *m = map_init(sizeof(char*), sizeof(char*), NULL);
+    map_insert(m, "key1", "value1");
+    map_insert(m, "key2", "value2");
+    map_insert(m, "key3", "value3");
+
+    ck_assert(map_has(m, "key1"));
+    ck_assert(map_has(m, "key2"));
+    ck_assert(map_has(m, "key3"));
+    ck_assert(!map_has(m, "key4"));
+
+    map_free(m);
+}
+END_TEST
+
 START_TEST(test_map_clear) {
     float value = 3.5;
     map *m = map_init(sizeof(float), sizeof(float), NULL);
@@ -78,6 +94,73 @@ START_TEST(test_map_clear) {
 }
 END_TEST
 
+START_TEST(test_map_get) {
+    map *m = map_init(sizeof(char*), sizeof(char*), NULL);
+    map_insert(m, "key1", "value1");
+    map_insert(m, "key2", "value2");
+    map_insert(m, "key3", "value3");
+
+    ck_assert(strcmp(map_get(m, "key1"), "value1") == 0);
+    ck_assert(strcmp(map_get(m, "key2"), "value2") == 0);
+    ck_assert(strcmp(map_get(m, "key3"), "value3") == 0);
+    ck_assert(map_get(m, "key4") == NULL);
+
+    map_free(m);
+}
+END_TEST
+
+START_TEST(test_map_insert) {
+    pair *inserted;
+    char *first, *second;
+    map *m = map_init(sizeof(char*), sizeof(char*), NULL);
+    ck_assert(map_length(m) == 0);
+    ck_assert(!map_has(m, "key1"));
+    ck_assert(!map_has(m, "key2"));
+    ck_assert(!map_has(m, "key3"));
+
+    inserted = map_insert(m, "key1", "value1");
+    first = pair_first(inserted);
+    second = pair_second(inserted);
+    ck_assert(strcmp(first, "key1") == 0);
+    ck_assert(strcmp(second, "value1") == 0);
+
+    inserted = map_insert(m, "key2", "value2");
+    first = pair_first(inserted);
+    second = pair_second(inserted);
+    ck_assert(strcmp(first, "key2") == 0);
+    ck_assert(strcmp(second, "value2") == 0);
+
+    ck_assert(map_length(m) == 2);
+    ck_assert(map_has(m, "key1"));
+    ck_assert(map_has(m, "key2"));
+    ck_assert(!map_has(m, "key3"));
+
+    map_free(m);
+}
+END_TEST
+
+START_TEST(test_map_erase) {
+    map *m = map_init(sizeof(char*), sizeof(char*), NULL);
+    map_insert(m, "key1", "value1");
+    map_insert(m, "key2", "value2");
+    map_insert(m, "key3", "value3");
+    ck_assert(map_length(m) == 3);
+    ck_assert(map_has(m, "key1"));
+    ck_assert(map_has(m, "key2"));
+    ck_assert(map_has(m, "key3"));
+
+    map_erase(m, "key1");
+    map_erase(m, "key2");
+    map_erase(m, "unknown");
+    ck_assert(map_length(m) == 1);
+    ck_assert(!map_has(m, "key1"));
+    ck_assert(!map_has(m, "key2"));
+    ck_assert(map_has(m, "key3"));
+
+    map_free(m);
+}
+END_TEST
+
 Suite* suite_map() {
     Suite *suite = suite_create("map");
     TCase *test_case = tcase_create("");
@@ -87,7 +170,11 @@ Suite* suite_map() {
     tcase_add_test(test_case, test_map_free);
     tcase_add_test(test_case, test_map_length);
     tcase_add_test(test_case, test_map_is_empty);
+    tcase_add_test(test_case, test_map_has);
     tcase_add_test(test_case, test_map_clear);
+    tcase_add_test(test_case, test_map_get);
+    tcase_add_test(test_case, test_map_insert);
+    tcase_add_test(test_case, test_map_erase);
     suite_add_tcase(suite, test_case);
     return suite;
 }
