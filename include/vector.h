@@ -10,8 +10,6 @@ vector* vector_init(size_t type_size);
 
 vector* vector_with_capacity(size_t type_size, size_t capacity);
 
-vector* vector_from_array(size_t type_size, size_t length, const void *array);
-
 void vector_free(vector *v);
 
 size_t vector_length(const vector *v);

@@ -36,22 +36,6 @@ vector* vector_with_capacity(size_t type_size, size_t capacity) {
     return v;
 }
 
-vector* vector_from_array(size_t type_size, size_t length, const void *array) {
-    // computes vector capacity based on the array to copy length
-    // if the vector would be at capacity by copying the original
-    // array then we allocate a bigger one
-    size_t capacity = CAPACITY > length ? CAPACITY : length * ALLOC_FACTOR;
-
-    vector *v = vector_with_capacity(type_size, capacity);
-    if (v == NULL) return NULL;
-
-    // copies the array contents to internal data buffer
-    memcpy(v->data, array, length * type_size);
-
-    v->length = length;
-    return v;
-}
-
 void vector_free(vector *v) {
     if (v != NULL) free(v->data);
     free(v);

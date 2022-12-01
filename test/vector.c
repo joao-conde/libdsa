@@ -40,27 +40,15 @@ START_TEST(test_vector_with_capacity_fail) {
 }
 END_TEST
 
-START_TEST(test_vector_from_array) {
-    int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
-    ck_assert(vector_length(v) == 4);
-    ck_assert(vector_capacity(v) == 256);
-    ck_assert(*(int*)vector_at(v, 0) == 15);
-    ck_assert(*(int*)vector_at(v, 1) == 21);
-    ck_assert(*(int*)vector_at(v, 2) == 30);
-    ck_assert(*(int*)vector_at(v, 3) == 69);
-    ck_assert(vector_at(v, 4) == NULL);
-    vector_free(v);
-}
-END_TEST
-
-START_TEST(test_vector_from_array_void_ptrs) {
+START_TEST(test_vector_void_ptrs) {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
     void *d3 = malloc(10 * sizeof(void*));
-    void* values[3] = {d1, d2, d3};
 
-    vector *v = vector_from_array(sizeof(void*), 3, values);
+    vector *v = vector_init(sizeof(void*));
+    vector_push(v, &d1);
+    vector_push(v, &d2);
+    vector_push(v, &d3);
     ck_assert(*(void**)vector_at(v, 0) == d1);
     ck_assert(*(void**)vector_at(v, 1) == d2);
     ck_assert(*(void**)vector_at(v, 2) == d3);
@@ -69,25 +57,6 @@ START_TEST(test_vector_from_array_void_ptrs) {
     free(d3);
     free(d2);
     free(d1);
-}
-END_TEST
-
-START_TEST(test_vector_from_array_resize) {
-    int *values = calloc(260, sizeof(int));
-    vector *v = vector_from_array(sizeof(int), 260, values);
-    ck_assert(vector_length(v) == 260);
-    ck_assert(vector_capacity(v) == 520);
-    vector_free(v);
-    free(values);
-}
-END_TEST
-
-START_TEST(test_vector_from_array_fail) {
-    vector *v = vector_from_array(SIZE_MAX, 1, NULL);
-    ck_assert(v == NULL);
-
-    v = vector_from_array(SIZE_MAX / 1000, 1, NULL);
-    ck_assert(v == NULL);
 }
 END_TEST
 
@@ -137,7 +106,8 @@ END_TEST
 
 START_TEST(test_vector_clear) {
     double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
-    vector *v = vector_from_array(sizeof(double), 7, values);
+    vector *v = vector_init(sizeof(double));
+    for (int i = 0; i < 7; i++) vector_push(v, values + i);
     ck_assert(!vector_is_empty(v));
     ck_assert(vector_length(v) == 7);
     ck_assert(vector_capacity(v) == 256);
@@ -153,7 +123,8 @@ END_TEST
 
 START_TEST(test_vector_at) {
     unsigned int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(unsigned int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(*(unsigned int*)vector_at(v, 0) == 15);
     ck_assert(*(unsigned int*)vector_at(v, 1) == 21);
     ck_assert(*(unsigned int*)vector_at(v, 2) == 30);
@@ -172,22 +143,23 @@ END_TEST
 
 START_TEST(test_vector_set) {
     unsigned int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(unsigned int), 4, values);
+    vector *v = vector_with_capacity(sizeof(int), 260);
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(*(unsigned int*)vector_at(v, 0) == 15);
     ck_assert(*(unsigned int*)vector_at(v, 1) == 21);
     ck_assert(*(unsigned int*)vector_at(v, 2) == 30);
     ck_assert(*(unsigned int*)vector_at(v, 3) == 69);
 
-    void *result = vector_set(v, 0, &values[3]);
+    void *result = vector_set(v, 0, values + 3);
     ck_assert(*(unsigned int*)result == 69);
 
-    result = vector_set(v, 1, &values[0]);
+    result = vector_set(v, 1, values);
     ck_assert(*(unsigned int*)result == 15);
 
-    result = vector_set(v, 2, &values[2]);
+    result = vector_set(v, 2, values + 2);
     ck_assert(*(unsigned int*)result == 30);
 
-    result = vector_set(v, 3, &values[1]);
+    result = vector_set(v, 3, values + 1);
     ck_assert(*(unsigned int*)result == 21);
 
     ck_assert(*(unsigned int*)vector_at(v, 0) == 69);
@@ -209,7 +181,8 @@ END_TEST
 
 START_TEST(test_vector_begin) {
     int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(*(int*)vector_begin(v) == 15);
     ck_assert(vector_begin(v) == vector_at(v, 0));
     vector_free(v);
@@ -218,7 +191,8 @@ END_TEST
 
 START_TEST(test_vector_back) {
     int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(vector_back(v) == vector_at(v, 3));
     vector_free(v);
 }
@@ -226,7 +200,8 @@ END_TEST
 
 START_TEST(test_vector_end) {
     int values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(vector_end(v) == vector_at(v, 3) + sizeof(int));
     vector_free(v);
 }
@@ -339,7 +314,8 @@ END_TEST
 
 START_TEST(test_vector_pop) {
     int *result, values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(vector_length(v) == 4);
     ck_assert(*(int*)vector_at(v, 0) == 15);
     ck_assert(*(int*)vector_at(v, 1) == 21);
@@ -392,7 +368,8 @@ END_TEST
 
 START_TEST(test_vector_insert) {
     int *result, values[4] = {15, 21, 30, 69};
-    vector *v = vector_from_array(sizeof(int), 4, values);
+    vector *v = vector_init(sizeof(int));
+    for (int i = 0; i < 4; i++) vector_push(v, values + i);
     ck_assert(vector_length(v) == 4);
     ck_assert(*(int*)vector_at(v, 0) == 15);
     ck_assert(*(int*)vector_at(v, 1) == 21);
@@ -502,7 +479,8 @@ END_TEST
 
 START_TEST(test_vector_erase) {
     double *result, values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
-    vector *v = vector_from_array(sizeof(double), 7, values);
+    vector *v = vector_init(sizeof(double));
+    for (int i = 0; i < 7; i++) vector_push(v, values + i);
     ck_assert(vector_length(v) == 7);
     ck_assert(*(double*)vector_at(v, 0) == 15.5);
     ck_assert(*(double*)vector_at(v, 1) == 21.7);
@@ -590,8 +568,12 @@ START_TEST(test_vector_erase) {
 END_TEST
 
 START_TEST(test_vector_resize) {
-    char* values[4] = {"hello", "world", "welcome", "all"};
-    vector *v = vector_from_array(sizeof(char*), 4, values);
+    vector *v = vector_init(sizeof(char*));
+    vector_push(v, "hello");
+    vector_push(v, "world");
+    vector_push(v, "welcome");
+    vector_push(v, "all");
+
     ck_assert(vector_capacity(v) == 256);
     ck_assert(vector_length(v) == 4);
 
@@ -599,8 +581,9 @@ START_TEST(test_vector_resize) {
     ck_assert(result != NULL);
     ck_assert(vector_capacity(v) == 2);
     ck_assert(vector_length(v) == 2);
-    ck_assert(strcmp(vector_at(v, 0), "hello"));
-    ck_assert(strcmp(vector_at(v, 0), "world"));
+
+    ck_assert(strcmp(vector_at(v, 0), "hello") == 0);
+    ck_assert(strcmp(vector_at(v, 1), "world") == 0);
     ck_assert(vector_at(v, 2) == NULL);
 
     result = vector_resize(v, 0);
@@ -613,11 +596,11 @@ START_TEST(test_vector_resize) {
     ck_assert(vector_capacity(v) == 256);
     ck_assert(vector_length(v) == 0);
 
-    result = vector_push(v, &values[0]);
+    result = vector_push(v, "hello");
     ck_assert(vector_capacity(v) == 256);
     ck_assert(vector_length(v) == 1);
-    ck_assert(strcmp(result, "hello"));
-    ck_assert(strcmp(vector_at(v, 0), "hello"));
+    ck_assert(strcmp(result, "hello") == 0);
+    ck_assert(strcmp(vector_at(v, 0), "hello") == 0);
 
     vector_free(v);
 }
@@ -767,10 +750,7 @@ Suite* suite_vector() {
     tcase_add_test(test_case, test_vector_init_fail);
     tcase_add_test(test_case, test_vector_with_capacity);
     tcase_add_test(test_case, test_vector_with_capacity_fail);
-    tcase_add_test(test_case, test_vector_from_array);
-    tcase_add_test(test_case, test_vector_from_array_void_ptrs);
-    tcase_add_test(test_case, test_vector_from_array_resize);
-    tcase_add_test(test_case, test_vector_from_array_fail);
+    tcase_add_test(test_case, test_vector_void_ptrs);
     tcase_add_test(test_case, test_vector_free);
     tcase_add_test(test_case, test_vector_length);
     tcase_add_test(test_case, test_vector_capacity);
