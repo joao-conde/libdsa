@@ -6,6 +6,8 @@ PIMPL
 
 Opaque type
 
+void* generics
+
 ## References
 
 https://en.cppreference.com/
