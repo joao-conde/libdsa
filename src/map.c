@@ -3,38 +3,9 @@
 
 #include "../include/list.h"
 #include "../include/map.h"
+#include "../include/pair.h"
 
 #define CAPACITY 256
-
-struct pair {
-    void *first;
-    void *second;
-};
-typedef struct pair pair;
-
-pair* pair_init(
-    const void *first,
-    const void *second,
-    size_t first_size,
-    size_t second_size
-) {
-    pair *p = malloc(sizeof(pair));
-    void *f = malloc(first_size);
-    void *s = malloc(second_size);
-    if (p == NULL || f == NULL || s == NULL) {
-        free(s);
-        free(f);
-        free(p);
-        return NULL;
-    }
-
-    memcpy(f, first, first_size);
-    memcpy(s, second, second_size);
-
-    p->first = f;
-    p->second = s;
-    return p;
-}
 
 struct map {
     size_t length;
@@ -63,7 +34,7 @@ node* map_find(const map *m, const void *key) {
     node* current = list_front(bucket);
     while (current != NULL) {
         pair *entry = current->data;
-        if (memcmp(entry->first, key, m->key_size) == 0) break;
+        if (memcmp(pair_first(entry), key, m->key_size) == 0) break;
         current = current->next;
     }
     return current;
@@ -80,7 +51,7 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hash_fn) {
 
     int i = 0;
     for (i = 0; i < CAPACITY; i++) {
-        buckets[i] = list_init(sizeof(pair));
+        buckets[i] = list_init(PAIR_SIZE);
         if (buckets[i] == NULL) break;
     }
     if (i < CAPACITY) {
@@ -129,7 +100,7 @@ void* map_get(const map *m, const void *key) {
     pair *entry = node->data;
     if (entry == NULL) return NULL;
 
-    return entry->second;
+    return pair_second(entry);
 }
 
 void* map_insert(map *m, const void *key, const void *value) {

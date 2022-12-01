@@ -1,11 +1,12 @@
 #include <check.h>
 
-#include "deque.c"
-#include "list.c"
-#include "map.c"
-#include "queue.c"
-#include "stack.c"
-#include "vector.c"
+#include "./deque.c"
+#include "./list.c"
+#include "./map.c"
+#include "./pair.c"
+#include "./queue.c"
+#include "./stack.c"
+#include "./vector.c"
 
 #define SUITE_NAME "libdsa"
 #define SUITE_SUCCESS 0
@@ -17,6 +18,7 @@ int main() {
     srunner_add_suite(sr, suite_deque());
     srunner_add_suite(sr, suite_list());
     srunner_add_suite(sr, suite_map());
+    srunner_add_suite(sr, suite_pair());
     srunner_add_suite(sr, suite_queue());
     srunner_add_suite(sr, suite_stack());
     srunner_add_suite(sr, suite_vector());

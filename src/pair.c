@@ -9,9 +9,7 @@ struct pair {
     size_t second_size;
 };
 
-size_t pair_sizeof() {
-    return sizeof(pair);
-}
+size_t PAIR_SIZE = sizeof(pair);
 
 pair* pair_init(
     const void *first,

@@ -3,9 +3,9 @@
 
 #include <stdlib.h>
 
-typedef struct pair pair;
+extern size_t PAIR_SIZE;
 
-size_t pair_sizeof();
+typedef struct pair pair;
 
 pair* pair_init(
     const void *first,
