@@ -30,11 +30,11 @@ usage:
 	@echo make memcheck - analyze memory usage and report memory leaks
 	@echo make clean - clean build and test artifacts
 
-debug: $(OBJS)
-	gcc -shared -o $(LIB).so $(OBJS) $(DEBUG_FLAGS)
+debug:
+	gcc $(DEBUG_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
 
-release: $(OBJS)
-	gcc -shared -o $(LIB).so $(OBJS) $(RELEASE_FLAGS)
+release:
+	gcc $(RELEASE_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
 
 install:
 	cp $(LIB).so $(INSTALL_BIN)
