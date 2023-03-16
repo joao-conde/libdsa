@@ -9,6 +9,7 @@ TEST_FLAGS = $(shell pkg-config --cflags --libs check) -g -Wall --coverage
 SRC = src
 HDR = include
 TEST = test
+BENCH = benchmark
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
@@ -65,6 +66,11 @@ memcheck:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
 	CK_FORK=no valgrind --error-exitcode=1 --leak-check=full -s ./runner
+
+bench:
+	$(MAKE) clean
+	gcc $(BENCH)/vector.c $(SRCS) $(RELEASE_FLAGS) -o vectorc
+	g++ $(BENCH)/vector.cpp -s -O3 -finline-functions -o vectorcpp
 
 clean:
 	-@$(RM) $(OBJS)

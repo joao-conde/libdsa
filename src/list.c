@@ -68,7 +68,7 @@ bool list_is_empty(const list *l) {
     return l->length == 0;
 }
 
-const node* list_front(const list *l) {
+node* list_front(const list *l) {
     if (list_is_empty(l)) return NULL;
     return l->front;
 }
@@ -78,7 +78,7 @@ const node* list_back(const list *l) {
     return l->back;
 }
 
-const node* list_push_back(list *l, const void *value) {
+node* list_push_back(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 

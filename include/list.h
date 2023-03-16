@@ -22,11 +22,11 @@ size_t list_length(const list *l);
 
 bool list_is_empty(const list *l);
 
-const node* list_front(const list *l);
+node* list_front(const list *l);
 
 const node* list_back(const list *l);
 
-const node* list_push_back(list *l, const void *value);
+node* list_push_back(list *l, const void *value);
 
 const node* list_push_front(list *l, const void *value);
 
