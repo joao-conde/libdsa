@@ -22,7 +22,7 @@ void test_pair_init() {
 
 void test_pair_init_fail() {
     int x = 1;
-    pair *p = pair_init(&x, &x, SIZE_MAX, SIZE_MAX);
+    pair *p = pair_init(&x, &x, PTRDIFF_MAX, PTRDIFF_MAX);
     assert(p == NULL);
 }
 

@@ -6,7 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update
-      - run: sudo apt-get install -y -q pkg-config check
       - run: make check
       - run: make coverage
       - run: make coverage-report
