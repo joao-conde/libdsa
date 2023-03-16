@@ -1,5 +1,3 @@
-#include <check.h>
-
 #include "./deque.c"
 #include "./list.c"
 #include "./map.c"
@@ -13,19 +11,11 @@
 #define SUITE_FAILURE -1
 
 int main() {
-    // creates and adds the module test suites to the suite runner
-    SRunner *sr = srunner_create(suite_create(SUITE_NAME));
-    srunner_add_suite(sr, suite_deque());
-    srunner_add_suite(sr, suite_list());
-    srunner_add_suite(sr, suite_map());
-    srunner_add_suite(sr, suite_pair());
-    srunner_add_suite(sr, suite_queue());
-    srunner_add_suite(sr, suite_stack());
-    srunner_add_suite(sr, suite_vector());
-
-    // runs all test suites and checks for failures
-    srunner_run_all(sr, CK_VERBOSE);
-    int failed = srunner_ntests_failed(sr);
-    srunner_free(sr);
-    return failed == 0 ? SUITE_SUCCESS : SUITE_FAILURE;
+    test_deque();
+    test_list();
+    test_map();
+    test_pair();
+    test_queue();
+    test_stack();
+    test_vector();
 }

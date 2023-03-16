@@ -1,209 +1,209 @@
-#include <check.h>
+#include <assert.h>
 #include <stdint.h>
 
 #include "../include/queue.h"
 
-START_TEST(test_queue_init) {
+void test_queue_init() {
     queue *q = queue_init(sizeof(int));
-    ck_assert(queue_is_empty(q));
+    assert(queue_is_empty(q));
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_init_fail) {
+
+void test_queue_init_fail() {
     queue *q = queue_init(SIZE_MAX);
-    ck_assert(q == NULL);
+    assert(q == NULL);
 
     q = queue_init(SIZE_MAX / 1000);
-    ck_assert(q == NULL);
+    assert(q == NULL);
 }
-END_TEST
 
-START_TEST(test_queue_free) {
+
+void test_queue_free() {
     queue_free(NULL);
 
     queue *q = queue_init(sizeof(int));
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_length) {
+
+void test_queue_length() {
     float value = 3.5;
     queue *q = queue_init(sizeof(float));
-    ck_assert(queue_length(q) == 0);
+    assert(queue_length(q) == 0);
 
     queue_push(q, &value);
     queue_push(q, &value);
     queue_push(q, &value);
-    ck_assert(queue_length(q) == 3);
+    assert(queue_length(q) == 3);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_is_empty) {
+
+void test_queue_is_empty() {
     queue *q = queue_init(sizeof(int));
-    ck_assert(queue_is_empty(q));
+    assert(queue_is_empty(q));
 
     int value = -10;
     queue_push(q, &value);
-    ck_assert(!queue_is_empty(q));
+    assert(!queue_is_empty(q));
 
     queue_pop(q);
-    ck_assert(queue_is_empty(q));
+    assert(queue_is_empty(q));
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_clear) {
+
+void test_queue_clear() {
     float value = 3.5;
     queue *q = queue_init(sizeof(float));
     queue_push(q, &value);
     queue_push(q, &value);
     queue_push(q, &value);
-    ck_assert(queue_length(q) == 3);
+    assert(queue_length(q) == 3);
 
     queue_clear(q);
-    ck_assert(queue_length(q) == 0);
+    assert(queue_length(q) == 0);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_at) {
+
+void test_queue_at() {
     int values[5] = {51, 12, -123, 1000, -1};
     queue *q = queue_init(sizeof(int));
-    ck_assert(queue_at(q, 0) == NULL);
+    assert(queue_at(q, 0) == NULL);
 
     queue_push(q, &values[0]);
     queue_push(q, &values[1]);
     queue_push(q, &values[2]);
     queue_push(q, &values[3]);
     queue_push(q, &values[4]);
-    ck_assert(*(int*)queue_at(q, 0) == 51);
-    ck_assert(*(int*)queue_at(q, 1) == 12);
-    ck_assert(*(int*)queue_at(q, 2) == -123);
-    ck_assert(*(int*)queue_at(q, 3) == 1000);
-    ck_assert(*(int*)queue_at(q, 4) == -1);
-    ck_assert(queue_at(q, 5) == NULL);
+    assert(*(int*)queue_at(q, 0) == 51);
+    assert(*(int*)queue_at(q, 1) == 12);
+    assert(*(int*)queue_at(q, 2) == -123);
+    assert(*(int*)queue_at(q, 3) == 1000);
+    assert(*(int*)queue_at(q, 4) == -1);
+    assert(queue_at(q, 5) == NULL);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_front) {
+
+void test_queue_front() {
     int values[4] = {-1, 10, 24, 59};
     queue *q = queue_init(sizeof(int));
 
-    ck_assert(queue_front(q) == NULL);
+    assert(queue_front(q) == NULL);
 
     queue_push(q, &values[0]);
-    ck_assert(*(int*) queue_front(q) == -1);
+    assert(*(int*) queue_front(q) == -1);
 
     queue_push(q, &values[1]);
-    ck_assert(*(int*) queue_front(q) == -1);
+    assert(*(int*) queue_front(q) == -1);
 
     queue_push(q, &values[2]);
-    ck_assert(*(int*) queue_front(q) == -1);
+    assert(*(int*) queue_front(q) == -1);
 
     queue_push(q, &values[3]);
-    ck_assert(*(int*) queue_front(q) == -1);
+    assert(*(int*) queue_front(q) == -1);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_front(q) == 10);
+    assert(*(int*) queue_front(q) == 10);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_front(q) == 24);
+    assert(*(int*) queue_front(q) == 24);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_front(q) == 59);
+    assert(*(int*) queue_front(q) == 59);
 
     queue_pop(q);
-    ck_assert(queue_front(q) == NULL);
+    assert(queue_front(q) == NULL);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_back) {
+
+void test_queue_back() {
     int values[4] = {-1, 10, 24, 59};
     queue *q = queue_init(sizeof(int));
 
-    ck_assert(queue_back(q) == NULL);
+    assert(queue_back(q) == NULL);
 
     queue_push(q, &values[0]);
-    ck_assert(*(int*) queue_back(q) == -1);
+    assert(*(int*) queue_back(q) == -1);
 
     queue_push(q, &values[1]);
-    ck_assert(*(int*) queue_back(q) == 10);
+    assert(*(int*) queue_back(q) == 10);
 
     queue_push(q, &values[2]);
-    ck_assert(*(int*) queue_back(q) == 24);
+    assert(*(int*) queue_back(q) == 24);
 
     queue_push(q, &values[3]);
-    ck_assert(*(int*) queue_back(q) == 59);
+    assert(*(int*) queue_back(q) == 59);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_back(q) == 59);
+    assert(*(int*) queue_back(q) == 59);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_back(q) == 59);
+    assert(*(int*) queue_back(q) == 59);
 
     queue_pop(q);
-    ck_assert(*(int*) queue_back(q) == 59);
+    assert(*(int*) queue_back(q) == 59);
 
     queue_pop(q);
-    ck_assert(queue_back(q) == NULL);
+    assert(queue_back(q) == NULL);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_pointers) {
+
+void test_queue_pointers() {
     queue *q = queue_init(sizeof(int));
-    ck_assert(queue_front(q) == queue_back(q));
+    assert(queue_front(q) == queue_back(q));
 
     int value = 3;
     queue_push(q, &value);
-    ck_assert(queue_front(q) == queue_back(q));
+    assert(queue_front(q) == queue_back(q));
 
     queue_push(q, &value);
-    ck_assert(queue_front(q) != queue_back(q));
+    assert(queue_front(q) != queue_back(q));
 
     queue_pop(q);
-    ck_assert(queue_front(q) == queue_back(q));
+    assert(queue_front(q) == queue_back(q));
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_push) {
+
+void test_queue_push() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     queue *q = queue_init(sizeof(int));
 
     result = queue_push(q, &values[0]);
-    ck_assert(*result == 51);
+    assert(*result == 51);
 
     result = queue_push(q, &values[1]);
-    ck_assert(*result == 12);
+    assert(*result == 12);
 
     result = queue_push(q, &values[2]);
-    ck_assert(*result == -123);
+    assert(*result == -123);
 
     result = queue_push(q, &values[3]);
-    ck_assert(*result == 1000);
+    assert(*result == 1000);
 
     result = queue_push(q, &values[4]);
-    ck_assert(*result == -1);
+    assert(*result == -1);
 
-    ck_assert(queue_length(q) == 5);
+    assert(queue_length(q) == 5);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_pop) {
+
+void test_queue_pop() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     queue *q = queue_init(sizeof(int));
     queue_push(q, &values[0]);
@@ -212,37 +212,37 @@ START_TEST(test_queue_pop) {
     queue_push(q, &values[3]);
     queue_push(q, &values[4]);
 
-    ck_assert(queue_length(q) == 5);
+    assert(queue_length(q) == 5);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 4);
-    ck_assert(*result == 51);
+    assert(queue_length(q) == 4);
+    assert(*result == 51);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 3);
-    ck_assert(*result == 12);
+    assert(queue_length(q) == 3);
+    assert(*result == 12);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 2);
-    ck_assert(*result == -123);
+    assert(queue_length(q) == 2);
+    assert(*result == -123);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 1);
-    ck_assert(*result == 1000);
+    assert(queue_length(q) == 1);
+    assert(*result == 1000);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 0);
-    ck_assert(*result == -1);
+    assert(queue_length(q) == 0);
+    assert(*result == -1);
 
     result = queue_pop(q);
-    ck_assert(queue_length(q) == 0);
-    ck_assert(result == NULL);
+    assert(queue_length(q) == 0);
+    assert(result == NULL);
 
     queue_free(q);
 }
-END_TEST
 
-START_TEST(test_queue_stress) {
+
+void test_queue_stress() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
@@ -257,12 +257,12 @@ START_TEST(test_queue_stress) {
         at = queue_at(q, i);
         front = queue_front(q);
         back = queue_back(q);
-        ck_assert(*pushed == i);
-        ck_assert(length == i + 1);
-        ck_assert(!is_empty);
-        ck_assert(*at == i);
-        ck_assert(*front == 0);
-        ck_assert(*back == i);
+        assert(*pushed == i);
+        assert(length == i + 1);
+        assert(!is_empty);
+        assert(*at == i);
+        assert(*front == 0);
+        assert(*back == i);
     }
 
     for (int i = 0; i < nelements / 2; i++) {
@@ -272,40 +272,35 @@ START_TEST(test_queue_stress) {
         popped = queue_pop(q);
         length = queue_length(q);
         is_empty = queue_is_empty(q);
-        ck_assert(*popped == i);
-        ck_assert(length == nelements - i - 1);
-        ck_assert(!is_empty);
-        ck_assert(*at == *popped);
-        ck_assert(*front == i);
-        ck_assert(*back == nelements - 1);
+        assert(*popped == i);
+        assert(length == nelements - i - 1);
+        assert(!is_empty);
+        assert(*at == *popped);
+        assert(*front == i);
+        assert(*back == nelements - 1);
     }
 
     queue_clear(q);
     length = queue_length(q);
     is_empty = queue_is_empty(q);
-    ck_assert(length == 0);
-    ck_assert(is_empty);
+    assert(length == 0);
+    assert(is_empty);
 
     queue_free(q);
 }
-END_TEST
 
-Suite* suite_queue() {
-    Suite *suite = suite_create("queue");
-    TCase *test_case = tcase_create("");
-    tcase_add_test(test_case, test_queue_init);
-    tcase_add_test(test_case, test_queue_init_fail);
-    tcase_add_test(test_case, test_queue_free);
-    tcase_add_test(test_case, test_queue_length);
-    tcase_add_test(test_case, test_queue_is_empty);
-    tcase_add_test(test_case, test_queue_clear);
-    tcase_add_test(test_case, test_queue_at);
-    tcase_add_test(test_case, test_queue_front);
-    tcase_add_test(test_case, test_queue_back);
-    tcase_add_test(test_case, test_queue_pointers);
-    tcase_add_test(test_case, test_queue_push);
-    tcase_add_test(test_case, test_queue_pop);
-    tcase_add_test(test_case, test_queue_stress);
-    suite_add_tcase(suite, test_case);
-    return suite;
+void test_queue() {
+    test_queue_init();
+    test_queue_init_fail();
+    test_queue_free();
+    test_queue_length();
+    test_queue_is_empty();
+    test_queue_clear();
+    test_queue_at();
+    test_queue_front();
+    test_queue_back();
+    test_queue_pointers();
+    test_queue_push();
+    test_queue_pop();
+    test_queue_stress();
 }

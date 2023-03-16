@@ -2,9 +2,11 @@ LIB = libdsa
 INSTALL_BIN = /usr/lib
 INSTALL_INCLUDE = /usr/include
 
+SHELL = /bin/bash
+
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
-TEST_FLAGS = $(shell pkg-config --cflags --libs check) -g -Wall --coverage
+TEST_FLAGS = -g -Wall --coverage
 
 SRC = src
 HDR = include
@@ -15,7 +17,7 @@ SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
 INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
-COVS = $(patsubst %.c, %.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+COVS = $(patsubst %.c, runner-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
 default: usage
 
