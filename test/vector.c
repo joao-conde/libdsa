@@ -13,7 +13,6 @@ void test_vector_init() {
     vector_free(v);
 }
 
-
 void test_vector_init_fail() {
     vector *v = vector_init(SIZE_MAX);
     assert(v == NULL);
@@ -22,14 +21,12 @@ void test_vector_init_fail() {
     assert(v == NULL);
 }
 
-
 void test_vector_with_capacity() {
     vector *v = vector_with_capacity(sizeof(int), 10);
     assert(vector_length(v) == 0);
     assert(vector_capacity(v) == 10);
     vector_free(v);
 }
-
 
 void test_vector_with_capacity_fail() {
     vector *v = vector_with_capacity(SIZE_MAX, 1000);
@@ -38,7 +35,6 @@ void test_vector_with_capacity_fail() {
     v = vector_with_capacity(SIZE_MAX / 1000, 256);
     assert(v == NULL);
 }
-
 
 void test_vector_void_ptrs() {
     void *d1 = malloc(10 * sizeof(void*));
@@ -59,14 +55,12 @@ void test_vector_void_ptrs() {
     free(d1);
 }
 
-
 void test_vector_free() {
     vector_free(NULL);
 
     vector *v = vector_init(sizeof(int));
     vector_free(v);
 }
-
 
 void test_vector_length() {
     float value = 3.5;
@@ -81,13 +75,11 @@ void test_vector_length() {
     vector_free(v);
 }
 
-
 void test_vector_capacity() {
     vector *v = vector_with_capacity(sizeof(int), 10);
     assert(vector_capacity(v) == 10);
     vector_free(v);
 }
-
 
 void test_vector_is_empty() {
     vector *v = vector_init(sizeof(int));
@@ -102,7 +94,6 @@ void test_vector_is_empty() {
 
     vector_free(v);
 }
-
 
 void test_vector_clear() {
     double values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
@@ -120,7 +111,6 @@ void test_vector_clear() {
     vector_free(v);
 }
 
-
 void test_vector_at() {
     unsigned int values[4] = {15, 21, 30, 69};
     vector *v = vector_init(sizeof(int));
@@ -133,13 +123,11 @@ void test_vector_at() {
     vector_free(v);
 }
 
-
 void test_vector_at_fail() {
     vector *v = vector_init(sizeof(int));
     assert(vector_at(v, 0) == NULL);
     vector_free(v);
 }
-
 
 void test_vector_set() {
     unsigned int values[4] = {15, 21, 30, 69};
@@ -170,14 +158,12 @@ void test_vector_set() {
     vector_free(v);
 }
 
-
 void test_vector_set_fail() {
     int value = 3;
     vector *v = vector_init(sizeof(int));
     assert(vector_set(v, 0, &value) == NULL);
     vector_free(v);
 }
-
 
 void test_vector_begin() {
     int values[4] = {15, 21, 30, 69};
@@ -188,7 +174,6 @@ void test_vector_begin() {
     vector_free(v);
 }
 
-
 void test_vector_back() {
     int values[4] = {15, 21, 30, 69};
     vector *v = vector_init(sizeof(int));
@@ -196,7 +181,6 @@ void test_vector_back() {
     assert(vector_back(v) == vector_at(v, 3));
     vector_free(v);
 }
-
 
 void test_vector_end() {
     int values[4] = {15, 21, 30, 69};
@@ -206,14 +190,12 @@ void test_vector_end() {
     vector_free(v);
 }
 
-
 void test_vector_pointers() {
     vector *v = vector_init(sizeof(int));
     assert(vector_begin(v) == vector_back(v));
     assert(vector_back(v) + sizeof(int) == vector_end(v));
     vector_free(v);
 }
-
 
 void test_vector_push() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -245,7 +227,6 @@ void test_vector_push() {
     vector_free(v);
 }
 
-
 void test_vector_push_void_ptrs() {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
@@ -264,7 +245,6 @@ void test_vector_push_void_ptrs() {
     free(d2);
     free(d1);
 }
-
 
 void test_vector_push_resize() {
     int values[5] = {0, -10, 50, 30, -57};
@@ -310,7 +290,6 @@ void test_vector_push_resize() {
 
     vector_free(v);
 }
-
 
 void test_vector_pop() {
     int *result, values[4] = {15, 21, 30, 69};
@@ -364,7 +343,6 @@ void test_vector_pop() {
 
     vector_free(v);
 }
-
 
 void test_vector_insert() {
     int *result, values[4] = {15, 21, 30, 69};
@@ -420,7 +398,6 @@ void test_vector_insert() {
     vector_free(v);
 }
 
-
 void test_vector_insert_void_ptrs() {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
@@ -439,7 +416,6 @@ void test_vector_insert_void_ptrs() {
     free(d2);
     free(d1);
 }
-
 
 void test_vector_insert_resize() {
     int values[4] = {15, 21, 30, 69};
@@ -475,7 +451,6 @@ void test_vector_insert_resize() {
 
     vector_free(v);
 }
-
 
 void test_vector_erase() {
     double *result, values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
@@ -566,7 +541,6 @@ void test_vector_erase() {
     vector_free(v);
 }
 
-
 void test_vector_resize() {
     vector *v = vector_init(sizeof(char*));
     vector_push(v, "hello");
@@ -604,7 +578,6 @@ void test_vector_resize() {
 
     vector_free(v);
 }
-
 
 void test_vector_stress() {
     unsigned int seed = time(NULL);

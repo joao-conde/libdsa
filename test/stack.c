@@ -9,7 +9,6 @@ void test_stack_init() {
     stack_free(s);
 }
 
-
 void test_stack_init_fail() {
     stack *s = stack_init(SIZE_MAX);
     assert(s == NULL);
@@ -18,14 +17,12 @@ void test_stack_init_fail() {
     assert(s == NULL);
 }
 
-
 void test_stack_free() {
     stack_free(NULL);
 
     stack *s = stack_init(sizeof(int));
     stack_free(s);
 }
-
 
 void test_stack_length() {
     float value = 3.5;
@@ -39,7 +36,6 @@ void test_stack_length() {
 
     stack_free(s);
 }
-
 
 void test_stack_is_empty() {
     stack *s = stack_init(sizeof(int));
@@ -55,7 +51,6 @@ void test_stack_is_empty() {
     stack_free(s);
 }
 
-
 void test_stack_clear() {
     float value = 3.5;
     stack *s = stack_init(sizeof(float));
@@ -69,7 +64,6 @@ void test_stack_clear() {
 
     stack_free(s);
 }
-
 
 void test_stack_top() {
     int values[4] = {-1, 10, 24, 59};
@@ -104,7 +98,6 @@ void test_stack_top() {
     stack_free(s);
 }
 
-
 void test_stack_push() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     stack *s = stack_init(sizeof(int));
@@ -129,7 +122,6 @@ void test_stack_push() {
     stack_free(s);
 }
 
-
 void test_stack_push_void_ptrs() {
     void *d1 = malloc(10 * sizeof(void*));
     void *d2 = malloc(10 * sizeof(void*));
@@ -148,7 +140,6 @@ void test_stack_push_void_ptrs() {
     free(d2);
     free(d1);
 }
-
 
 void test_stack_pop() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -187,7 +178,6 @@ void test_stack_pop() {
 
     stack_free(s);
 }
-
 
 void test_stack_stress() {
     int nelements = 100000;

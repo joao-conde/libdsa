@@ -9,7 +9,6 @@ void test_deque_init() {
     deque_free(dq);
 }
 
-
 void test_deque_init_fail() {
     deque *dq = deque_init(SIZE_MAX);
     assert(dq == NULL);
@@ -18,14 +17,12 @@ void test_deque_init_fail() {
     assert(dq == NULL);
 }
 
-
 void test_deque_free() {
     deque_free(NULL);
 
     deque *dq = deque_init(sizeof(int));
     deque_free(dq);
 }
-
 
 void test_deque_length() {
     float value = 3.5;
@@ -39,7 +36,6 @@ void test_deque_length() {
 
     deque_free(dq);
 }
-
 
 void test_deque_is_empty() {
     deque *dq = deque_init(sizeof(int));
@@ -55,7 +51,6 @@ void test_deque_is_empty() {
     deque_free(dq);
 }
 
-
 void test_deque_clear() {
     float value = 3.5;
     deque *dq = deque_init(sizeof(float));
@@ -69,7 +64,6 @@ void test_deque_clear() {
 
     deque_free(dq);
 }
-
 
 void test_deque_at() {
     int values[5] = {51, 12, -123, 1000, -1};
@@ -108,7 +102,6 @@ void test_deque_at() {
     deque_free(dq);
 }
 
-
 void test_deque_front() {
     int values[4] = {-1, 10, 24, 59};
     deque *dq = deque_init(sizeof(int));
@@ -141,7 +134,6 @@ void test_deque_front() {
 
     deque_free(dq);
 }
-
 
 void test_deque_back() {
     int values[4] = {-1, 10, 24, 59};
@@ -176,7 +168,6 @@ void test_deque_back() {
     deque_free(dq);
 }
 
-
 void test_deque_pointers() {
     deque *dq = deque_init(sizeof(int));
     assert(deque_front(dq) == deque_back(dq));
@@ -193,7 +184,6 @@ void test_deque_pointers() {
 
     deque_free(dq);
 }
-
 
 void test_deque_push_back() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -219,7 +209,6 @@ void test_deque_push_back() {
     deque_free(dq);
 }
 
-
 void test_deque_push_front() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     deque *dq = deque_init(sizeof(int));
@@ -243,7 +232,6 @@ void test_deque_push_front() {
 
     deque_free(dq);
 }
-
 
 void test_deque_pop_back() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -283,7 +271,6 @@ void test_deque_pop_back() {
     deque_free(dq);
 }
 
-
 void test_deque_pop_front() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     deque *dq = deque_init(sizeof(int));
@@ -321,7 +308,6 @@ void test_deque_pop_front() {
 
     deque_free(dq);
 }
-
 
 void test_deque_stress() {
     int nelements = 100000;

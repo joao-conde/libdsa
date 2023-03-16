@@ -12,7 +12,6 @@ void test_hash_int() {
     assert(hash == hash_int(&key));
 }
 
-
 void test_hash_str() {
     char *key = "hello world";
     size_t hash = hash_str(key);
@@ -20,13 +19,11 @@ void test_hash_str() {
     assert(hash == hash_str(key));
 }
 
-
 void test_map_init() {
     map *m = map_init(sizeof(int), sizeof(int), NULL);
     assert(map_is_empty(m));
     map_free(m);
 }
-
 
 void test_map_free() {
     map_free(NULL);
@@ -34,7 +31,6 @@ void test_map_free() {
     map *m = map_init(sizeof(int), sizeof(int), NULL);
     map_free(m);
 }
-
 
 void test_map_length() {
     float value = 3.5;
@@ -48,7 +44,6 @@ void test_map_length() {
 
     map_free(m);
 }
-
 
 void test_map_is_empty() {
     map *m = map_init(sizeof(int), sizeof(int), NULL);
@@ -64,7 +59,6 @@ void test_map_is_empty() {
     map_free(m);
 }
 
-
 void test_map_has() {
     map *m = map_init(sizeof(char*), sizeof(char*), NULL);
     map_insert(m, "key1", "value1");
@@ -78,7 +72,6 @@ void test_map_has() {
 
     map_free(m);
 }
-
 
 void test_map_clear() {
     float value = 3.5;
@@ -94,7 +87,6 @@ void test_map_clear() {
     map_free(m);
 }
 
-
 void test_map_get() {
     map *m = map_init(sizeof(char*), sizeof(char*), NULL);
     map_insert(m, "key1", "value1");
@@ -108,7 +100,6 @@ void test_map_get() {
 
     map_free(m);
 }
-
 
 void test_map_insert() {
     pair *inserted;
@@ -138,7 +129,6 @@ void test_map_insert() {
 
     map_free(m);
 }
-
 
 void test_map_erase() {
     map *m = map_init(sizeof(char*), sizeof(char*), NULL);

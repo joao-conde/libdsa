@@ -11,14 +11,12 @@ void test_list_init() {
     list_free(l);
 }
 
-
 void test_list_free() {
     list_free(NULL);
 
     list *l = list_init(sizeof(int));
     list_free(l);
 }
-
 
 void test_list_length() {
     float value = 3.5;
@@ -37,7 +35,6 @@ void test_list_length() {
     list_free(l);
 }
 
-
 void test_list_is_empty() {
     list *l = list_init(sizeof(int));
     assert(list_is_empty(l));
@@ -51,7 +48,6 @@ void test_list_is_empty() {
 
     list_free(l);
 }
-
 
 void test_list_front() {
     int values[4] = {-1, 10, 24, 59};
@@ -86,7 +82,6 @@ void test_list_front() {
     list_free(l);
 }
 
-
 void test_list_back() {
     int values[4] = {-1, 10, 24, 59};
     list *l = list_init(sizeof(int));
@@ -120,7 +115,6 @@ void test_list_back() {
     list_free(l);
 }
 
-
 void test_list_pointers() {
     list *l = list_init(sizeof(int));
     assert(list_front(l) == list_back(l));
@@ -137,7 +131,6 @@ void test_list_pointers() {
 
     list_free(l);
 }
-
 
 void test_list_push_back() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -163,7 +156,6 @@ void test_list_push_back() {
     list_free(l);
 }
 
-
 void test_list_push_back_fail() {
     node *result;
     list *l = list_init(PTRDIFF_MAX);
@@ -173,7 +165,6 @@ void test_list_push_back_fail() {
 
     list_free(l);
 }
-
 
 void test_list_push_front() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -199,7 +190,6 @@ void test_list_push_front() {
     list_free(l);
 }
 
-
 void test_list_push_front_fail() {
     node *result;
     list *l = list_init(PTRDIFF_MAX);
@@ -209,7 +199,6 @@ void test_list_push_front_fail() {
 
     list_free(l);
 }
-
 
 void test_list_pop_back() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -251,7 +240,6 @@ void test_list_pop_back() {
     list_free(l);
 }
 
-
 void test_list_pop_front() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
     list *l = list_init(sizeof(int));
@@ -291,7 +279,6 @@ void test_list_pop_front() {
 
     list_free(l);
 }
-
 
 void test_list_insert() {
     int values[4] = {15, 21, 30, 69};
@@ -344,7 +331,6 @@ void test_list_insert() {
     list_free(l);
 }
 
-
 void test_list_insert_fail() {
     node *result;
     list *l = list_init(PTRDIFF_MAX);
@@ -354,7 +340,6 @@ void test_list_insert_fail() {
 
     list_free(l);
 }
-
 
 void test_list_erase() {
     int values[4] = {15, 21, 30, 69};
@@ -405,7 +390,6 @@ void test_list_erase() {
 
     list_free(l);
 }
-
 
 void test_list_stress() {
     int nelements = 100000;

@@ -9,7 +9,6 @@ void test_queue_init() {
     queue_free(q);
 }
 
-
 void test_queue_init_fail() {
     queue *q = queue_init(SIZE_MAX);
     assert(q == NULL);
@@ -18,14 +17,12 @@ void test_queue_init_fail() {
     assert(q == NULL);
 }
 
-
 void test_queue_free() {
     queue_free(NULL);
 
     queue *q = queue_init(sizeof(int));
     queue_free(q);
 }
-
 
 void test_queue_length() {
     float value = 3.5;
@@ -39,7 +36,6 @@ void test_queue_length() {
 
     queue_free(q);
 }
-
 
 void test_queue_is_empty() {
     queue *q = queue_init(sizeof(int));
@@ -55,7 +51,6 @@ void test_queue_is_empty() {
     queue_free(q);
 }
 
-
 void test_queue_clear() {
     float value = 3.5;
     queue *q = queue_init(sizeof(float));
@@ -69,7 +64,6 @@ void test_queue_clear() {
 
     queue_free(q);
 }
-
 
 void test_queue_at() {
     int values[5] = {51, 12, -123, 1000, -1};
@@ -90,7 +84,6 @@ void test_queue_at() {
 
     queue_free(q);
 }
-
 
 void test_queue_front() {
     int values[4] = {-1, 10, 24, 59};
@@ -125,7 +118,6 @@ void test_queue_front() {
     queue_free(q);
 }
 
-
 void test_queue_back() {
     int values[4] = {-1, 10, 24, 59};
     queue *q = queue_init(sizeof(int));
@@ -159,7 +151,6 @@ void test_queue_back() {
     queue_free(q);
 }
 
-
 void test_queue_pointers() {
     queue *q = queue_init(sizeof(int));
     assert(queue_front(q) == queue_back(q));
@@ -176,7 +167,6 @@ void test_queue_pointers() {
 
     queue_free(q);
 }
-
 
 void test_queue_push() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -201,7 +191,6 @@ void test_queue_push() {
 
     queue_free(q);
 }
-
 
 void test_queue_pop() {
     int *result, values[5] = {51, 12, -123, 1000, -1};
@@ -240,7 +229,6 @@ void test_queue_pop() {
 
     queue_free(q);
 }
-
 
 void test_queue_stress() {
     int nelements = 100000;

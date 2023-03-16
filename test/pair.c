@@ -8,7 +8,6 @@ void test_pair_size() {
     assert(PAIR_SIZE);
 }
 
-
 void test_pair_init() {
     int first = 1;
     char *second = "value";
@@ -19,13 +18,11 @@ void test_pair_init() {
     pair_free(p);
 }
 
-
 void test_pair_init_fail() {
     int x = 1;
     pair *p = pair_init(&x, &x, PTRDIFF_MAX, PTRDIFF_MAX);
     assert(p == NULL);
 }
-
 
 void test_pair_free() {
     pair_free(NULL);
@@ -35,7 +32,6 @@ void test_pair_free() {
     pair *p = pair_init(&first, second, sizeof(int), sizeof(char*));
     pair_free(p);
 }
-
 
 void test_pair_first() {
     int first = 1;
@@ -47,7 +43,6 @@ void test_pair_first() {
     pair_free(p);
 }
 
-
 void test_pair_second() {
     int first = 1;
     char *second = "value";
@@ -56,7 +51,6 @@ void test_pair_second() {
 
     pair_free(p);
 }
-
 
 void test_pair_stress() {
     int nelements = 100000;
