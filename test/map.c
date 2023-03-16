@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "../include/map.h"
 #include "../include/pair.h"

@@ -73,7 +73,7 @@ node* list_front(const list *l) {
     return l->front;
 }
 
-const node* list_back(const list *l) {
+node* list_back(const list *l) {
     if (list_is_empty(l)) return NULL;
     return l->back;
 }
@@ -95,7 +95,7 @@ node* list_push_back(list *l, const void *value) {
     return new;
 }
 
-const node* list_push_front(list *l, const void *value) {
+node* list_push_front(list *l, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 
@@ -138,7 +138,7 @@ void list_pop_front(list *l) {
     node_free(front);
 }
 
-const node* list_insert(list *l, node *pos, const void *value) {
+node* list_insert(list *l, node *pos, const void *value) {
     node *new = node_init(l->type_size, value);
     if (new == NULL) return NULL;
 
