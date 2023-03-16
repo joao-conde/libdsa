@@ -32,6 +32,7 @@ usage:
 	@echo make lint - lint headers, source and test files
 	@echo make memcheck - analyze memory usage and report memory leaks
 	@echo make clean - clean build and test artifacts
+	@echo make benchmark - comparison between C++ STL and $(LIB)
 
 debug:
 	gcc $(DEBUG_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
@@ -51,7 +52,7 @@ uninstall:
 check:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
-	CK_FORK=no ./runner
+	./runner
 
 coverage:
 	$(MAKE) check
@@ -67,15 +68,18 @@ lint:
 memcheck:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
-	CK_FORK=no valgrind --error-exitcode=1 --leak-check=full -s ./runner
+	valgrind --error-exitcode=1 --leak-check=full -s ./runner
 
 bench:
 	$(MAKE) clean
-	gcc $(BENCH)/vector.c $(SRCS) $(RELEASE_FLAGS) -o vectorc
-	g++ $(BENCH)/vector.cpp -s -O3 -finline-functions -o vectorcpp
+	gcc $(BENCH)/*.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-vector
+	g++ $(BENCH)/*.cpp -s -O3 -finline-functions -o bench-cc-vector
+	time ./bench-c-vector
+	time ./bench-cc-vector
 
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(LIB).so
 	-@$(RM) runner
 	-@$(RM) *.gcno *.gcda *.gcov
+	-@$(RM) bench-*
