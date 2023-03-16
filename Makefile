@@ -72,8 +72,12 @@ memcheck:
 
 bench:
 	$(MAKE) clean
-	gcc $(BENCH)/*.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-vector
-	g++ $(BENCH)/*.cpp -s -O3 -finline-functions -o bench-cc-vector
+	gcc $(BENCH)/stack.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-stack
+	g++ $(BENCH)/stack.cc -s -O3 -finline-functions -o bench-cc-stack
+	time ./bench-c-stack
+	time ./bench-cc-stack
+	gcc $(BENCH)/vector.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-vector
+	g++ $(BENCH)/vector.cc -s -O3 -finline-functions -o bench-cc-vector
 	time ./bench-c-vector
 	time ./bench-cc-vector
 

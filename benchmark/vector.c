@@ -1,7 +1,6 @@
 #include <stdbool.h>
-#include <time.h>
 
-#include "../include//vector.h"
+#include "../include/vector.h"
 
 int main() {
     int random, nelements = 1000000;
