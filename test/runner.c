@@ -6,10 +6,6 @@
 #include "./stack.c"
 #include "./vector.c"
 
-#define SUITE_NAME "libdsa"
-#define SUITE_SUCCESS 0
-#define SUITE_FAILURE -1
-
 int main() {
     test_deque();
     test_list();
