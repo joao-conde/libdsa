@@ -8,7 +8,7 @@ C data structures and algorithms library, inspired on C++ STL.
 - PIMPL design pattern
 - C generic data structures leveraging void pointers
 - 100% code coverage
-- Memory-leak free (checked with Valgrind)
+- Memory-leak detection with Valgrind
 - Google's C/C++ style
 
 ## Install
