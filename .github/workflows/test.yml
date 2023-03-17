@@ -6,6 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update
-      - run: make check
+      - run: make test
       - run: make coverage
       - run: make coverage-report

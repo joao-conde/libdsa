@@ -1,9 +1,8 @@
-# build artifacts
+runner
+
 *.so
 *.o
 
-# test artifacts
-runner
 *.gcda
 *.gcno
 *.gcov

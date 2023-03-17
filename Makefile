@@ -11,7 +11,6 @@ TEST_FLAGS = -g -Wall --coverage
 SRC = src
 HDR = include
 TEST = test
-BENCH = benchmark
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
@@ -19,20 +18,21 @@ INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
 COVS = $(patsubst %.c, runner-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
+.PHONY: usage debug release clean install uninstall test coverage coverage-report lint memcheck
+
 default: usage
 
 usage:
 	@echo make debug - build $(LIB)
 	@echo make release - build optimized $(LIB)
+	@echo make clean - clean build, test and other artifacts
 	@echo make install - install $(LIB) in \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
-	@echo make check - run all test suites
+	@echo make test - run all test suites
 	@echo make coverage - run all test suites and measure coverage
 	@echo make coverage-report - run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
 	@echo make memcheck - analyze memory usage and report memory leaks
-	@echo make clean - clean build and test artifacts
-	@echo make benchmark - comparison between C++ STL and $(LIB)
 
 debug:
 	gcc $(DEBUG_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
@@ -49,17 +49,17 @@ uninstall:
 	-@$(RM) $(INSTALL_BIN)/$(LIB).so
 	-@$(RM) $(INSTALL_HDRS)
 
-check:
+test:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
 	./runner
 
 coverage:
-	$(MAKE) check
+	$(MAKE) test
 	gcov $(COVS)
 
 coverage-report:
-	$(MAKE) check
+	$(MAKE) test
 	gcov --function-summaries --use-colors --stdout $(COVS)
 
 lint:
@@ -70,20 +70,8 @@ memcheck:
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner
 
-bench:
-	$(MAKE) clean
-	gcc $(BENCH)/stack.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-stack
-	g++ $(BENCH)/stack.cc -s -O3 -finline-functions -o bench-cc-stack
-	time ./bench-c-stack
-	time ./bench-cc-stack
-	gcc $(BENCH)/vector.c $(SRCS) $(RELEASE_FLAGS) -o bench-c-vector
-	g++ $(BENCH)/vector.cc -s -O3 -finline-functions -o bench-cc-vector
-	time ./bench-c-vector
-	time ./bench-cc-vector
-
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(LIB).so
 	-@$(RM) runner
 	-@$(RM) *.gcno *.gcda *.gcov
-	-@$(RM) bench-*
