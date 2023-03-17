@@ -52,6 +52,26 @@ void test_pair_second() {
     pair_free(p);
 }
 
+void test_pair_set_first() {
+    pair *p = pair_init("first", "second", sizeof(char*), sizeof(char*));
+    assert(strcmp(pair_first(p), "first") == 0);
+
+    pair_set_first(p, "changed");
+    assert(strcmp(pair_first(p), "changed") == 0);
+
+    pair_free(p);
+}
+
+void test_pair_set_second() {
+    pair *p = pair_init("first", "second", sizeof(char*), sizeof(char*));
+    assert(strcmp(pair_second(p), "second") == 0);
+
+    pair_set_second(p, "changed");
+    assert(strcmp(pair_second(p), "changed") == 0);
+
+    pair_free(p);
+}
+
 void test_pair_load() {
     int nelements = 100000;
     int *first, *second;
@@ -72,5 +92,7 @@ void test_pair() {
     test_pair_free();
     test_pair_first();
     test_pair_second();
+    test_pair_set_first();
+    test_pair_set_second();
     test_pair_load();
 }
