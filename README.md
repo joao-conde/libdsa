@@ -31,8 +31,6 @@ int main() {
 
 ## References
 
-Generally followed the approach C++ STL takes.
-
 - deque: https://en.cppreference.com/w/cpp/container/deque
 - list: https://en.cppreference.com/w/cpp/container/list
 - queue: https://en.cppreference.com/w/cpp/container/queue
