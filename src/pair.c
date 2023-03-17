@@ -56,3 +56,11 @@ void* pair_first(const pair *p) {
 void* pair_second(const pair *p) {
     return p->second;
 }
+
+void pair_set_first(pair *p, const void* first) {
+    memcpy(p->first, first, p->first_size);
+}
+
+void pair_set_second(pair *p, const void* second) {
+    memcpy(p->second, second, p->second_size);
+}
