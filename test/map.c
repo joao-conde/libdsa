@@ -40,7 +40,10 @@ void test_map_length() {
     map_insert(m, &value, &value);
     map_insert(m, &value, &value);
     map_insert(m, &value, &value);
-    assert(map_length(m) == 3);
+    assert(map_length(m) == 1);
+
+    map_insert(m, "key", &value);
+    assert(map_length(m) == 2);
 
     map_free(m);
 }
@@ -76,9 +79,9 @@ void test_map_has() {
 void test_map_clear() {
     float value = 3.5;
     map *m = map_init(sizeof(float), sizeof(float), NULL);
-    map_insert(m, &value, &value);
-    map_insert(m, &value, &value);
-    map_insert(m, &value, &value);
+    map_insert(m, "key1", &value);
+    map_insert(m, "key2", &value);
+    map_insert(m, "key3", &value);
     assert(map_length(m) == 3);
 
     map_clear(m);
@@ -122,6 +125,16 @@ void test_map_insert() {
     assert(strcmp(first, "key2") == 0);
     assert(strcmp(second, "value2") == 0);
 
+    assert(map_length(m) == 2);
+    assert(map_has(m, "key1"));
+    assert(map_has(m, "key2"));
+    assert(!map_has(m, "key3"));
+
+    inserted = map_insert(m, "key2", "changed");
+    first = pair_first(inserted);
+    second = pair_second(inserted);
+    assert(strcmp(first, "key2") == 0);
+    assert(strcmp(second, "changed") == 0);
     assert(map_length(m) == 2);
     assert(map_has(m, "key1"));
     assert(map_has(m, "key2"));

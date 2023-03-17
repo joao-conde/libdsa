@@ -100,7 +100,7 @@ void map_clear(map *m) {
 node* map_find(const map *m, const void *key) {
     size_t bucket_i = m->hash(key) % m->nbuckets;
     list *bucket = m->buckets[bucket_i];
-    node* current = list_front(bucket);
+    node *current = list_front(bucket);
     while (current != NULL) {
         pair *entry = (pair*) current->data;
         if (memcmp(pair_first(entry), key, m->key_size) == 0) break;
@@ -122,6 +122,14 @@ void* map_get(const map *m, const void *key) {
 pair* map_insert(map *m, const void *key, const void *value) {
     size_t bucket_i = m->hash(key) % m->nbuckets;
     list *bucket = m->buckets[bucket_i];
+
+    node *n = map_find(m, key);
+    if (n != NULL) {
+        pair *entry = (pair*) n->data;
+        pair_set_second(entry, value);
+        return entry;
+    }
+
     pair *entry = pair_init(key, value, m->key_size, m->value_size);
     if (entry == NULL) return NULL;
 
@@ -129,7 +137,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
     if (pushed == NULL) return NULL;
 
     m->length += 1;
-    return entry;
+    return pushed->data;
 }
 
 void map_erase(map *m, const void *key) {
