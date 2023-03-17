@@ -61,11 +61,21 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hash) {
 void map_free(map *m) {
     if (m != NULL) {
         // free each allocated bucket
-        for (size_t i = 0; i < m->length; i++) {
-            list_free(m->buckets[i]);
+        for (size_t i = 0; i < m->nbuckets; i++) {
+            list *bucket = (list *) m->buckets[i];
+            while (list_length(bucket) > 0) {
+                node *front = list_front(bucket);
+
+                pair *entry = (pair*) front->data;
+                pair_free(entry);
+                front->data = NULL;
+
+                list_pop_back(bucket);
+            }
+            list_free(bucket);
         }
 
-        // free the chunks container
+        // free the buckets container
         free(m->buckets);
     }
     free(m);
