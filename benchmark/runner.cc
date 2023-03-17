@@ -13,6 +13,11 @@ void print_benchmark(std::string name, void (fn)()) {
 }
 
 int main() {
-    print_benchmark("[C (libdsa)] vector_push", bench_cc_vector_push);
-    print_benchmark("[C++  (STL)] vector_push_back", bench_c_vector_push);
+    std::cout << "C LIBDSA" << std::endl;
+    print_benchmark("vector_push", bench_c_vector_push);
+    print_benchmark("vector_pop", bench_c_vector_pop);
+
+    std::cout << "C++ STL" << std::endl;
+    print_benchmark("vector_push", bench_cc_vector_push);
+    print_benchmark("vector_pop", bench_cc_vector_pop);
 }
