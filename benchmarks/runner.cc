@@ -3,14 +3,13 @@
 
 #include "benchmark.h"
 
-using namespace std;
-
-void print_benchmark(string name, void (fn)()) {
-    auto start = chrono::high_resolution_clock::now();
+void print_benchmark(std::string name, void (fn)()) {
+    auto start = std::chrono::high_resolution_clock::now();
     fn();
-    auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start).count();
-    cout << name << " " << duration << "ms" << endl; 
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    auto milliseconds = duration.count();
+    std::cout << name << " " << milliseconds << "ms" << std::endl;
 }
 
 int main() {
