@@ -12,6 +12,7 @@ SRC = src
 HDR = include
 TEST = test
 BENCH = benchmark
+EXAMP = examples
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
@@ -65,7 +66,7 @@ coverage-report:
 	gcov --function-summaries --use-colors --stdout $(COVS)
 
 lint:
-	cpplint --extensions=c,cc,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH)
+	cpplint --extensions=c,cc,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
 
 memcheck:
 	$(MAKE) clean
