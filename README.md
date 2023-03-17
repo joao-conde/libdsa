@@ -1,6 +1,6 @@
 # libdsa
 
-C data structures and algorithms library, inspired on C++ STL.
+C data structures and algorithms library, based on the C++ STL.
 
 ## Features
 
@@ -42,4 +42,3 @@ make install
 - queue: https://en.cppreference.com/w/cpp/container/queue
 - stack: https://en.cppreference.com/w/cpp/container/stack
 - vector: https://en.cppreference.com/w/cpp/container/vector
-- map: https://en.cppreference.com/w/cpp/container/unordered_map
