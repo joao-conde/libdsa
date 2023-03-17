@@ -11,6 +11,23 @@ C data structures and algorithms library, inspired on C++ STL.
 - Memory-leak detection with Valgrind
 - Google's C/C++ style
 
+## Examples
+
+Check the [examples folder](./examples) for example uses of libdsa.
+
+```c
+#include <dsa.h>
+
+int main() {
+    vector *v = vector_init(sizeof(mytype));
+    vector_push(v, &m1);
+    vector_insert(v, 0, &m2);
+    vector_pop(v);
+    vector_clear(v);
+    vector_free(v);
+}
+```
+
 ## Install
 
 ```bash
