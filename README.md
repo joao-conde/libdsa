@@ -15,20 +15,6 @@ make release
 make install
 ```
 
-## Usage
-
-```c
-#include <dsa.h>
-
-typedef struct mytype_t mytype_t;
-
-int main() {
-    mytype_t *m = malloc(sizeof(mytype_t));
-    vector *v = vector_init(sizeof(mytype_t));
-    vector_push(v, m);
-}
-```
-
 ## References
 
 - deque: https://en.cppreference.com/w/cpp/container/deque

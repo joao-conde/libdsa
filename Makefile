@@ -11,6 +11,7 @@ TEST_FLAGS = -g -Wall --coverage
 SRC = src
 HDR = include
 TEST = test
+BENCH = benchmarks
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
@@ -18,7 +19,7 @@ INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
 COVS = $(patsubst %.c, runner-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
-.PHONY: usage debug release clean install uninstall test coverage coverage-report lint memcheck
+.PHONY: usage debug release clean install uninstall test coverage coverage-report lint memcheck benchmark
 
 default: usage
 
@@ -63,12 +64,17 @@ coverage-report:
 	gcov --function-summaries --use-colors --stdout $(COVS)
 
 lint:
-	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) 
+	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH)
 
 memcheck:
 	$(MAKE) clean
 	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner
+
+benchmark:
+	$(MAKE) clean
+	g++ $(BENCH)/*.cc $(BENCH)/*.c $(SRCS) $(RELEASE_FLAGS) -o runner
+	./runner
 
 clean:
 	-@$(RM) $(OBJS)

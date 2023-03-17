@@ -29,8 +29,8 @@ size_t hash_str(const void *key) {
 }
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hash) {
-    map *m = malloc(sizeof(map));
-    list **buckets = malloc(CAPACITY * sizeof(list*));
+    map *m = (map*) malloc(sizeof(map));
+    list **buckets = (list**) malloc(CAPACITY * sizeof(list*));
     if (m == NULL || buckets == NULL) {
         free(buckets);
         free(m);
@@ -86,7 +86,7 @@ node* map_find(const map *m, const void *key) {
     list *bucket = m->buckets[bucket_i];
     node* current = list_front(bucket);
     while (current != NULL) {
-        pair *entry = current->data;
+        pair *entry = (pair*) current->data;
         if (memcmp(pair_first(entry), key, m->key_size) == 0) break;
         current = current->next;
     }
@@ -97,7 +97,7 @@ void* map_get(const map *m, const void *key) {
     node *n = map_find(m, key);
     if (n == NULL) return NULL;
 
-    pair *entry = n->data;
+    pair *entry = (pair*) n->data;
     if (entry == NULL) return NULL;
 
     return pair_second(entry);

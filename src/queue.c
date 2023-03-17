@@ -6,7 +6,7 @@ struct queue {
 };
 
 queue* queue_init(size_t type_size) {
-    queue *q = malloc(sizeof(queue));
+    queue *q = (queue*) malloc(sizeof(queue));
     deque *data = deque_init(type_size);
     if (q == NULL || data == NULL) {
         deque_free(data);

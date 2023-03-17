@@ -391,7 +391,7 @@ void test_list_erase() {
     list_free(l);
 }
 
-void test_list_stress() {
+void test_list_load() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
@@ -521,5 +521,5 @@ void test_list() {
     test_list_insert();
     test_list_insert_fail();
     test_list_erase();
-    test_list_stress();
+    test_list_load();
 }

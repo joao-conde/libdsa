@@ -21,7 +21,7 @@ pair* pair_init(
     // checks for overflow of amount of requested memory
     if (first_size > PTRDIFF_MAX || second_size > PTRDIFF_MAX) return NULL;
 
-    pair *p = malloc(sizeof(pair));
+    pair *p = (pair*) malloc(sizeof(pair));
     void *f = malloc(first_size);
     void *s = malloc(second_size);
     if (p == NULL || f == NULL || s == NULL) {

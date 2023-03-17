@@ -179,7 +179,7 @@ void test_stack_pop() {
     stack_free(s);
 }
 
-void test_stack_stress() {
+void test_stack_load() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
@@ -229,5 +229,5 @@ void test_stack() {
     test_stack_push();
     test_stack_push_void_ptrs();
     test_stack_pop();
-    test_stack_stress();
+    test_stack_load();
 }
