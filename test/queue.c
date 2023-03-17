@@ -230,7 +230,7 @@ void test_queue_pop() {
     queue_free(q);
 }
 
-void test_queue_stress() {
+void test_queue_load() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
@@ -290,5 +290,5 @@ void test_queue() {
     test_queue_pointers();
     test_queue_push();
     test_queue_pop();
-    test_queue_stress();
+    test_queue_load();
 }

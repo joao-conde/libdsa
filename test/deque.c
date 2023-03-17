@@ -309,7 +309,7 @@ void test_deque_pop_front() {
     deque_free(dq);
 }
 
-void test_deque_stress() {
+void test_deque_load() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
@@ -399,5 +399,5 @@ void test_deque() {
     test_deque_push_front();
     test_deque_pop_back();
     test_deque_pop_front();
-    test_deque_stress();
+    test_deque_load();
 }

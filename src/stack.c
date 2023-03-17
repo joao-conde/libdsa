@@ -6,7 +6,7 @@ struct stack {
 };
 
 stack* stack_init(size_t type_size) {
-    stack *s = malloc(sizeof(stack));
+    stack *s = (stack*) malloc(sizeof(stack));
     vector *data = vector_init(type_size);
     if (s == NULL || data == NULL) {
         vector_free(data);

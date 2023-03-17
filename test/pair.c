@@ -52,7 +52,7 @@ void test_pair_second() {
     pair_free(p);
 }
 
-void test_pair_stress() {
+void test_pair_load() {
     int nelements = 100000;
     int *first, *second;
     for (int i = 0; i < nelements; i++) {
@@ -72,5 +72,5 @@ void test_pair() {
     test_pair_free();
     test_pair_first();
     test_pair_second();
-    test_pair_stress();
+    test_pair_load();
 }

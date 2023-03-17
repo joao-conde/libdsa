@@ -17,19 +17,19 @@ node* node_init(size_t type_size, const void *value) {
     // checks for overflow of amount of requested memory
     if (type_size > PTRDIFF_MAX) return NULL;
 
-    node *new = malloc(sizeof(node));
+    node *n = (node*) malloc(sizeof(node));
     void *data = malloc(type_size);
-    if (new == NULL || data == NULL) {
+    if (n == NULL || data == NULL) {
         free(data);
-        free(new);
+        free(n);
         return NULL;
     }
 
     memcpy(data, value, type_size);
-    new->data = data;
-    new->prev = NULL;
-    new->next = NULL;
-    return new;
+    n->data = data;
+    n->prev = NULL;
+    n->next = NULL;
+    return n;
 }
 
 void node_free(node *n) {
@@ -38,7 +38,7 @@ void node_free(node *n) {
 }
 
 list* list_init(size_t type_size) {
-    list *l = malloc(sizeof(list));
+    list *l = (list*) malloc(sizeof(list));
     if (l == NULL) return NULL;
 
     l->length = 0;
@@ -79,37 +79,37 @@ node* list_back(const list *l) {
 }
 
 node* list_push_back(list *l, const void *value) {
-    node *new = node_init(l->type_size, value);
-    if (new == NULL) return NULL;
+    node *n = node_init(l->type_size, value);
+    if (n == NULL) return NULL;
 
     if (list_is_empty(l)) {
-        l->front = new;
-        l->back = new;
+        l->front = n;
+        l->back = n;
     } else {
-       l->back->next = new;
-       new->prev = l->back;
-       l->back = new;
+       l->back->next = n;
+       n->prev = l->back;
+       l->back = n;
     }
 
     l->length += 1;
-    return new;
+    return n;
 }
 
 node* list_push_front(list *l, const void *value) {
-    node *new = node_init(l->type_size, value);
-    if (new == NULL) return NULL;
+    node *n = node_init(l->type_size, value);
+    if (n == NULL) return NULL;
 
     if (list_is_empty(l)) {
-        l->front = new;
-        l->back = new;
+        l->front = n;
+        l->back = n;
     } else {
-        new->next = l->front;
-        l->front->prev = new;
-        l->front = new;
+        n->next = l->front;
+        l->front->prev = n;
+        l->front = n;
     }
 
     l->length += 1;
-    return new;
+    return n;
 }
 
 void list_pop_back(list *l) {
@@ -139,23 +139,23 @@ void list_pop_front(list *l) {
 }
 
 node* list_insert(list *l, node *pos, const void *value) {
-    node *new = node_init(l->type_size, value);
-    if (new == NULL) return NULL;
+    node *n = node_init(l->type_size, value);
+    if (n == NULL) return NULL;
 
     if (pos == l->back) {
-        pos->next = new;
-        new->prev = pos;
-        l->back = new;
+        pos->next = n;
+        n->prev = pos;
+        l->back = n;
     } else {
         node *next = pos->next;
-        pos->next = new;
-        new->prev = pos;
-        new->next = next;
-        next->prev = new;
+        pos->next = n;
+        n->prev = pos;
+        n->next = next;
+        next->prev = n;
     }
 
     l->length += 1;
-    return new;
+    return n;
 }
 
 void list_erase(list *l, node *pos) {
