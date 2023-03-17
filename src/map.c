@@ -60,6 +60,12 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hash) {
 
 void map_free(map *m) {
     if (m != NULL) {
+        // free each allocated bucket
+        for (size_t i = 0; i < m->length; i++) {
+            list_free(m->buckets[i]);
+        }
+
+        // free the chunks container
         free(m->buckets);
     }
     free(m);
