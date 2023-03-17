@@ -137,7 +137,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
     if (pushed == NULL) return NULL;
 
     m->length += 1;
-    return pushed->data;
+    return (pair*) pushed->data;
 }
 
 void map_erase(map *m, const void *key) {
