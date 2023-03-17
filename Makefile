@@ -34,6 +34,7 @@ usage:
 	@echo make coverage-report - run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
 	@echo make memcheck - analyze memory usage and report memory leaks
+	@echo make benchmark - run $(LIB) benchmarks comparing with C++ STL 
 
 debug:
 	gcc $(DEBUG_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
@@ -52,7 +53,7 @@ uninstall:
 
 test:
 	$(MAKE) clean
-	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
+	gcc -o runner $(TEST)/runner.c $(SRCS) $(TEST_FLAGS)
 	./runner
 
 coverage:
@@ -68,12 +69,14 @@ lint:
 
 memcheck:
 	$(MAKE) clean
-	gcc $(TEST)/runner.c $(SRCS) $(TEST_FLAGS) -o runner
+	gcc -o runner $(TEST)/runner.c $(SRCS) $(TEST_FLAGS)
+	valgrind --error-exitcode=1 --leak-check=full -s ./runner
+	g++ -o runner $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner
 
 benchmark:
 	$(MAKE) clean
-	g++ $(BENCH)/*.cc $(BENCH)/*.c $(SRCS) $(RELEASE_FLAGS) -o runner
+	g++ -o runner $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	./runner
 
 clean:
