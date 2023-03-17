@@ -9,7 +9,6 @@ void bench_cc_vector_push() {
     }
 }
 
-
 void bench_cc_vector_pop() {
     std::vector<int> v;
     for (std::size_t i = 0; i < ITER_VECTOR_PUSH; i++) {
