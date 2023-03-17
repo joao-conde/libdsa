@@ -11,7 +11,7 @@ TEST_FLAGS = -g -Wall --coverage
 SRC = src
 HDR = include
 TEST = test
-BENCH = benchmarks
+BENCH = benchmark
 
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
