@@ -65,7 +65,7 @@ coverage-report:
 	gcov --function-summaries --use-colors --stdout $(COVS)
 
 lint:
-	cpplint --extensions=c,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH)
+	cpplint --extensions=c,cc,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH)
 
 memcheck:
 	$(MAKE) clean
