@@ -2,19 +2,68 @@
 
 #include "benchmark.h"
 
-void bench_cc_vector_push() {
-    std::vector<int> v;
-    for (std::size_t i = 0; i < ITER_VECTOR_PUSH; i++) {
+void bcc_vector_push() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
         v.push_back(i);
     }
 }
 
-void bench_cc_vector_pop() {
-    std::vector<int> v;
-    for (std::size_t i = 0; i < ITER_VECTOR_PUSH; i++) {
+void bcc_vector_push_pop() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
         v.push_back(i);
     }
-    for (std::size_t i = 0; i < ITER_VECTOR_POP; i++) {
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
         v.pop_back();
+    }
+}
+
+void bcc_vector_push_clear() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
+        v.push_back(i);
+    }
+    v.clear();
+}
+
+void bcc_vector_push_at() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
+        v.push_back(i);
+        size_t x = v.at(i);
+    }
+}
+
+void bcc_vector_push_set() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
+        v.push_back(i);
+        v.at(i) = i;
+    }
+}
+
+void bcc_vector_push_resize() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_PUSHES; i++) {
+        v.push_back(i);
+    }
+    v.resize(1);
+}
+
+void bcc_vector_insert() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_INSERTS; i++) {
+        v.insert(v.begin(), i);
+    }
+}
+
+void bcc_vector_insert_erase() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_INSERTS; i++) {
+        v.insert(v.begin(), i);
+    }
+    for (size_t i = 0; i < VECTOR_INSERTS; i++) {
+        v.erase(v.begin());
     }
 }
