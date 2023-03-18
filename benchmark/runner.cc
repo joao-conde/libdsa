@@ -3,6 +3,14 @@
 int main() {
     print_benchmark_header();
 
+    // benchmark list module
+    print_benchmark("list_push_back", bc_list_push_back, bcc_list_push_back);
+    print_benchmark("list_push_front", bc_list_push_front, bcc_list_push_front);
+    print_benchmark("list_pop_back", bc_list_push_pop_back, bcc_list_push_pop_back);
+    print_benchmark("list_pop_front", bc_list_push_pop_front, bcc_list_push_pop_front);
+    print_benchmark("list_insert", bc_list_insert, bcc_list_insert);
+    print_benchmark("list_erase", bc_list_insert_erase, bcc_list_insert_erase);
+
     // benchmark pair module
     print_benchmark("pair_first", bc_pair_first, bcc_pair_first);
     print_benchmark("pair_second", bc_pair_second, bcc_pair_second);
