@@ -1,6 +1,7 @@
 #ifndef BENCHMARK_BENCHMARK_H_
 #define BENCHMARK_BENCHMARK_H_
 
+#define DEQUE_LOAD 100000000UL
 #define LIST_LOAD 10000000UL
 #define PAIR_LOAD 100000000UL
 #define VECTOR_LOAD_PUSH 100000000UL
@@ -16,6 +17,12 @@ int64_t benchmark(void (fn)());
 void print_benchmark_header();
 void print_benchmark(std::string name, void (c_fn)(), void (cc_fn)());
 
+void bc_deque_push_back();
+void bc_deque_push_front();
+void bc_deque_push_pop_back();
+void bc_deque_push_pop_front();
+void bc_deque_push_at();
+void bc_deque_push_clear();
 void bc_list_push_back();
 void bc_list_push_front();
 void bc_list_push_pop_back();
@@ -35,6 +42,12 @@ void bc_vector_push_resize();
 void bc_vector_insert();
 void bc_vector_insert_erase();
 
+void bcc_deque_push_back();
+void bcc_deque_push_front();
+void bcc_deque_push_pop_back();
+void bcc_deque_push_pop_front();
+void bcc_deque_push_at();
+void bcc_deque_push_clear();
 void bcc_list_push_back();
 void bcc_list_push_front();
 void bcc_list_push_pop_back();

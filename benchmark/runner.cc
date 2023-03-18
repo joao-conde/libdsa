@@ -3,6 +3,14 @@
 int main() {
     print_benchmark_header();
 
+    // benchmark deque module
+    print_benchmark("deque_push_back", bc_deque_push_back, bcc_deque_push_back);
+    print_benchmark("deque_push_front", bc_deque_push_front, bcc_deque_push_front);
+    print_benchmark("deque_pop_back", bc_deque_push_pop_back, bcc_deque_push_pop_back);
+    print_benchmark("deque_pop_front", bc_deque_push_pop_front, bcc_deque_push_pop_front);
+    print_benchmark("deque_at", bc_deque_push_at, bcc_deque_push_at);
+    print_benchmark("deque_clear", bc_deque_push_clear, bcc_deque_push_clear);
+
     // benchmark list module
     print_benchmark("list_push_back", bc_list_push_back, bcc_list_push_back);
     print_benchmark("list_push_front", bc_list_push_front, bcc_list_push_front);
