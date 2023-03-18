@@ -1,19 +1,25 @@
 #ifndef BENCHMARK_BENCHMARK_H_
 #define BENCHMARK_BENCHMARK_H_
 
-#define VECTOR_PUSHES 100000000UL
-#define VECTOR_INSERTS 100000UL
+#define PAIR_LOAD 100000000UL
+
+#define VECTOR_LOAD_PUSH 100000000UL
+#define VECTOR_LOAD_INSERT 100000UL
 
 #define TABLE_WIDTH 20
 
 #include <iostream>
 
-#include "../include/vector.h"
+#include "../include/dsa.h"
 
 int64_t benchmark(void (fn)());
 void print_benchmark_header();
 void print_benchmark(std::string name, void (c_fn)(), void (cc_fn)());
 
+void bc_pair_first();
+void bc_pair_second();
+void bc_pair_set_first();
+void bc_pair_set_second();
 void bc_vector_push();
 void bc_vector_push_pop();
 void bc_vector_push_clear();
@@ -23,6 +29,10 @@ void bc_vector_push_resize();
 void bc_vector_insert();
 void bc_vector_insert_erase();
 
+void bcc_pair_first();
+void bcc_pair_second();
+void bcc_pair_set_first();
+void bcc_pair_set_second();
 void bcc_vector_push();
 void bcc_vector_push_pop();
 void bcc_vector_push_clear();
