@@ -13,7 +13,7 @@ void print_benchmark(std::string name, void (fn)()) {
 }
 
 int main() {
-    std::cout << "C LIBDSA" << std::endl;
+    std::cout << "C LibDSA" << std::endl;
     print_benchmark("vector_push", bench_c_vector_push);
     print_benchmark("vector_pop", bench_c_vector_pop);
 

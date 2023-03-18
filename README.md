@@ -1,6 +1,8 @@
-# libdsa
+# LibDSA
 
 C data structures and algorithms library, based on the C++ STL.
+
+Mostly a personal endeavor to learn the inner workings of different data structures and algorithms. Consider using production-ready C template container libraries.
 
 ## Features
 
@@ -13,7 +15,7 @@ C data structures and algorithms library, based on the C++ STL.
 
 ## Examples
 
-Check the [examples folder](./examples) for example uses of libdsa.
+Check the [examples folder](./examples) for more uses of libdsa.
 
 ```c
 #include <dsa.h>
@@ -33,6 +35,12 @@ int main() {
 ```bash
 make release
 make install
+```
+
+## Benchmark
+
+```bash
+make benchmark
 ```
 
 ## References
