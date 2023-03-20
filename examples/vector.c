@@ -13,7 +13,6 @@ int main() {
     vector_insert(v, 1, &m3);
 
     mytype *m = vector_at(v, 1);
-    mytype_print(m);
 
     vector_erase(v, 2);
 
