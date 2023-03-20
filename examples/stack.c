@@ -10,7 +10,7 @@ int main() {
     stack_push(s, &m1);
     stack_push(s, &m2);
 
-    mytype *m = stack_top(s);
+    mytype *top = stack_top(s);
 
     stack_pop(s);
 
