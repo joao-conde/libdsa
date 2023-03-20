@@ -19,24 +19,6 @@ void bc_vector_push_pop() {
     vector_free(v);
 }
 
-void bc_vector_push_clear() {
-    vector *v = vector_init(sizeof(size_t));
-    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
-        vector_push(v, &i);
-    }
-    vector_clear(v);
-    vector_free(v);
-}
-
-void bc_vector_push_at() {
-    vector *v = vector_init(sizeof(size_t));
-    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
-        vector_push(v, &i);
-        size_t *x = (size_t*) vector_at(v, i);
-    }
-    vector_free(v);
-}
-
 void bc_vector_push_set() {
     vector *v = vector_init(sizeof(size_t));
     for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
@@ -71,5 +53,23 @@ void bc_vector_insert_erase() {
     for (size_t i = 0; i < VECTOR_LOAD_INSERT; i++) {
         vector_erase(v, 0);
     }
+    vector_free(v);
+}
+
+void bc_vector_push_at() {
+    vector *v = vector_init(sizeof(size_t));
+    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
+        vector_push(v, &i);
+        size_t *x = (size_t*) vector_at(v, i);
+    }
+    vector_free(v);
+}
+
+void bc_vector_push_clear() {
+    vector *v = vector_init(sizeof(size_t));
+    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
+        vector_push(v, &i);
+    }
+    vector_clear(v);
     vector_free(v);
 }

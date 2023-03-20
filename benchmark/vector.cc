@@ -19,22 +19,6 @@ void bcc_vector_push_pop() {
     }
 }
 
-void bcc_vector_push_clear() {
-    std::vector<size_t> v;
-    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
-        v.push_back(i);
-    }
-    v.clear();
-}
-
-void bcc_vector_push_at() {
-    std::vector<size_t> v;
-    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
-        v.push_back(i);
-        size_t x = v.at(i);
-    }
-}
-
 void bcc_vector_push_set() {
     std::vector<size_t> v;
     for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
@@ -66,4 +50,20 @@ void bcc_vector_insert_erase() {
     for (size_t i = 0; i < VECTOR_LOAD_INSERT; i++) {
         v.erase(v.begin());
     }
+}
+
+void bcc_vector_push_at() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
+        v.push_back(i);
+        size_t x = v.at(i);
+    }
+}
+
+void bcc_vector_push_clear() {
+    std::vector<size_t> v;
+    for (size_t i = 0; i < VECTOR_LOAD_PUSH; i++) {
+        v.push_back(i);
+    }
+    v.clear();
 }
