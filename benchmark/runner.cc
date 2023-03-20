@@ -25,6 +25,11 @@ int main() {
     print_benchmark("pair_set_first", bc_pair_set_first, bcc_pair_set_first);
     print_benchmark("pair_set_second", bc_pair_set_second, bcc_pair_set_second);
 
+    // benchmark queue module
+    print_benchmark("queue_push", bc_queue_push, bcc_queue_push);
+    print_benchmark("queue_pop", bc_queue_push_pop, bcc_queue_push_pop);
+    print_benchmark("queue_clear", bc_queue_push_clear, bcc_queue_push_clear);
+
     // benchmark vector module
     print_benchmark("vector_push", bc_vector_push, bcc_vector_push);
     print_benchmark("vector_pop", bc_vector_push_pop, bcc_vector_push_pop);
