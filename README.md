@@ -22,23 +22,38 @@ Check the [examples folder](./examples) for more uses of libdsa.
 
 int main() {
     vector *v = vector_init(sizeof(mytype));
-    vector_push(v, &m1);
+    vector_push(v, &m);
     vector_pop(v);
     vector_free(v);
 }
 ```
 
-## Install
+## Usage
+
+Install:
 
 ```bash
-make release
-make install
+$ make release
+$ make install
+```
+
+Import:
+
+```c
+#include <dsa.h>
+```
+
+Compile:
+
+```bash
+$ gcc *.c -ldsa
 ```
 
 ## References
 
 - deque: https://en.cppreference.com/w/cpp/container/deque
 - list: https://en.cppreference.com/w/cpp/container/list
+- pair: https://en.cppreference.com/w/cpp/utility/pair
 - queue: https://en.cppreference.com/w/cpp/container/queue
 - stack: https://en.cppreference.com/w/cpp/container/stack
 - vector: https://en.cppreference.com/w/cpp/container/vector
