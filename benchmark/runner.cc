@@ -32,7 +32,7 @@ int main() {
 
     // benchmark stack module
     print_benchmark("stack_push", bc_stack_push, bcc_stack_push);
-    print_benchmark("stack_pop", bc_stack_pop, bcc_stack_pop);
+    print_benchmark("stack_pop", bc_stack_push_pop, bcc_stack_push_pop);
 
     // benchmark vector module
     print_benchmark("vector_push", bc_vector_push, bcc_vector_push);
