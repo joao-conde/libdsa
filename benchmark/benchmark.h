@@ -1,11 +1,13 @@
 #ifndef BENCHMARK_BENCHMARK_H_
 #define BENCHMARK_BENCHMARK_H_
 
-#define DEQUE_LOAD 100000000UL
-#define LIST_LOAD 10000000UL
-#define PAIR_LOAD 100000000UL
-#define VECTOR_LOAD_PUSH 100000000UL
-#define VECTOR_LOAD_INSERT 100000UL
+#define DEQUE_LOAD 100000UL
+#define LIST_LOAD 100000UL
+#define PAIR_LOAD 1000000UL
+#define QUEUE_LOAD 1000000UL
+#define STACK_LOAD 1000000UL
+#define VECTOR_LOAD_PUSH 100000UL
+#define VECTOR_LOAD_INSERT 1000UL
 
 #define TABLE_WIDTH 20
 
@@ -36,6 +38,8 @@ void bc_pair_set_second();
 void bc_queue_push();
 void bc_queue_push_pop();
 void bc_queue_push_clear();
+void bc_stack_push();
+void bc_stack_pop();
 void bc_vector_push();
 void bc_vector_push_pop();
 void bc_vector_push_set();
@@ -64,6 +68,8 @@ void bcc_pair_set_second();
 void bcc_queue_push();
 void bcc_queue_push_pop();
 void bcc_queue_push_clear();
+void bcc_stack_push();
+void bcc_stack_pop();
 void bcc_vector_push();
 void bcc_vector_push_pop();
 void bcc_vector_push_set();

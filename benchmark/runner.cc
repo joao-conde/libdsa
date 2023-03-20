@@ -30,6 +30,10 @@ int main() {
     print_benchmark("queue_pop", bc_queue_push_pop, bcc_queue_push_pop);
     print_benchmark("queue_clear", bc_queue_push_clear, bcc_queue_push_clear);
 
+    // benchmark stack module
+    print_benchmark("stack_push", bc_stack_push, bcc_stack_push);
+    print_benchmark("stack_pop", bc_stack_pop, bcc_stack_pop);
+
     // benchmark vector module
     print_benchmark("vector_push", bc_vector_push, bcc_vector_push);
     print_benchmark("vector_pop", bc_vector_push_pop, bcc_vector_push_pop);
