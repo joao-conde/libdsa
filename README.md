@@ -23,9 +23,7 @@ Check the [examples folder](./examples) for more uses of libdsa.
 int main() {
     vector *v = vector_init(sizeof(mytype));
     vector_push(v, &m1);
-    vector_insert(v, 0, &m2);
     vector_pop(v);
-    vector_clear(v);
     vector_free(v);
 }
 ```
