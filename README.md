@@ -35,12 +35,6 @@ make release
 make install
 ```
 
-## Benchmark
-
-```bash
-make benchmark
-```
-
 ## References
 
 - deque: https://en.cppreference.com/w/cpp/container/deque
