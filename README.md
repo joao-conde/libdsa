@@ -6,9 +6,9 @@ A personal endeavor to **learn the inner workings** of different **data structur
 
 ## Features
 
-- Opaque data types
-- PIMPL design pattern
-- C generic data structures leveraging void pointers
+- **Opaque data types**
+- **PIMPL** design pattern
+- **C generic** data structures leveraging **void pointers**
 - 100% code coverage
 - Memory-leak detection with Valgrind
 - Google's C/C++ style
