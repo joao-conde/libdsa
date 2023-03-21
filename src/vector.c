@@ -3,7 +3,7 @@
 
 #include "../include/vector.h"
 
-#define CAPACITY 256
+#define CAPACITY 512
 #define ALLOC_FACTOR 2
 
 struct vector {

@@ -5,7 +5,7 @@
 #include "../include/deque.h"
 #include "../include/vector.h"
 
-#define CHUNK_CAPACITY 256
+#define CHUNK_CAPACITY 512
 
 struct deque {
     size_t length;
