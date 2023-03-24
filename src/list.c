@@ -3,21 +3,21 @@
 
 #include "../include/list.h"
 
-node* node_init(size_t type_size, const void *value);
-void node_free(node *n);
+list_node* list_node_init(size_t type_size, const void *value);
+void list_node_free(list_node *n);
 
 struct list {
     size_t length;
     size_t type_size;
-    node *front;
-    node *back;
+    list_node *front;
+    list_node *back;
 };
 
-node* node_init(size_t type_size, const void *value) {
+list_node* list_node_init(size_t type_size, const void *value) {
     // checks for overflow of amount of requested memory
     if (type_size > PTRDIFF_MAX) return NULL;
 
-    node *n = (node*) malloc(sizeof(node));
+    list_node *n = (list_node*) malloc(sizeof(list_node));
     void *data = malloc(type_size);
     if (n == NULL || data == NULL) {
         free(data);
@@ -32,7 +32,7 @@ node* node_init(size_t type_size, const void *value) {
     return n;
 }
 
-void node_free(node *n) {
+void list_node_free(list_node *n) {
     if (n != NULL) free(n->data);
     free(n);
 }
@@ -50,10 +50,10 @@ list* list_init(size_t type_size) {
 
 void list_free(list *l) {
     if (l != NULL) {
-        node *front = l->front;
+        list_node *front = l->front;
         while (front != NULL) {
-            node *tmp = front->next;
-            node_free(front);
+            list_node *tmp = front->next;
+            list_node_free(front);
             front = tmp;
         }
     }
@@ -68,18 +68,18 @@ bool list_is_empty(const list *l) {
     return l->length == 0;
 }
 
-node* list_front(const list *l) {
+list_node* list_front(const list *l) {
     if (list_is_empty(l)) return NULL;
     return l->front;
 }
 
-node* list_back(const list *l) {
+list_node* list_back(const list *l) {
     if (list_is_empty(l)) return NULL;
     return l->back;
 }
 
-node* list_push_back(list *l, const void *value) {
-    node *n = node_init(l->type_size, value);
+list_node* list_push_back(list *l, const void *value) {
+    list_node *n = list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (list_is_empty(l)) {
@@ -95,8 +95,8 @@ node* list_push_back(list *l, const void *value) {
     return n;
 }
 
-node* list_push_front(list *l, const void *value) {
-    node *n = node_init(l->type_size, value);
+list_node* list_push_front(list *l, const void *value) {
+    list_node *n = list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (list_is_empty(l)) {
@@ -115,31 +115,31 @@ node* list_push_front(list *l, const void *value) {
 void list_pop_back(list *l) {
     if (list_is_empty(l)) return;
 
-    node *back = l->back;
-    node *prev = back->prev;
+    list_node *back = l->back;
+    list_node *prev = back->prev;
     l->back = prev;
     if (prev != NULL) prev->next = NULL;
     if (l->front == back) l->front = prev;
 
     l->length -= 1;
-    node_free(back);
+    list_node_free(back);
 }
 
 void list_pop_front(list *l) {
     if (list_is_empty(l)) return;
 
-    node *front = l->front;
-    node *next = front->next;
+    list_node *front = l->front;
+    list_node *next = front->next;
     l->front = next;
     if (next != NULL) next->prev = NULL;
     if (l->back == front) l->back = next;
 
     l->length -= 1;
-    node_free(front);
+    list_node_free(front);
 }
 
-node* list_insert(list *l, node *pos, const void *value) {
-    node *n = node_init(l->type_size, value);
+list_node* list_insert(list *l, list_node *pos, const void *value) {
+    list_node *n = list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (pos == l->back) {
@@ -147,7 +147,7 @@ node* list_insert(list *l, node *pos, const void *value) {
         n->prev = pos;
         l->back = n;
     } else {
-        node *next = pos->next;
+        list_node *next = pos->next;
         pos->next = n;
         n->prev = pos;
         n->next = next;
@@ -158,18 +158,18 @@ node* list_insert(list *l, node *pos, const void *value) {
     return n;
 }
 
-void list_erase(list *l, node *pos) {
+void list_erase(list *l, list_node *pos) {
     bool is_back = l->back == pos;
     bool is_front = l->front == pos;
     if (is_back) list_pop_back(l);
     if (is_front) list_pop_front(l);
     if (is_back || is_front) return;
 
-    node *next = pos->next;
-    node *prev = pos->prev;
+    list_node *next = pos->next;
+    list_node *prev = pos->prev;
     next->prev = prev;
     prev->next = next;
 
     l->length -= 1;
-    node_free(pos);
+    list_node_free(pos);
 }

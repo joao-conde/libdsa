@@ -6,11 +6,11 @@
 
 typedef struct list list;
 
-typedef struct node node;
+typedef struct list_node list_node;
 
-struct node {
-    node *prev;
-    node *next;
+struct list_node {
+    list_node *prev;
+    list_node *next;
     void *data;
 };
 
@@ -22,20 +22,20 @@ size_t list_length(const list *l);
 
 bool list_is_empty(const list *l);
 
-node* list_front(const list *l);
+list_node* list_front(const list *l);
 
-node* list_back(const list *l);
+list_node* list_back(const list *l);
 
-node* list_push_back(list *l, const void *value);
+list_node* list_push_back(list *l, const void *value);
 
-node* list_push_front(list *l, const void *value);
+list_node* list_push_front(list *l, const void *value);
 
 void list_pop_back(list *l);
 
 void list_pop_front(list *l);
 
-node* list_insert(list *l, node *pos, const void *value);
+list_node* list_insert(list *l, list_node *pos, const void *value);
 
-void list_erase(list *l, node *pos);
+void list_erase(list *l, list_node *pos);
 
 #endif // INCLUDE_LIST_H_

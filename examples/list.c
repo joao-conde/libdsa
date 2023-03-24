@@ -11,8 +11,8 @@ int main() {
     list_push_back(l, &m1);
     list_push_front(l, &m2);
 
-    node *front = list_front(l);
-    node *back = list_back(l);
+    list_node *front = list_front(l);
+    list_node *back = list_back(l);
 
     list_insert(l, front, &m3);
     list_erase(l, front);

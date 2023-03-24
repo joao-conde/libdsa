@@ -23,7 +23,7 @@ void test_list_length() {
     list *l = list_init(sizeof(float));
     assert(list_length(l) == 0);
 
-    node *pushed = list_push_back(l, &value);
+    list_node *pushed = list_push_back(l, &value);
     assert(list_length(l) == 1);
     assert(list_front(l) == pushed);
     assert(list_back(l) == pushed);
@@ -157,7 +157,7 @@ void test_list_push_back() {
 }
 
 void test_list_push_back_fail() {
-    node *result;
+    list_node *result;
     list *l = list_init(PTRDIFF_MAX);
 
     result = list_push_back(l, NULL);
@@ -191,7 +191,7 @@ void test_list_push_front() {
 }
 
 void test_list_push_front_fail() {
-    node *result;
+    list_node *result;
     list *l = list_init(PTRDIFF_MAX);
 
     result = list_push_front(l, NULL);
@@ -289,7 +289,7 @@ void test_list_insert() {
     list_push_back(l, &values[3]);
     assert(list_length(l) == 4);
 
-    node *inserted, *pos, *next, *front, *back;
+    list_node *inserted, *pos, *next, *front, *back;
 
     front = list_front(l);
     back = list_back(l);
@@ -332,7 +332,7 @@ void test_list_insert() {
 }
 
 void test_list_insert_fail() {
-    node *result;
+    list_node *result;
     list *l = list_init(PTRDIFF_MAX);
 
     result = list_insert(l, NULL, NULL);
@@ -354,7 +354,7 @@ void test_list_erase() {
     list_push_back(l, &values[3]);
     assert(list_length(l) == 8);
 
-    node *prev, *pos, *next, *front, *back;
+    list_node *prev, *pos, *next, *front, *back;
 
     front = list_front(l);
     back = list_back(l);
@@ -395,7 +395,7 @@ void test_list_load() {
     int nelements = 100000;
     bool is_empty;
     size_t length;
-    node *pushed, *inserted, *erased, *front, *back, *current;
+    list_node *pushed, *inserted, *erased, *front, *back, *current;
 
     list *l = list_init(sizeof(int));
 
