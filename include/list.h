@@ -14,6 +14,10 @@ struct list_node {
     void *data;
 };
 
+list_node* list_node_init(size_t type_size, const void *value);
+
+void list_node_free(list_node *n);
+
 list* list_init(size_t type_size);
 
 void list_free(list *l);

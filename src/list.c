@@ -3,9 +3,6 @@
 
 #include "../include/list.h"
 
-list_node* list_node_init(size_t type_size, const void *value);
-void list_node_free(list_node *n);
-
 struct list {
     size_t length;
     size_t type_size;
