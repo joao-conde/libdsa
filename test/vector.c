@@ -9,7 +9,7 @@
 void test_vector_init() {
     vector *v = vector_init(sizeof(int));
     assert(vector_length(v) == 0);
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
     vector_free(v);
 }
 
@@ -32,7 +32,7 @@ void test_vector_with_capacity_fail() {
     vector *v = vector_with_capacity(SIZE_MAX, 1000);
     assert(v == NULL);
 
-    v = vector_with_capacity(SIZE_MAX / 1000, 256);
+    v = vector_with_capacity(SIZE_MAX / 1000, 512);
     assert(v == NULL);
 }
 
@@ -101,12 +101,12 @@ void test_vector_clear() {
     for (int i = 0; i < 7; i++) vector_push(v, values + i);
     assert(!vector_is_empty(v));
     assert(vector_length(v) == 7);
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
 
     vector_clear(v);
     assert(vector_is_empty(v));
     assert(vector_length(v) == 0);
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
 
     vector_free(v);
 }
@@ -548,7 +548,7 @@ void test_vector_resize() {
     vector_push(v, "welcome");
     vector_push(v, "all");
 
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
     assert(vector_length(v) == 4);
 
     void *result = vector_resize(v, 2);
@@ -565,13 +565,13 @@ void test_vector_resize() {
     assert(vector_capacity(v) == 0);
     assert(vector_length(v) == 0);
 
-    result = vector_resize(v, 256);
+    result = vector_resize(v, 512);
     assert(result != NULL);
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
     assert(vector_length(v) == 0);
 
     result = vector_push(v, "hello");
-    assert(vector_capacity(v) == 256);
+    assert(vector_capacity(v) == 512);
     assert(vector_length(v) == 1);
     assert(strcmp(result, "hello") == 0);
     assert(strcmp(vector_at(v, 0), "hello") == 0);
@@ -600,7 +600,7 @@ void test_vector_load() {
         end = vector_end(v);
         assert(*pushed == i);
         assert(length == i + 1);
-        assert(capacity >= 256);
+        assert(capacity >= 512);
         assert(!is_empty);
         assert(*at == i);
         assert(*set == i);
@@ -621,7 +621,7 @@ void test_vector_load() {
         end = vector_end(v);
         assert(*popped == nelements - i - 1);
         assert(length == nelements - i - 1);
-        assert(capacity >= 256);
+        assert(capacity >= 512);
         assert(!is_empty);
         assert(*at == i);
         assert(*set == i);
