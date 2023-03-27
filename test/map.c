@@ -65,8 +65,8 @@ void test_map_capacity() {
     assert(map_capacity(m) == 1);
 
     map_insert(m, "key1", "value1");
-    map_insert(m, "key1", "value2");
-    map_insert(m, "key1", "value3");
+    map_insert(m, "key2", "value2");
+    map_insert(m, "key3", "value3");
     assert(map_length(m) == 3);
     assert(map_capacity(m) == 4);
 
@@ -213,6 +213,7 @@ void test_map() {
     test_map_with_capacity_fail();
     test_map_free();
     test_map_length();
+    test_map_capacity();
     test_map_is_empty();
     test_map_has();
     test_map_find();
