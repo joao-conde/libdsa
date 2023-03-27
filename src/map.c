@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -79,6 +78,14 @@ size_t map_length(const map *m) {
     return m->length;
 }
 
+bool map_is_empty(const map *m) {
+    return m->length == 0;
+}
+
+bool map_has(const map *m, const void *key) {
+    return map_get(m, key) != NULL;
+}
+
 pair* map_find(const map *m, const void *key) {
     size_t hash = m->hasher(key) % m->capacity;
     list *bucket = m->buckets[hash];
@@ -119,4 +126,23 @@ pair* map_insert(map *m, const void *key, const void *value) {
 
     m->length += 1;
     return inserted->data;
+}
+
+void map_erase(map *m, const void *key) {
+    size_t hash = m->hasher(key) % m->capacity;
+    list *bucket = m->buckets[hash];
+    if (bucket == NULL) return;
+
+    list_node *cur = list_front(bucket);
+    while (
+        cur != NULL &&
+        cur->next != NULL &&
+        memcmp(pair_first(cur->data), key, m->key_size) != 0
+    ) {
+        cur = cur->next;
+    }
+    if (cur == NULL) return;
+
+    m->length -= 1;
+    list_erase(bucket, cur);
 }
