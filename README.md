@@ -44,10 +44,10 @@ Import:
 #include <dsa.h>
 ```
 
-Compile:
+Compile your code with `-ldsa`:
 
 ```bash
-$ gcc *.c -ldsa
+$ gcc yourcode.c -ldsa
 ```
 
 ## References
