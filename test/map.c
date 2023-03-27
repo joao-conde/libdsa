@@ -17,10 +17,7 @@ void test_map_init() {
 }
 
 void test_map_init_fail() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
-    assert(m == NULL);
-
-    m = vector_init(SIZE_MAX / 10000);
+    map *m = map_init(SIZE_MAX, SIZE_MAX, hash_str);
     assert(m == NULL);
 }
 
