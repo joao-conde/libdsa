@@ -67,7 +67,7 @@ void bc_list_insert_erase() {
 
 void bc_list_push_clear() {
     list *l = list_init(sizeof(size_t));
-    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+    for (size_t i = 0; i < LIST_LOAD; i++) {
         list_push_back(l, &i);
     }
     list_clear(l);
