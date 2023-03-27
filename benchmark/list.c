@@ -64,3 +64,11 @@ void bc_list_insert_erase() {
     }
     list_free(l);
 }
+
+void bc_list_push_clear() {
+    list *l = list_init(sizeof(size_t));
+    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+        list_push_back(l, &i);
+    }
+    list_clear(l);
+}
