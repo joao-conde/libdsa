@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdint.h>
 #include <string.h>
 
 #include "../include/map.h"
@@ -13,6 +14,14 @@ size_t hash_str(const void *key) {
 void test_map_init() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
     map_free(m);
+}
+
+void test_map_init_fail() {
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    assert(m == NULL);
+
+    m = vector_init(SIZE_MAX / 10000);
+    assert(m == NULL);
 }
 
 void test_map_free() {
