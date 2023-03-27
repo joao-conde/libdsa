@@ -20,5 +20,7 @@ int main() {
     list_pop_front(l);
     list_pop_back(l);
 
+    list_clear(l);
+
     list_free(l);
 }
