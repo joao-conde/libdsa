@@ -12,6 +12,8 @@ typedef struct map map;
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher);
 
+map* map_init_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity);
+
 void map_free(map *m);
 
 size_t map_length(const map *m);
