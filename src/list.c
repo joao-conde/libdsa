@@ -65,6 +65,18 @@ bool list_is_empty(const list *l) {
     return l->length == 0;
 }
 
+void list_clear(list *l) {
+    list_node *cur = l->front;
+    while (cur != NULL) {
+        list_node *next = cur->next;
+        list_node_free(cur);
+        cur = next;
+    }
+    l->length = 0;
+    l->front = NULL;
+    l->back = NULL;
+}
+
 list_node* list_front(const list *l) {
     if (list_is_empty(l)) return NULL;
     return l->front;

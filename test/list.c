@@ -49,6 +49,23 @@ void test_list_is_empty() {
     list_free(l);
 }
 
+void test_list_clear() {
+    int values[4] = {15, 21, 30, 69};
+    list *l = list_init(sizeof(int));
+    assert(list_is_empty(l));
+
+    list_push_back(l, &values[0]);
+    list_push_back(l, &values[1]);
+    list_push_back(l, &values[2]);
+    list_push_back(l, &values[3]);
+    assert(list_length(l) == 4);
+
+    list_clear(l);
+    assert(list_is_empty(l));
+
+    list_free(l);
+}
+
 void test_list_front() {
     int values[4] = {-1, 10, 24, 59};
     list *l = list_init(sizeof(int));
@@ -510,6 +527,7 @@ void test_list() {
     test_list_free();
     test_list_length();
     test_list_is_empty();
+    test_list_clear();
     test_list_front();
     test_list_back();
     test_list_pointers();
