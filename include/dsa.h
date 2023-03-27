@@ -5,6 +5,7 @@
 
 #include "deque.h"
 #include "list.h"
+#include "map.h"
 #include "pair.h"
 #include "queue.h"
 #include "stack.h"

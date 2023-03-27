@@ -54,6 +54,7 @@ $ gcc yourcode.c -ldsa
 
 - deque: https://en.cppreference.com/w/cpp/container/deque
 - list: https://en.cppreference.com/w/cpp/container/list
+- map: https://en.cppreference.com/w/cpp/container/unordered_map
 - pair: https://en.cppreference.com/w/cpp/utility/pair
 - queue: https://en.cppreference.com/w/cpp/container/queue
 - stack: https://en.cppreference.com/w/cpp/container/stack
