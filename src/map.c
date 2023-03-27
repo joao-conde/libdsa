@@ -5,6 +5,7 @@
 #include "../include/map.h"
 
 #define CAPACITY 512
+#define ALLOC_FACTOR 2
 #define LOAD_FACTOR 1.0
 
 struct map {
@@ -18,11 +19,15 @@ struct map {
 };
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
+    return map_init_with_capacity(key_size, value_size, hasher, CAPACITY);
+}
+
+map* map_init_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity) {
     // checks for overflow of amount of requested memory
     if (key_size > PTRDIFF_MAX || value_size > PTRDIFF_MAX) return NULL;
 
     map *m = (map*) malloc(sizeof(map));
-    list **buckets = (list**) malloc(CAPACITY * sizeof(list*));
+    list **buckets = (list**) malloc(capacity * sizeof(list*));
     if (m == NULL || buckets == NULL) {
         free(buckets);
         free(m);
@@ -30,11 +35,11 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
     }
 
     int i = 0;
-    for (i = 0; i < CAPACITY; i++) {
+    for (i = 0; i < capacity; i++) {
         buckets[i] = list_init(PAIR_SIZE);
         if (buckets[i] == NULL) break;
     }
-    if (i < CAPACITY) {
+    if (i < capacity) {
         for (int j = 0; j < i; j++) free(buckets[j]);
         free(buckets);
         free(m);
@@ -42,7 +47,7 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
     }
 
     m->length = 0;
-    m->capacity = CAPACITY;
+    m->capacity = capacity;
     m->key_size = key_size;
     m->value_size = value_size;
     m->max_load_factor = LOAD_FACTOR;
@@ -114,6 +119,32 @@ pair* map_insert(map *m, const void *key, const void *value) {
     if (entry != NULL) {
         pair_set_second(entry, value);
         return entry;
+    }
+
+    // if the current percentual load of the hashmap exceeds
+    // our limit we resize and rehash every entry
+    if (m->length * m->max_load_factor >= m->capacity) {
+        map *new = map_init_with_capacity(
+            m->key_size,
+            m->value_size,
+            m->hasher,
+            m->capacity * ALLOC_FACTOR);
+
+        for (size_t i = 0; i < m->length; i++) {
+            list *bucket = m->buckets[i];
+            list_node *cur = list_front(bucket);
+            while (cur != NULL) {
+                pair *entry = cur->data;
+                void *key = pair_first(entry);
+                void *value = pair_second(entry);
+                map_insert(new, key, value);
+                cur = cur->next;
+            }
+
+            m->length = new->length;
+            m->capacity = new->capacity;
+            m->buckets = new->buckets;
+        }
     }
 
     size_t hash = m->hasher(key) % m->capacity;
