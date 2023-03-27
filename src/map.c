@@ -4,7 +4,6 @@
 
 #include "../include/list.h"
 #include "../include/map.h"
-#include "../include/pair.h"
 
 #define CAPACITY 512
 #define LOAD_FACTOR 1.0
@@ -16,9 +15,10 @@ struct map {
     size_t value_size;
     size_t max_load_factor;
     list **buckets;
+    hash_fn *hasher;
 };
 
-map* map_init(size_t key_size, size_t value_size) {
+map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
     // checks for overflow of amount of requested memory
     if (key_size > PTRDIFF_MAX || value_size > PTRDIFF_MAX) return NULL;
 
@@ -48,6 +48,7 @@ map* map_init(size_t key_size, size_t value_size) {
     m->value_size = value_size;
     m->max_load_factor = LOAD_FACTOR;
     m->buckets = buckets;
+    m->hasher = hasher;
     return m;
 }
 
@@ -74,8 +75,37 @@ void map_free(map *m) {
     free(m);
 }
 
-void* map_get(const map *m, const void *key) {
-    return NULL;
+pair* map_find(const map *m, const void *key) {
+    size_t hash = m->hasher(key) % m->capacity;
+    list *bucket = m->buckets[hash];
+    if (bucket == NULL) return NULL;
+
+    list_node *cur = list_front(bucket);
+    while (cur->next != NULL && memcmp(pair_first(cur->data), key, m->key_size) != 0) {
+        cur = cur->next;
+    }
+    if (cur == NULL) return NULL;
+    return cur->data;
 }
 
-void map_insert(map *m, const void *key, const void *value) { }
+void* map_get(const map *m, const void *key) {
+    pair *entry = map_find(m, key);
+    if (entry == NULL) return NULL;
+    return pair_second(entry);
+}
+
+pair* map_insert(map *m, const void *key, const void *value) {
+    pair *entry = map_find(m, key);
+    if (entry != NULL) {
+        pair_set_second(entry, value);
+        return entry;
+    }
+
+    size_t hash = m->hasher(key) % m->capacity;
+    list *bucket = m->buckets[hash];
+    if (bucket == NULL) return NULL;
+
+    entry = pair_init(key, value, m->key_size, m->value_size);
+    list_node *inserted = list_push_back(bucket, entry);
+    return inserted->data;
+}
