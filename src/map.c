@@ -124,27 +124,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
     // if the current percentual load of the hashmap exceeds
     // our limit we resize and rehash every entry
     if (m->length * m->max_load_factor >= m->capacity) {
-        map *new = map_init_with_capacity(
-            m->key_size,
-            m->value_size,
-            m->hasher,
-            m->capacity * ALLOC_FACTOR);
-
-        for (size_t i = 0; i < m->length; i++) {
-            list *bucket = m->buckets[i];
-            list_node *cur = list_front(bucket);
-            while (cur != NULL) {
-                pair *entry = cur->data;
-                void *key = pair_first(entry);
-                void *value = pair_second(entry);
-                map_insert(new, key, value);
-                cur = cur->next;
-            }
-
-            m->length = new->length;
-            m->capacity = new->capacity;
-            m->buckets = new->buckets;
-        }
+        map_rehash(m, m->capacity * ALLOC_FACTOR);
     }
 
     size_t hash = m->hasher(key) % m->capacity;
@@ -176,4 +156,24 @@ void map_erase(map *m, const void *key) {
 
     m->length -= 1;
     list_erase(bucket, cur);
+}
+
+void map_rehash(map *m, size_t capacity) {
+    map *new = map_init_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
+
+    for (size_t i = 0; i < m->length; i++) {
+        list *bucket = m->buckets[i];
+        list_node *cur = list_front(bucket);
+        while (cur != NULL) {
+            pair *entry = cur->data;
+            void *key = pair_first(entry);
+            void *value = pair_second(entry);
+            map_insert(new, key, value);
+            cur = cur->next;
+        }
+
+        m->length = new->length;
+        m->capacity = new->capacity;
+        m->buckets = new->buckets;
+    }
 }
