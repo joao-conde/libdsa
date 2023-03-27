@@ -52,3 +52,11 @@ void bcc_list_insert_erase() {
         l.erase(l.begin());
     }
 }
+
+void bcc_list_push_clear() {
+    std::list<size_t> l;
+    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+        l.push_back(i);
+    }
+    l.clear();
+}

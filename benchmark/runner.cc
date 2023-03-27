@@ -18,6 +18,7 @@ int main() {
     print_benchmark("list_pop_front", bc_list_push_pop_front, bcc_list_push_pop_front);
     print_benchmark("list_insert", bc_list_insert, bcc_list_insert);
     print_benchmark("list_erase", bc_list_insert_erase, bcc_list_insert_erase);
+    print_benchmark("list_clear", bc_list_push_clear, bcc_list_push_clear);
 
     // benchmark pair module
     print_benchmark("pair_first", bc_pair_first, bcc_pair_first);
