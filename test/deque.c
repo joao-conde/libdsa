@@ -13,7 +13,7 @@ void test_deque_init_fail() {
     deque *dq = deque_init(SIZE_MAX);
     assert(dq == NULL);
 
-    dq = deque_init(SIZE_MAX / 1000);
+    dq = deque_init(SIZE_MAX / 10000);
     assert(dq == NULL);
 }
 

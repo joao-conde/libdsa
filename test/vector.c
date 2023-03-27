@@ -17,7 +17,7 @@ void test_vector_init_fail() {
     vector *v = vector_init(SIZE_MAX);
     assert(v == NULL);
 
-    v = vector_init(SIZE_MAX / 1000);
+    v = vector_init(SIZE_MAX / 10000);
     assert(v == NULL);
 }
 
