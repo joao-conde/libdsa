@@ -13,6 +13,8 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hasher);
 
 void map_free(map *m);
 
+size_t map_length(const map *m);
+
 pair* map_find(const map *m, const void *key);
 
 void* map_get(const map *m, const void *key);
