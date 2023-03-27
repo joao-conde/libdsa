@@ -30,4 +30,6 @@ pair* map_insert(map *m, const void *key, const void *value);
 
 void map_erase(map *m, const void *key);
 
+void map_rehash(map *m, size_t capacity);
+
 #endif // INCLUDE_MAP_H_
