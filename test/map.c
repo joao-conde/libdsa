@@ -19,6 +19,24 @@ void test_map_free() {
     map_free(m);
 }
 
+void test_map_length() {
+    int keys[3] = {1, 2, 3};
+    map *m = map_init(sizeof(int), sizeof(char*), hash_int);
+    assert(map_length(m) == 0);
+
+    map_insert(m, &keys[0], "value");
+    map_insert(m, &keys[0], "value");
+    map_insert(m, &keys[0], "value");
+    assert(map_length(m) == 1);
+
+    map_insert(m, &keys[0], "value1");
+    map_insert(m, &keys[1], "value2");
+    map_insert(m, &keys[2], "value3");
+    assert(map_length(m) == 3);
+
+    map_free(m);
+}
+
 void test_map_find() {
     int key = 1;
     map *m = map_init(sizeof(int), sizeof(char*), hash_int);
@@ -38,11 +56,13 @@ void test_map_get() {
     int key = 1;
     map *m = map_init(sizeof(int), sizeof(char*), hash_int);
 
-    assert(map_get(m, &key) == NULL);
+    char* value = map_get(m, &key);
+    assert(value == NULL);
 
     map_insert(m, &key, "value");
-    assert(strcmp(map_get(m, &key), "value") == 0);
-    assert(map_get(m, &key) == map_get(m, &key));
+    value = map_get(m, &key);
+    assert(strcmp(value, "value") == 0);
+    assert(value == map_get(m, &key));
 
     map_free(m);
 }
@@ -52,10 +72,11 @@ void test_map_insert() {
     map *m = map_init(sizeof(int), sizeof(char*), hash_int);
     assert(map_length(m) == 0);
 
-    assert(map_find(m, &keys[0]) == NULL);
+    pair *entry = map_find(m, &keys[0]);
+    assert(entry == NULL);
 
     pair *first_inserted = map_insert(m, &keys[0], "value");
-    pair *entry = map_find(m, &keys[0]);
+    entry = map_find(m, &keys[0]);
     assert(map_length(m) == 1);
     assert(first_inserted == entry);
     assert(*(int*) pair_first(first_inserted) == 1);
@@ -83,6 +104,7 @@ void test_map_insert() {
 void test_map() {
     test_map_init();
     test_map_free();
+    test_map_length();
     test_map_find();
     test_map_get();
     test_map_insert();
