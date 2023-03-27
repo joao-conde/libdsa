@@ -71,4 +71,5 @@ void bc_list_push_clear() {
         list_push_back(l, &i);
     }
     list_clear(l);
+    list_free(l);
 }
