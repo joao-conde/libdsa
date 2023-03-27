@@ -75,13 +75,21 @@ void map_free(map *m) {
     free(m);
 }
 
+size_t map_length(const map *m) {
+    return m->length;
+}
+
 pair* map_find(const map *m, const void *key) {
     size_t hash = m->hasher(key) % m->capacity;
     list *bucket = m->buckets[hash];
     if (bucket == NULL) return NULL;
 
     list_node *cur = list_front(bucket);
-    while (cur->next != NULL && memcmp(pair_first(cur->data), key, m->key_size) != 0) {
+    while (
+        cur != NULL &&
+        cur->next != NULL &&
+        memcmp(pair_first(cur->data), key, m->key_size) != 0
+    ) {
         cur = cur->next;
     }
     if (cur == NULL) return NULL;
@@ -107,5 +115,8 @@ pair* map_insert(map *m, const void *key, const void *value) {
 
     entry = pair_init(key, value, m->key_size, m->value_size);
     list_node *inserted = list_push_back(bucket, entry);
+    if (inserted == NULL) return NULL;
+
+    m->length += 1;
     return inserted->data;
 }
