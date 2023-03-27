@@ -100,12 +100,12 @@ pair* map_find(const map *m, const void *key) {
     while (
         cur != NULL &&
         cur->next != NULL &&
-        memcmp(pair_first(cur->data), key, m->key_size) != 0
+        memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
     ) {
         cur = cur->next;
     }
     if (cur == NULL) return NULL;
-    return cur->data;
+    return (pair*) cur->data;
 }
 
 void* map_get(const map *m, const void *key) {
@@ -136,7 +136,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
     if (inserted == NULL) return NULL;
 
     m->length += 1;
-    return inserted->data;
+    return (pair*) inserted->data;
 }
 
 void map_erase(map *m, const void *key) {
@@ -147,8 +147,7 @@ void map_erase(map *m, const void *key) {
     list_node *cur = list_front(bucket);
     while (
         cur != NULL &&
-        cur->next != NULL &&
-        memcmp(pair_first(cur->data), key, m->key_size) != 0
+        memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
     ) {
         cur = cur->next;
     }
@@ -159,21 +158,22 @@ void map_erase(map *m, const void *key) {
 }
 
 void map_rehash(map *m, size_t capacity) {
-    map *new = map_init_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
+    map *rehashed = map_init_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
+    if (rehashed == NULL) return;
 
     for (size_t i = 0; i < m->length; i++) {
         list *bucket = m->buckets[i];
         list_node *cur = list_front(bucket);
         while (cur != NULL) {
-            pair *entry = cur->data;
+            pair *entry = (pair*) cur->data;
             void *key = pair_first(entry);
             void *value = pair_second(entry);
-            map_insert(new, key, value);
+            map_insert(rehashed, key, value);
             cur = cur->next;
         }
 
-        m->length = new->length;
-        m->capacity = new->capacity;
-        m->buckets = new->buckets;
+        m->length = rehashed->length;
+        m->capacity = rehashed->capacity;
+        m->buckets = rehashed->buckets;
     }
 }
