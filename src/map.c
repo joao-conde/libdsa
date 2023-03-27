@@ -19,10 +19,10 @@ struct map {
 };
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
-    return map_init_with_capacity(key_size, value_size, hasher, CAPACITY);
+    return map_with_capacity(key_size, value_size, hasher, CAPACITY);
 }
 
-map* map_init_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity) {
+map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity) {
     // checks for overflow of amount of requested memory
     if (key_size > PTRDIFF_MAX || value_size > PTRDIFF_MAX) return NULL;
 
@@ -34,16 +34,8 @@ map* map_init_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher,
         return NULL;
     }
 
-    int i = 0;
-    for (i = 0; i < capacity; i++) {
+    for (size_t i = 0; i < capacity; i++) {
         buckets[i] = list_init(PAIR_SIZE);
-        if (buckets[i] == NULL) break;
-    }
-    if (i < capacity) {
-        for (int j = 0; j < i; j++) free(buckets[j]);
-        free(buckets);
-        free(m);
-        return NULL;
     }
 
     m->length = 0;
@@ -81,6 +73,10 @@ void map_free(map *m) {
 
 size_t map_length(const map *m) {
     return m->length;
+}
+
+size_t map_capacity(const map *m) {
+    return m->capacity;
 }
 
 bool map_is_empty(const map *m) {
@@ -158,7 +154,7 @@ void map_erase(map *m, const void *key) {
 }
 
 void map_rehash(map *m, size_t capacity) {
-    map *rehashed = map_init_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
+    map *rehashed = map_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
     if (rehashed == NULL) return;
 
     for (size_t i = 0; i < m->length; i++) {
