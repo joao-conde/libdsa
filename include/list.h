@@ -26,6 +26,8 @@ size_t list_length(const list *l);
 
 bool list_is_empty(const list *l);
 
+void list_clear(list *l);
+
 list_node* list_front(const list *l);
 
 list_node* list_back(const list *l);
