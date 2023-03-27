@@ -50,18 +50,20 @@ void test_list_is_empty() {
 }
 
 void test_list_clear() {
-    int values[4] = {15, 21, 30, 69};
+    int values[2] = {15, 21};
     list *l = list_init(sizeof(int));
     assert(list_is_empty(l));
 
     list_push_back(l, &values[0]);
     list_push_back(l, &values[1]);
-    list_push_back(l, &values[2]);
-    list_push_back(l, &values[3]);
-    assert(list_length(l) == 4);
+    assert(list_length(l) == 2);
 
     list_clear(l);
     assert(list_is_empty(l));
+
+    list_push_back(l, &values[0]);
+    list_push_back(l, &values[1]);
+    assert(list_length(l) == 2);
 
     list_free(l);
 }
