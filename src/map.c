@@ -111,16 +111,16 @@ void* map_get(const map *m, const void *key) {
 }
 
 pair* map_insert(map *m, const void *key, const void *value) {
-    pair *entry = map_find(m, key);
-    if (entry != NULL) {
-        pair_set_second(entry, value);
-        return entry;
-    }
-
     // if the current percentual load of the hashmap exceeds
     // our limit we resize and rehash every entry
     if (m->length * m->max_load_factor >= m->capacity) {
         map_rehash(m, m->capacity * ALLOC_FACTOR);
+    }
+
+    pair *entry = map_find(m, key);
+    if (entry != NULL) {
+        pair_set_second(entry, value);
+        return entry;
     }
 
     size_t hash = m->hasher(key) % m->capacity;
@@ -167,9 +167,9 @@ void map_rehash(map *m, size_t capacity) {
             map_insert(rehashed, key, value);
             cur = cur->next;
         }
-
-        m->length = rehashed->length;
-        m->capacity = rehashed->capacity;
-        m->buckets = rehashed->buckets;
     }
+
+    m->length = rehashed->length;
+    m->capacity = rehashed->capacity;
+    m->buckets = rehashed->buckets;
 }
