@@ -18,7 +18,7 @@ SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
 INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
-COVS = $(patsubst %.c, runner-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+COVS = $(patsubst %.c, runner-test-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
 .PHONY: usage debug release clean install uninstall test coverage coverage-report lint memcheck benchmark
 
@@ -54,8 +54,8 @@ uninstall:
 
 test:
 	$(MAKE) clean
-	gcc -o runner $(TEST)/runner.c $(SRCS) $(TEST_FLAGS)
-	./runner
+	gcc -o runner-test $(TEST)/runner.c $(SRCS) $(TEST_FLAGS)
+	./runner-test
 
 coverage:
 	$(MAKE) test
@@ -70,10 +70,10 @@ lint:
 
 memcheck:
 	$(MAKE) clean
-	gcc -o runner $(TEST)/runner.c $(SRCS) $(TEST_FLAGS)
-	valgrind --error-exitcode=1 --leak-check=full -s ./runner
-	g++ -o runner $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
-	valgrind --error-exitcode=1 --leak-check=full -s ./runner
+	gcc -o runner-test $(TEST)/runner.c $(SRCS) $(RELEASE_FLAGS)
+	g++ -o runner-bench $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	valgrind --error-exitcode=1 --leak-check=full -s ./runner-test
+	valgrind --error-exitcode=1 --leak-check=full -s ./runner-bench
 
 benchmark:
 	$(MAKE) clean
@@ -83,5 +83,5 @@ benchmark:
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(LIB).so
-	-@$(RM) runner
+	-@$(RM) runner-*
 	-@$(RM) *.gcno *.gcda *.gcov

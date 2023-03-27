@@ -1,4 +1,4 @@
-runner
+runner*
 
 *.so
 *.o
