@@ -65,7 +65,13 @@ void test_map_capacity() {
     assert(map_capacity(m) == 1);
 
     map_insert(m, "key1", "value1");
+    assert(map_length(m) == 1);
+    assert(map_capacity(m) == 1);
+
     map_insert(m, "key2", "value2");
+    assert(map_length(m) == 2);
+    assert(map_capacity(m) == 2);
+
     map_insert(m, "key3", "value3");
     assert(map_length(m) == 3);
     assert(map_capacity(m) == 4);
@@ -206,6 +212,42 @@ void test_map_erase() {
     map_free(m);
 }
 
+void test_map_rehash() {
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_str, 10);
+    assert(map_capacity(m) == 10);
+    assert(map_length(m) == 0);
+
+    map_rehash(m, 1);
+    assert(map_capacity(m) == 1);
+    assert(map_length(m) == 0);
+
+    map_insert(m, "key1", "value1");
+    assert(map_capacity(m) == 1);
+    assert(map_length(m) == 1);
+
+    map_insert(m, "key2", "value2");
+    assert(map_capacity(m) == 2);
+    assert(map_length(m) == 2);
+
+    map_insert(m, "key3", "value3");
+    assert(map_capacity(m) == 4);
+    assert(map_length(m) == 3);
+
+    map_rehash(m, 0);
+    assert(map_capacity(m) == 3);
+    assert(map_length(m) == 3);
+    assert(strcmp(map_get(m, "key1"), "value1") == 0);
+    assert(strcmp(map_get(m, "key2"), "value2") == 0);
+    assert(strcmp(map_get(m, "key3"), "value3") == 0);
+
+    map_rehash(m, 512);
+    assert(map_capacity(m) == 512);
+    assert(map_length(m) == 3);
+    assert(strcmp(map_get(m, "key1"), "value1") == 0);
+    assert(strcmp(map_get(m, "key2"), "value2") == 0);
+    assert(strcmp(map_get(m, "key3"), "value3") == 0);
+}
+
 void test_map() {
     test_map_init();
     test_map_init_fail();
@@ -220,4 +262,5 @@ void test_map() {
     test_map_get();
     test_map_insert();
     test_map_erase();
+    test_map_rehash();
 }

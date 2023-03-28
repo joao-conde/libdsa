@@ -1,22 +1,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "internal/map.h"
+
 #include "../include/list.h"
 #include "../include/map.h"
-
-#define CAPACITY 512
-#define ALLOC_FACTOR 2
-#define LOAD_FACTOR 1.0
-
-struct map {
-    size_t length;
-    size_t capacity;
-    size_t key_size;
-    size_t value_size;
-    size_t max_load_factor;
-    list **buckets;
-    hash_fn *hasher;
-};
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
     return map_with_capacity(key_size, value_size, hasher, CAPACITY);
@@ -95,7 +83,6 @@ pair* map_find(const map *m, const void *key) {
     list_node *cur = list_front(bucket);
     while (
         cur != NULL &&
-        cur->next != NULL &&
         memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
     ) {
         cur = cur->next;
@@ -154,6 +141,9 @@ void map_erase(map *m, const void *key) {
 }
 
 void map_rehash(map *m, size_t capacity) {
+    size_t min = m->length / m->max_load_factor;
+    capacity = capacity > min ? capacity : min;
+
     map *rehashed = map_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
     if (rehashed == NULL) return;
 
