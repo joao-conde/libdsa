@@ -1,5 +1,5 @@
-#ifndef SRC_PRIVATE_MAP_H_
-#define SRC_PRIVATE_MAP_H_
+#ifndef SRC_INTERNAL_MAP_H_
+#define SRC_INTERNAL_MAP_H_
 
 #include "../../include/list.h"
 #include "../../include/map.h"
@@ -18,4 +18,4 @@ struct map {
     hash_fn *hasher;
 };
 
-#endif // SRC_PRIVATE_MAP_H_
+#endif // SRC_INTERNAL_MAP_H_
