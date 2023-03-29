@@ -148,7 +148,7 @@ void map_erase(map *m, const void *key) {
     if (cur == NULL) return;
 
     m->length -= 1;
-    pair_free(cur->data);
+    pair_free((pair*) cur->data);
     cur->data = NULL;
     list_erase(bucket, cur);
 }
