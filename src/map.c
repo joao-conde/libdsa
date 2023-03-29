@@ -50,7 +50,7 @@ void map_free(map *m) {
     if (m != NULL) {
         // free each allocated bucket
         for (size_t i = 0; i < m->capacity; i++) {
-            list *bucket = (list *) m->buckets[i];
+            list *bucket = (list*) m->buckets[i];
             while (list_length(bucket) > 0) {
                 list_node *front = list_front(bucket);
 
@@ -58,7 +58,7 @@ void map_free(map *m) {
                 pair_free(entry);
                 front->data = NULL;
 
-                list_pop_back(bucket);
+                list_pop_front(bucket);
             }
             list_free(bucket);
         }
@@ -126,6 +126,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
 
     entry = pair_init(key, value, m->key_size, m->value_size);
     list_node *inserted = list_push_back(bucket, entry);
+    free(entry);
     if (inserted == NULL) return NULL;
 
     m->length += 1;
