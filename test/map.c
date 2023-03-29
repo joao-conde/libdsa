@@ -246,6 +246,8 @@ void test_map_rehash() {
     assert(strcmp(map_get(m, "key1"), "value1") == 0);
     assert(strcmp(map_get(m, "key2"), "value2") == 0);
     assert(strcmp(map_get(m, "key3"), "value3") == 0);
+
+    map_free(m);
 }
 
 void test_map() {
