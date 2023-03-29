@@ -11,40 +11,40 @@ size_t hash_str(const void *key) {
     return hash;
 }
 
-size_t hash_terrible(const void *key) {
-    return 1;
+size_t hash_terribly(const void *key) {
+    return hash_str(key) % 4;
 }
 
 void test_map_init() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     map_free(m);
 }
 
 void test_map_init_fail() {
-    map *m = map_init(SIZE_MAX, SIZE_MAX, hash_str);
+    map *m = map_init(SIZE_MAX, SIZE_MAX, hash_terribly);
     assert(m == NULL);
 }
 
 void test_map_with_capacity() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_str, 512);
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 512);
     assert(map_capacity(m) == 512);
     map_free(m);
 }
 
 void test_map_with_capacity_fail() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_str, SIZE_MAX);
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX);
     assert(m == NULL);
 }
 
 void test_map_free() {
     map_free(NULL);
 
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     map_free(m);
 }
 
 void test_map_length() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(map_length(m) == 0);
 
     map_insert(m, "key1", "value1");
@@ -61,7 +61,7 @@ void test_map_length() {
 }
 
 void test_map_capacity() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_str, 1);
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
     assert(map_capacity(m) == 1);
 
     map_insert(m, "key1", "value1");
@@ -80,7 +80,7 @@ void test_map_capacity() {
 }
 
 void test_map_is_empty() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(map_is_empty(m));
 
     map_insert(m, "key", "value");
@@ -93,7 +93,7 @@ void test_map_is_empty() {
 }
 
 void test_map_has() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(!map_has(m, "key1"));
     assert(!map_has(m, "key2"));
     assert(!map_has(m, "key3"));
@@ -112,7 +112,7 @@ void test_map_has() {
 }
 
 void test_map_find() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
 
     pair *entry = map_find(m, "key");
     assert(entry == NULL);
@@ -126,7 +126,7 @@ void test_map_find() {
 }
 
 void test_map_get() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
 
     char* value = map_get(m, "key");
     assert(value == NULL);
@@ -140,7 +140,7 @@ void test_map_get() {
 }
 
 void test_map_insert() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(map_length(m) == 0);
 
     pair *entry = map_find(m, "key1");
@@ -173,7 +173,7 @@ void test_map_insert() {
 }
 
 void test_map_erase() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_str);
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(map_length(m) == 0);
 
     map_insert(m, "key1", "value1");
@@ -213,7 +213,7 @@ void test_map_erase() {
 }
 
 void test_map_rehash() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_str, 10);
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 10);
     assert(map_capacity(m) == 10);
     assert(map_length(m) == 0);
 
