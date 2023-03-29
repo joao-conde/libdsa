@@ -22,7 +22,7 @@ map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
 
 map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity) {
     // checks for overflow of amount of requested memory
-    if (key_size > PTRDIFF_MAX || value_size > PTRDIFF_MAX) return NULL;
+    if (key_size > PTRDIFF_MAX || value_size > PTRDIFF_MAX || capacity > PTRDIFF_MAX) return NULL;
 
     map *m = (map*) malloc(sizeof(map));
     list **buckets = (list**) malloc(capacity * sizeof(list*));
