@@ -71,8 +71,8 @@ lint:
 
 memcheck:
 	$(MAKE) clean
-	gcc -o runner-test $(MEMCHECK_FLAGS) $(TEST)/runner.c $(SRCS)
-	g++ -o runner-bench $(MEMCHECK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
+	g++ -o runner-bench $(TEST_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner-test
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner-bench
 
