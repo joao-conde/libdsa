@@ -8,14 +8,4 @@
 #define ALLOC_FACTOR 2
 #define LOAD_FACTOR 1.0
 
-struct map {
-    size_t length;
-    size_t capacity;
-    size_t key_size;
-    size_t value_size;
-    float max_load_factor;
-    list **buckets;
-    hash_fn *hasher;
-};
-
 #endif // SRC_INTERNAL_MAP_H_

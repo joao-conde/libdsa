@@ -6,6 +6,16 @@
 #include "../include/list.h"
 #include "../include/map.h"
 
+struct map {
+    size_t length;
+    size_t capacity;
+    size_t key_size;
+    size_t value_size;
+    float max_load_factor;
+    list **buckets;
+    hash_fn *hasher;
+};
+
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher) {
     return map_with_capacity(key_size, value_size, hasher, CAPACITY);
 }
