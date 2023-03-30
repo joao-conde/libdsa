@@ -64,7 +64,7 @@ bool map_is_empty(const map *m) {
 }
 
 bool map_has(const map *m, const void *key) {
-    return map_get(m, key) != NULL;
+    return map_find(m, key) != NULL;
 }
 
 pair* map_find(const map *m, const void *key) {
@@ -116,17 +116,10 @@ pair* map_insert(map *m, const void *key, const void *value) {
 }
 
 void map_erase(map *m, const void *key) {
-    size_t hash = m->hasher(key) % m->capacity;
-    list *bucket = m->buckets[hash];
+    list *bucket = _map_find_bucket(m, key);
     if (bucket == NULL) return;
 
-    list_node *cur = list_front(bucket);
-    while (
-        cur != NULL &&
-        memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
-    ) {
-        cur = cur->next;
-    }
+    list_node *cur = _map_find_bucket_node(m, bucket, key);
     if (cur == NULL) return;
 
     m->length -= 1;
@@ -177,4 +170,21 @@ void _map_free_buckets(map *m) {
         list_free(bucket);
     }
     free(m->buckets);
+}
+
+list* _map_find_bucket(const map *m, const void *key) {
+    size_t hash = m->hasher(key) % m->capacity;
+    list *bucket = m->buckets[hash];
+    return bucket;
+}
+
+list_node* _map_find_bucket_node(const map *m, const list *bucket, const void *key) {
+    list_node *cur = list_front(bucket);
+    while (
+        cur != NULL &&
+        memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
+    ) {
+        cur = cur->next;
+    }
+    return cur;
 }
