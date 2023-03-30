@@ -85,8 +85,18 @@ bool map_is_empty(const map *m) {
 void map_clear(map *m) {
     for (size_t i = 0; i < m->capacity; i++) {
         list *bucket = (list*) m->buckets[i];
+
+        list_node *cur = list_front(bucket);
+        while (cur != NULL) {
+            pair *entry = (pair*) cur->data;
+            pair_free(entry);
+            cur->data = NULL;
+            cur = cur->next;
+        }
+
         list_clear(bucket);
     }
+
     m->length = 0;
 }
 
