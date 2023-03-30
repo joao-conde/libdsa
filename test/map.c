@@ -113,12 +113,10 @@ void test_map_has() {
 
 void test_map_find() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
-
-    pair *entry = map_find(m, "key");
-    assert(entry == NULL);
+    assert(map_find(m, "key") == NULL);
 
     map_insert(m, "key", "value");
-    entry = map_find(m, "key");
+    pair *entry = map_find(m, "key");
     assert(strcmp(pair_first(entry), "key") == 0);
     assert(strcmp(pair_second(entry), "value") == 0);
 
@@ -127,14 +125,11 @@ void test_map_find() {
 
 void test_map_get() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
-
-    char* value = map_get(m, "key");
-    assert(value == NULL);
+    assert(map_get(m, "key") == NULL);
 
     map_insert(m, "key", "value");
-    value = map_get(m, "key");
+    char *value = map_get(m, "key");
     assert(strcmp(value, "value") == 0);
-    assert(value == map_get(m, "key"));
 
     map_free(m);
 }

@@ -164,14 +164,15 @@ void map_rehash(map *m, size_t capacity) {
 void _map_free_buckets(map *m) {
     for (size_t i = 0; i < m->capacity; i++) {
         list *bucket = (list*) m->buckets[i];
+
         list_node *cur = list_front(bucket);
         while (cur != NULL) {
             pair *entry = (pair*) cur->data;
             pair_free(entry);
             cur->data = NULL;
-
             cur = cur->next;
         }
+
         list_free(bucket);
     }
 
