@@ -16,11 +16,15 @@ map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size
 
 void map_free(map *m);
 
+float map_max_load_factor(const map *m);
+
+void map_set_max_load_factor(map *m, float factor);
+
+float map_load_factor(const map *m);
+
 size_t map_length(const map *m);
 
 size_t map_capacity(const map *m);
-
-float map_load_factor(const map *m);
 
 bool map_is_empty(const map *m);
 
