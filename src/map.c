@@ -47,25 +47,7 @@ map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size
 }
 
 void map_free(map *m) {
-    if (m != NULL) {
-        // free each allocated bucket
-        for (size_t i = 0; i < m->capacity; i++) {
-            list *bucket = (list*) m->buckets[i];
-            while (list_length(bucket) > 0) {
-                list_node *front = list_front(bucket);
-
-                pair *entry = (pair*) front->data;
-                pair_free(entry);
-                front->data = NULL;
-
-                list_pop_front(bucket);
-            }
-            list_free(bucket);
-        }
-
-        // free the buckets container
-        free(m->buckets);
-    }
+    if (m != NULL) _map_free_buckets(m);
     free(m);
 }
 
@@ -172,7 +154,15 @@ void map_rehash(map *m, size_t capacity) {
         }
     }
 
-    // TODO(@joao-conde): refactor for compound frees (internal header usage)
+    _map_free_buckets(m);
+
+    m->length = rehashed->length;
+    m->capacity = rehashed->capacity;
+    m->buckets = rehashed->buckets;
+    free(rehashed);
+}
+
+void _map_free_buckets(map *m) {
     for (size_t i = 0; i < m->capacity; i++) {
         list *bucket = (list*) m->buckets[i];
         while (list_length(bucket) > 0) {
@@ -187,9 +177,4 @@ void map_rehash(map *m, size_t capacity) {
         list_free(bucket);
     }
     free(m->buckets);
-
-    m->length = rehashed->length;
-    m->capacity = rehashed->capacity;
-    m->buckets = rehashed->buckets;
-    free(rehashed);
 }
