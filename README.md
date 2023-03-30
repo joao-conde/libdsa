@@ -1,4 +1,4 @@
-# LibDSA
+# libdsa
 
 **C data structures and algorithms library**, based on the **C++ STL**.
 
@@ -11,7 +11,7 @@ A personal endeavor to **learn the inner workings** of different **data structur
 - **C generic** data structures leveraging **void pointers**
 - Benchmark and comparison with the C++ STL
 - 100% code coverage
-- Memory-leak detection with Valgrind
+- Memory-leak free (analyzed with Valgrind)
 - Google's C/C++ style
 
 ## Examples
