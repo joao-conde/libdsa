@@ -8,4 +8,6 @@
 #define ALLOC_FACTOR 2
 #define LOAD_FACTOR 1.0
 
+void _map_free_buckets(map *m);
+
 #endif // SRC_INTERNAL_MAP_H_
