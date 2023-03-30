@@ -92,6 +92,24 @@ void test_map_is_empty() {
     map_free(m);
 }
 
+void test_map_clear() {
+    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    assert(map_is_empty(m));
+
+    map_insert(m, "key1", "value1");
+    map_insert(m, "key2", "value2");
+    assert(map_length(m) == 2);
+    assert(strcmp(map_get(m, "key1"), "value1") == 0);
+    assert(strcmp(map_get(m, "key2"), "value2") == 0);
+
+    map_clear(m);
+    assert(map_length(m) == 0);
+    assert(map_get(m, "key1") == NULL);
+    assert(map_get(m, "key2") == NULL);
+
+    map_free(m);
+}
+
 void test_map_has() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(!map_has(m, "key1"));
@@ -254,6 +272,7 @@ void test_map() {
     test_map_length();
     test_map_capacity();
     test_map_is_empty();
+    test_map_clear();
     test_map_has();
     test_map_find();
     test_map_get();

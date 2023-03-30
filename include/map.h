@@ -22,6 +22,8 @@ size_t map_capacity(const map *m);
 
 bool map_is_empty(const map *m);
 
+void map_clear(map *m);
+
 bool map_has(const map *m, const void *key);
 
 pair* map_find(const map *m, const void *key);
