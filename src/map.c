@@ -64,6 +64,14 @@ bool map_is_empty(const map *m) {
     return m->length == 0;
 }
 
+void map_clear(map *m) {
+    for (size_t i = 0; i < m->capacity; i++) {
+        list *bucket = (list*) m->buckets[i];
+        list_clear(bucket);
+    }
+    m->length = 0;
+}
+
 bool map_has(const map *m, const void *key) {
     return map_find(m, key) != NULL;
 }
