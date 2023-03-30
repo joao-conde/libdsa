@@ -10,4 +10,8 @@
 
 void _map_free_buckets(map *m);
 
+list* _map_find_bucket(const map *m, const void *key);
+
+list_node* _map_find_bucket_node(const map *m, const list *bucket, const void *key);
+
 #endif // SRC_INTERNAL_MAP_H_
