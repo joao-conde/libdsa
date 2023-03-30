@@ -79,6 +79,29 @@ void test_map_capacity() {
     map_free(m);
 }
 
+void test_map_load_factor() {
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_capacity(m) == 1);
+    assert(map_load_factor(m) == 0.0);
+
+    map_insert(m, "key1", "value1");
+    assert(map_length(m) == 1);
+    assert(map_capacity(m) == 1);
+    assert(map_load_factor(m) == 1.0);
+
+    map_insert(m, "key2", "value2");
+    assert(map_length(m) == 2);
+    assert(map_capacity(m) == 2);
+    assert(map_load_factor(m) == 1.0);
+
+    map_insert(m, "key3", "value3");
+    assert(map_length(m) == 3);
+    assert(map_capacity(m) == 4);
+    assert(map_load_factor(m) == 0.75);
+
+    map_free(m);
+}
+
 void test_map_is_empty() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
     assert(map_is_empty(m));
@@ -271,6 +294,7 @@ void test_map() {
     test_map_free();
     test_map_length();
     test_map_capacity();
+    test_map_load_factor();
     test_map_is_empty();
     test_map_clear();
     test_map_has();

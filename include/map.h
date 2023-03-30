@@ -20,6 +20,8 @@ size_t map_length(const map *m);
 
 size_t map_capacity(const map *m);
 
+float map_load_factor(const map *m);
+
 bool map_is_empty(const map *m);
 
 void map_clear(map *m);
