@@ -130,14 +130,17 @@ void map_erase(map *m, const void *key) {
 }
 
 void map_rehash(map *m, size_t capacity) {
+    // compute minimal capacity to rehash to
     size_t min = m->length / m->max_load_factor;
     capacity = capacity > min ? capacity : min;
 
     map *rehashed = map_with_capacity(m->key_size, m->value_size, m->hasher, capacity);
     if (rehashed == NULL) return;
 
+    // insert the pairs in a new map with capacity
     for (size_t i = 0; i < m->length; i++) {
         list *bucket = m->buckets[i];
+
         list_node *cur = list_front(bucket);
         while (cur != NULL) {
             pair *entry = (pair*) cur->data;
@@ -148,28 +151,30 @@ void map_rehash(map *m, size_t capacity) {
         }
     }
 
+    // free the original buckets which are no longer valid
     _map_free_buckets(m);
 
     m->length = rehashed->length;
     m->capacity = rehashed->capacity;
     m->buckets = rehashed->buckets;
+
     free(rehashed);
 }
 
 void _map_free_buckets(map *m) {
     for (size_t i = 0; i < m->capacity; i++) {
         list *bucket = (list*) m->buckets[i];
-        while (list_length(bucket) > 0) {
-            list_node *front = list_front(bucket);
-
-            pair *entry = (pair*) front->data;
+        list_node *cur = list_front(bucket);
+        while (cur != NULL) {
+            pair *entry = (pair*) cur->data;
             pair_free(entry);
-            front->data = NULL;
+            cur->data = NULL;
 
-            list_pop_front(bucket);
+            cur = cur->next;
         }
         list_free(bucket);
     }
+
     free(m->buckets);
 }
 
