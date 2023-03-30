@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <float.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -13,6 +14,10 @@ size_t hash_str(const void *key) {
 
 size_t hash_terribly(const void *key) {
     return hash_str(key) % 4;
+}
+
+bool equals(float f1, float f2) {
+    return abs(f1 - f2) <= FLT_EPSILON;
 }
 
 void test_map_init() {
@@ -40,6 +45,54 @@ void test_map_free() {
     map_free(NULL);
 
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map_free(m);
+}
+
+void test_map_max_load_factor() {
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_max_load_factor(m) == 1.0);
+    map_free(m);
+}
+
+void test_map_set_max_load_factor() {
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_max_load_factor(m) == 1.0);
+
+    map_set_max_load_factor(m, 2.01);
+    assert(equals(map_max_load_factor(m), 2.01));
+
+    map_insert(m, "key1", "value1");
+    map_insert(m, "key2", "value2");
+    assert(equals(map_load_factor(m), 1.0));
+    assert(equals(map_max_load_factor(m), 2.01));
+
+    map_set_max_load_factor(m, 1.0);
+    assert(equals(map_load_factor(m), 0.5));
+    assert(equals(map_max_load_factor(m), 1.0));
+
+    map_free(m);
+}
+
+void test_map_load_factor() {
+    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_capacity(m) == 1);
+    assert(map_load_factor(m) == 0.0);
+
+    map_insert(m, "key1", "value1");
+    assert(map_length(m) == 1);
+    assert(map_capacity(m) == 1);
+    assert(map_load_factor(m) == 1.0);
+
+    map_insert(m, "key2", "value2");
+    assert(map_length(m) == 2);
+    assert(map_capacity(m) == 2);
+    assert(map_load_factor(m) == 1.0);
+
+    map_insert(m, "key3", "value3");
+    assert(map_length(m) == 3);
+    assert(map_capacity(m) == 4);
+    assert(map_load_factor(m) == 0.75);
+
     map_free(m);
 }
 
@@ -75,29 +128,6 @@ void test_map_capacity() {
     map_insert(m, "key3", "value3");
     assert(map_length(m) == 3);
     assert(map_capacity(m) == 4);
-
-    map_free(m);
-}
-
-void test_map_load_factor() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
-    assert(map_capacity(m) == 1);
-    assert(map_load_factor(m) == 0.0);
-
-    map_insert(m, "key1", "value1");
-    assert(map_length(m) == 1);
-    assert(map_capacity(m) == 1);
-    assert(map_load_factor(m) == 1.0);
-
-    map_insert(m, "key2", "value2");
-    assert(map_length(m) == 2);
-    assert(map_capacity(m) == 2);
-    assert(map_load_factor(m) == 1.0);
-
-    map_insert(m, "key3", "value3");
-    assert(map_length(m) == 3);
-    assert(map_capacity(m) == 4);
-    assert(map_load_factor(m) == 0.75);
 
     map_free(m);
 }
@@ -292,9 +322,11 @@ void test_map() {
     test_map_with_capacity();
     test_map_with_capacity_fail();
     test_map_free();
+    test_map_max_load_factor();
+    test_map_set_max_load_factor();
+    test_map_load_factor();
     test_map_length();
     test_map_capacity();
-    test_map_load_factor();
     test_map_is_empty();
     test_map_clear();
     test_map_has();

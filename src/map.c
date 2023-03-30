@@ -52,16 +52,30 @@ void map_free(map *m) {
     free(m);
 }
 
+float map_max_load_factor(const map *m) {
+    return m->max_load_factor;
+}
+
+void map_set_max_load_factor(map *m, float factor) {
+    m->max_load_factor = factor;
+
+    // if the current load of the hashmap exceeds
+    // the limit we resize and rehash every entry
+    if (m->length * m->max_load_factor >= m->capacity) {
+        map_rehash(m, m->capacity * ALLOC_FACTOR);
+    }
+}
+
+float map_load_factor(const map *m) {
+    return (float) m->length / (float) m->capacity;
+}
+
 size_t map_length(const map *m) {
     return m->length;
 }
 
 size_t map_capacity(const map *m) {
     return m->capacity;
-}
-
-float map_load_factor(const map *m) {
-    return (float) m->length / (float) m->capacity;
 }
 
 bool map_is_empty(const map *m) {
