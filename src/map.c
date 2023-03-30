@@ -60,6 +60,10 @@ size_t map_capacity(const map *m) {
     return m->capacity;
 }
 
+float map_load_factor(const map *m) {
+    return (float) m->length / (float) m->capacity;
+}
+
 bool map_is_empty(const map *m) {
     return m->length == 0;
 }
