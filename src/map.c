@@ -32,6 +32,7 @@ map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size
         return NULL;
     }
 
+    // initializes the buckets for set capacity
     for (size_t i = 0; i < capacity; i++) {
         buckets[i] = list_init(PAIR_SIZE);
     }
@@ -84,22 +85,24 @@ void* map_get(const map *m, const void *key) {
 }
 
 pair* map_insert(map *m, const void *key, const void *value) {
-    // if the current percentual load of the hashmap exceeds
-    // our limit we resize and rehash every entry
+    // if the current load of the hashmap exceeds
+    // the limit we resize and rehash every entry
     if (m->length * m->max_load_factor >= m->capacity) {
         map_rehash(m, m->capacity * ALLOC_FACTOR);
     }
 
+    // if the key exists we update the value and return
     pair *entry = map_find(m, key);
     if (entry != NULL) {
         pair_set_second(entry, value);
         return entry;
     }
 
-    size_t hash = m->hasher(key) % m->capacity;
-    list *bucket = m->buckets[hash];
+    list *bucket = _map_find_bucket(m, key);
     if (bucket == NULL) return NULL;
 
+    // create the key-value pair, insert in the bucket
+    // and free the original pair
     entry = pair_init(key, value, m->key_size, m->value_size);
     list_node *inserted = list_push_back(bucket, entry);
     free(entry);
@@ -116,10 +119,14 @@ void map_erase(map *m, const void *key) {
     list_node *cur = _map_find_bucket_node(m, bucket, key);
     if (cur == NULL) return;
 
-    m->length -= 1;
+    // free the key-value pair
     pair_free((pair*) cur->data);
     cur->data = NULL;
+
+    // delete the key-value node from the bucket
     list_erase(bucket, cur);
+
+    m->length -= 1;
 }
 
 void map_rehash(map *m, size_t capacity) {
