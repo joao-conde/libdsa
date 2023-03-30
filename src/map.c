@@ -68,18 +68,12 @@ bool map_has(const map *m, const void *key) {
 }
 
 pair* map_find(const map *m, const void *key) {
-    size_t hash = m->hasher(key) % m->capacity;
-    list *bucket = m->buckets[hash];
+    list *bucket = _map_find_bucket(m, key);
     if (bucket == NULL) return NULL;
 
-    list_node *cur = list_front(bucket);
-    while (
-        cur != NULL &&
-        memcmp(pair_first((pair*) cur->data), key, m->key_size) != 0
-    ) {
-        cur = cur->next;
-    }
+    list_node *cur = _map_find_bucket_node(m, bucket, key);
     if (cur == NULL) return NULL;
+
     return (pair*) cur->data;
 }
 
