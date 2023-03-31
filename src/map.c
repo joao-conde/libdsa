@@ -86,6 +86,7 @@ void map_clear(map *m) {
     for (size_t i = 0; i < m->nbuckets; i++) {
         list *bucket = (list*) m->buckets[i];
 
+        // free each key-value pair in the bucket
         list_node *cur = list_front(bucket);
         while (cur != NULL) {
             pair *entry = (pair*) cur->data;
@@ -94,6 +95,7 @@ void map_clear(map *m) {
             cur = cur->next;
         }
 
+        // clear the bucket
         list_clear(bucket);
     }
 
@@ -142,6 +144,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
     entry = pair_init(key, value, m->key_size, m->value_size);
     list_node *inserted = list_push_back(bucket, entry);
     free(entry);
+
     if (inserted == NULL) return NULL;
 
     m->length += 1;
@@ -159,7 +162,7 @@ void map_erase(map *m, const void *key) {
     pair_free((pair*) cur->data);
     cur->data = NULL;
 
-    // delete the key-value node from the bucket
+    // remove the key-value node from the bucket
     list_erase(bucket, cur);
 
     m->length -= 1;
@@ -173,7 +176,7 @@ void map_rehash(map *m, size_t nbuckets) {
     map *rehashed = map_with_buckets(m->key_size, m->value_size, m->hasher, nbuckets);
     if (rehashed == NULL) return;
 
-    // insert the pairs in a new map with nbuckets
+    // insert the key-value pairs in a new map with nbuckets
     for (size_t i = 0; i < m->length; i++) {
         list *bucket = m->buckets[i];
 
@@ -201,6 +204,7 @@ void _map_free_buckets(map *m) {
     for (size_t i = 0; i < m->nbuckets; i++) {
         list *bucket = (list*) m->buckets[i];
 
+        // free each key-value pair in the bucket
         list_node *cur = list_front(bucket);
         while (cur != NULL) {
             pair *entry = (pair*) cur->data;
@@ -209,6 +213,7 @@ void _map_free_buckets(map *m) {
             cur = cur->next;
         }
 
+        // free the bucket
         list_free(bucket);
     }
 
