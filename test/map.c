@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <float.h>
+#include <math.h>
 #include <stdint.h>
 #include <string.h>
 
@@ -16,8 +17,8 @@ size_t hash_terribly(const void *key) {
     return hash_str(key) % 4;
 }
 
-bool equals(float f1, float f2) {
-    return abs(f1 - f2) <= FLT_EPSILON;
+bool fequals(float f1, float f2) {
+    return fabs(f1 - f2) <= FLT_EPSILON;
 }
 
 void test_map_init() {
@@ -59,16 +60,16 @@ void test_map_set_max_load_factor() {
     assert(map_max_load_factor(m) == 1.0);
 
     map_set_max_load_factor(m, 2.01);
-    assert(equals(map_max_load_factor(m), 2.01));
+    assert(fequals(map_max_load_factor(m), 2.01));
 
     map_insert(m, "key1", "value1");
     map_insert(m, "key2", "value2");
-    assert(equals(map_load_factor(m), 1.0));
-    assert(equals(map_max_load_factor(m), 2.01));
+    assert(fequals(map_load_factor(m), 1.0));
+    assert(fequals(map_max_load_factor(m), 2.01));
 
     map_set_max_load_factor(m, 1.0);
-    assert(equals(map_load_factor(m), 0.5));
-    assert(equals(map_max_load_factor(m), 1.0));
+    assert(fequals(map_load_factor(m), 0.5));
+    assert(fequals(map_max_load_factor(m), 1.0));
 
     map_free(m);
 }
