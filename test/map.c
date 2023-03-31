@@ -30,14 +30,14 @@ void test_map_init_fail() {
     assert(m == NULL);
 }
 
-void test_map_with_capacity() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 512);
-    assert(map_capacity(m) == 512);
+void test_map_with_buckets() {
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 512);
+    assert(map_buckets(m) == 512);
     map_free(m);
 }
 
-void test_map_with_capacity_fail() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX);
+void test_map_with_buckets_fail() {
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX);
     assert(m == NULL);
 }
 
@@ -49,13 +49,13 @@ void test_map_free() {
 }
 
 void test_map_max_load_factor() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
     assert(map_max_load_factor(m) == 1.0);
     map_free(m);
 }
 
 void test_map_set_max_load_factor() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
     assert(map_max_load_factor(m) == 1.0);
 
     map_set_max_load_factor(m, 2.01);
@@ -74,23 +74,23 @@ void test_map_set_max_load_factor() {
 }
 
 void test_map_load_factor() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
-    assert(map_capacity(m) == 1);
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_buckets(m) == 1);
     assert(map_load_factor(m) == 0.0);
 
     map_insert(m, "key1", "value1");
     assert(map_length(m) == 1);
-    assert(map_capacity(m) == 1);
+    assert(map_buckets(m) == 1);
     assert(map_load_factor(m) == 1.0);
 
     map_insert(m, "key2", "value2");
     assert(map_length(m) == 2);
-    assert(map_capacity(m) == 2);
+    assert(map_buckets(m) == 2);
     assert(map_load_factor(m) == 1.0);
 
     map_insert(m, "key3", "value3");
     assert(map_length(m) == 3);
-    assert(map_capacity(m) == 4);
+    assert(map_buckets(m) == 4);
     assert(map_load_factor(m) == 0.75);
 
     map_free(m);
@@ -113,21 +113,21 @@ void test_map_length() {
     map_free(m);
 }
 
-void test_map_capacity() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 1);
-    assert(map_capacity(m) == 1);
+void test_map_buckets() {
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    assert(map_buckets(m) == 1);
 
     map_insert(m, "key1", "value1");
     assert(map_length(m) == 1);
-    assert(map_capacity(m) == 1);
+    assert(map_buckets(m) == 1);
 
     map_insert(m, "key2", "value2");
     assert(map_length(m) == 2);
-    assert(map_capacity(m) == 2);
+    assert(map_buckets(m) == 2);
 
     map_insert(m, "key3", "value3");
     assert(map_length(m) == 3);
-    assert(map_capacity(m) == 4);
+    assert(map_buckets(m) == 4);
 
     map_free(m);
 }
@@ -279,35 +279,35 @@ void test_map_erase() {
 }
 
 void test_map_rehash() {
-    map *m = map_with_capacity(sizeof(char*), sizeof(char*), hash_terribly, 10);
-    assert(map_capacity(m) == 10);
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 10);
+    assert(map_buckets(m) == 10);
     assert(map_length(m) == 0);
 
     map_rehash(m, 1);
-    assert(map_capacity(m) == 1);
+    assert(map_buckets(m) == 1);
     assert(map_length(m) == 0);
 
     map_insert(m, "key1", "value1");
-    assert(map_capacity(m) == 1);
+    assert(map_buckets(m) == 1);
     assert(map_length(m) == 1);
 
     map_insert(m, "key2", "value2");
-    assert(map_capacity(m) == 2);
+    assert(map_buckets(m) == 2);
     assert(map_length(m) == 2);
 
     map_insert(m, "key3", "value3");
-    assert(map_capacity(m) == 4);
+    assert(map_buckets(m) == 4);
     assert(map_length(m) == 3);
 
     map_rehash(m, 0);
-    assert(map_capacity(m) == 3);
+    assert(map_buckets(m) == 3);
     assert(map_length(m) == 3);
     assert(strcmp(map_get(m, "key1"), "value1") == 0);
     assert(strcmp(map_get(m, "key2"), "value2") == 0);
     assert(strcmp(map_get(m, "key3"), "value3") == 0);
 
     map_rehash(m, 512);
-    assert(map_capacity(m) == 512);
+    assert(map_buckets(m) == 512);
     assert(map_length(m) == 3);
     assert(strcmp(map_get(m, "key1"), "value1") == 0);
     assert(strcmp(map_get(m, "key2"), "value2") == 0);
@@ -319,14 +319,14 @@ void test_map_rehash() {
 void test_map() {
     test_map_init();
     test_map_init_fail();
-    test_map_with_capacity();
-    test_map_with_capacity_fail();
+    test_map_with_buckets();
+    test_map_with_buckets_fail();
     test_map_free();
     test_map_max_load_factor();
     test_map_set_max_load_factor();
     test_map_load_factor();
     test_map_length();
-    test_map_capacity();
+    test_map_buckets();
     test_map_is_empty();
     test_map_clear();
     test_map_has();

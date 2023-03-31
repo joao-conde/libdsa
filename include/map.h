@@ -12,7 +12,7 @@ typedef struct map map;
 
 map* map_init(size_t key_size, size_t value_size, hash_fn *hasher);
 
-map* map_with_capacity(size_t key_size, size_t value_size, hash_fn *hasher, size_t capacity);
+map* map_with_buckets(size_t key_size, size_t value_size, hash_fn *hasher, size_t nbuckets);
 
 void map_free(map *m);
 
@@ -24,7 +24,7 @@ float map_load_factor(const map *m);
 
 size_t map_length(const map *m);
 
-size_t map_capacity(const map *m);
+size_t map_buckets(const map *m);
 
 bool map_is_empty(const map *m);
 
@@ -40,6 +40,6 @@ pair* map_insert(map *m, const void *key, const void *value);
 
 void map_erase(map *m, const void *key);
 
-void map_rehash(map *m, size_t capacity);
+void map_rehash(map *m, size_t nbuckets);
 
 #endif // INCLUDE_MAP_H_

@@ -4,7 +4,7 @@
 #include "../../include/list.h"
 #include "../../include/map.h"
 
-#define CAPACITY 512
+#define NBUCKETS 512
 
 #define ALLOC_FACTOR 2.0
 
