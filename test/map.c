@@ -305,7 +305,7 @@ void test_map_rehash() {
     assert(map_length(m) == 3);
 
     map_rehash(m, 0);
-    assert(map_buckets(m) == 3);
+    assert(map_buckets(m) == 4);
     assert(map_length(m) == 3);
     assert(strcmp(map_get(m, "key1"), "value1") == 0);
     assert(strcmp(map_get(m, "key2"), "value2") == 0);

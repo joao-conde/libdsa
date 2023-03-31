@@ -84,7 +84,7 @@ bool map_is_empty(const map *m) {
 
 void map_clear(map *m) {
     for (size_t i = 0; i < m->nbuckets; i++) {
-        list *bucket = (list*) m->buckets[i];
+        list *bucket = m->buckets[i];
 
         // free each key-value pair in the bucket
         list_node *cur = list_front(bucket);
@@ -169,9 +169,9 @@ void map_erase(map *m, const void *key) {
 }
 
 void map_rehash(map *m, size_t nbuckets) {
-    // compute minimal number of buckets to rehash to
-    size_t min = m->length / m->max_load_factor;
-    nbuckets = nbuckets > min ? nbuckets : min;
+    // compute minimum number of buckets to rehash to
+    size_t minbuckets = 1 + m->length / m->max_load_factor;
+    nbuckets = nbuckets > minbuckets ? nbuckets : minbuckets;
 
     map *rehashed = map_with_buckets(m->key_size, m->value_size, m->hasher, nbuckets);
     if (rehashed == NULL) return;
@@ -202,7 +202,7 @@ void map_rehash(map *m, size_t nbuckets) {
 
 void _map_free_buckets(map *m) {
     for (size_t i = 0; i < m->nbuckets; i++) {
-        list *bucket = (list*) m->buckets[i];
+        list *bucket = m->buckets[i];
 
         // free each key-value pair in the bucket
         list_node *cur = list_front(bucket);
