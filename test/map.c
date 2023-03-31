@@ -13,6 +13,10 @@ size_t hash_str(const void *key) {
     return hash;
 }
 
+size_t hash_int(const void *key) {
+    return *(size_t*) key;
+}
+
 size_t hash_terribly(const void *key) {
     return hash_str(key) % 4;
 }
@@ -317,6 +321,52 @@ void test_map_rehash() {
     map_free(m);
 }
 
+void test_map_load() {
+    int nelements = 100000;
+    bool has, is_empty;
+    size_t length;
+    float max_load_factor, load_factor;
+    pair *inserted;
+
+    map *m = map_init(sizeof(int), sizeof(int), hash_int);
+
+    for (int i = 0; i < nelements; i++) {
+        inserted = map_insert(m, &i, &i);
+        length = map_length(m);
+        is_empty = map_is_empty(m);
+        has = map_has(m, &i);
+        load_factor = map_load_factor(m);
+        max_load_factor = map_max_load_factor(m);
+        assert(*(int*) pair_first(inserted) == i);
+        assert(*(int*) pair_second(inserted) == i);
+        assert(length == i + 1);
+        assert(!is_empty);
+        assert(has);
+        assert(load_factor <= max_load_factor);
+    }
+
+    for (int i = 0; i < nelements / 2; i++) {
+        map_erase(m, &i);
+        length = map_length(m);
+        is_empty = map_is_empty(m);
+        has = map_has(m, &i);
+        load_factor = map_load_factor(m);
+        max_load_factor = map_max_load_factor(m);
+        assert(length == nelements - i - 1);
+        assert(!is_empty);
+        assert(!has);
+        assert(load_factor <= max_load_factor);
+    }
+
+    map_clear(m);
+    length = map_length(m);
+    is_empty = map_is_empty(m);
+    assert(length == 0);
+    assert(is_empty);
+
+    map_free(m);
+}
+
 void test_map() {
     test_map_init();
     test_map_init_fail();
@@ -336,4 +386,5 @@ void test_map() {
     test_map_insert();
     test_map_erase();
     test_map_rehash();
+    test_map_load();
 }
