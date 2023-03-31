@@ -3,6 +3,7 @@
 
 #define DEQUE_LOAD 10000000UL
 #define LIST_LOAD 10000000UL
+#define MAP_LOAD 100000UL
 #define PAIR_LOAD 10000000UL
 #define QUEUE_LOAD 10000000UL
 #define STACK_LOAD 10000000UL
@@ -32,6 +33,11 @@ void bc_list_push_pop_front();
 void bc_list_insert();
 void bc_list_insert_erase();
 void bc_list_push_clear();
+void bc_map_insert();
+void bc_map_insert_erase();
+void bc_map_insert_get();
+void bc_map_insert_clear();
+void bc_map_insert_rehash();
 void bc_pair_first();
 void bc_pair_second();
 void bc_pair_set_first();
@@ -63,6 +69,11 @@ void bcc_list_push_pop_front();
 void bcc_list_insert();
 void bcc_list_insert_erase();
 void bcc_list_push_clear();
+void bcc_map_insert();
+void bcc_map_insert_erase();
+void bcc_map_insert_get();
+void bcc_map_insert_clear();
+void bcc_map_insert_rehash();
 void bcc_pair_first();
 void bcc_pair_second();
 void bcc_pair_set_first();

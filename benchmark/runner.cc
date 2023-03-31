@@ -20,6 +20,13 @@ int main() {
     print_benchmark("list_erase", bc_list_insert_erase, bcc_list_insert_erase);
     print_benchmark("list_clear", bc_list_push_clear, bcc_list_push_clear);
 
+    // benchmark map module
+    print_benchmark("map_insert", bc_map_insert, bcc_map_insert);
+    print_benchmark("map_erase", bc_map_insert_erase, bcc_map_insert_erase);
+    print_benchmark("map_get", bc_map_insert_get, bcc_map_insert_get);
+    print_benchmark("map_clear", bc_map_insert_clear, bcc_map_insert_clear);
+    print_benchmark("map_rehash", bc_map_insert_rehash, bcc_map_insert_rehash);
+
     // benchmark pair module
     print_benchmark("pair_first", bc_pair_first, bcc_pair_first);
     print_benchmark("pair_second", bc_pair_second, bcc_pair_second);
