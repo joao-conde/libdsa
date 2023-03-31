@@ -9,7 +9,7 @@ A personal endeavor to **learn the inner workings** of different **data structur
 - **Opaque data types**
 - **PIMPL** design pattern
 - **C generic** data structures leveraging **void pointers**
-- Benchmark with the C++ STL
+- Benchmarked and compared with the C++ STL
 - 100% code coverage
 - Memory-leak free (analyzed with Valgrind)
 - Google's C/C++ style
