@@ -73,8 +73,8 @@ memcheck:
 	$(MAKE) clean
 	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
 	g++ -o runner-bench $(TEST_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
-	valgrind --error-exitcode=1 --leak-check=full -s ./runner-test
-	valgrind --error-exitcode=1 --leak-check=full -s ./runner-bench
+	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-test
+	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-bench
 
 benchmark:
 	$(MAKE) clean
