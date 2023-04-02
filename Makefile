@@ -84,5 +84,5 @@ benchmark:
 clean:
 	-@$(RM) $(OBJS)
 	-@$(RM) $(LIB).so
-	-@$(RM) runner-*
+	-@$(RM) runner*
 	-@$(RM) *.gcno *.gcda *.gcov
