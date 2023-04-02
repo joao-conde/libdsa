@@ -14,7 +14,7 @@ size_t hash_str(const void *key) {
 }
 
 size_t hash_int(const void *key) {
-    return *(size_t*) key;
+    return *(int*) key;
 }
 
 size_t hash_terribly(const void *key) {
