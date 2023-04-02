@@ -22,7 +22,7 @@ void map_set_max_load_factor(map *m, float factor);
 
 float map_load_factor(const map *m);
 
-size_t map_length(const map *m);
+size_t map_size(const map *m);
 
 size_t map_buckets(const map *m);
 

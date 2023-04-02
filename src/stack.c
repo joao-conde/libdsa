@@ -23,8 +23,8 @@ void stack_free(stack *s) {
     free(s);
 }
 
-size_t stack_length(const stack *s) {
-    return vector_length(s->data);
+size_t stack_size(const stack *s) {
+    return vector_size(s->data);
 }
 
 bool stack_empty(const stack *s) {

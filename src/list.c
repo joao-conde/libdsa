@@ -4,7 +4,7 @@
 #include "../include/list.h"
 
 struct list {
-    size_t length;
+    size_t size;
     size_t type_size;
     list_node *front;
     list_node *back;
@@ -38,7 +38,7 @@ list* list_init(size_t type_size) {
     list *l = (list*) malloc(sizeof(list));
     if (l == NULL) return NULL;
 
-    l->length = 0;
+    l->size = 0;
     l->type_size = type_size;
     l->front = NULL;
     l->back = NULL;
@@ -57,12 +57,12 @@ void list_free(list *l) {
     free(l);
 }
 
-size_t list_length(const list *l) {
-    return l->length;
+size_t list_size(const list *l) {
+    return l->size;
 }
 
 bool list_empty(const list *l) {
-    return l->length == 0;
+    return l->size == 0;
 }
 
 void list_clear(list *l) {
@@ -72,7 +72,7 @@ void list_clear(list *l) {
         list_node_free(cur);
         cur = next;
     }
-    l->length = 0;
+    l->size = 0;
     l->front = NULL;
     l->back = NULL;
 }
@@ -100,7 +100,7 @@ list_node* list_push_back(list *l, const void *value) {
        l->back = n;
     }
 
-    l->length += 1;
+    l->size += 1;
     return n;
 }
 
@@ -117,7 +117,7 @@ list_node* list_push_front(list *l, const void *value) {
         l->front = n;
     }
 
-    l->length += 1;
+    l->size += 1;
     return n;
 }
 
@@ -130,7 +130,7 @@ void list_pop_back(list *l) {
     if (prev != NULL) prev->next = NULL;
     if (l->front == back) l->front = prev;
 
-    l->length -= 1;
+    l->size -= 1;
     list_node_free(back);
 }
 
@@ -143,7 +143,7 @@ void list_pop_front(list *l) {
     if (next != NULL) next->prev = NULL;
     if (l->back == front) l->back = next;
 
-    l->length -= 1;
+    l->size -= 1;
     list_node_free(front);
 }
 
@@ -163,7 +163,7 @@ list_node* list_insert(list *l, list_node *pos, const void *value) {
         next->prev = n;
     }
 
-    l->length += 1;
+    l->size += 1;
     return n;
 }
 
@@ -179,6 +179,6 @@ void list_erase(list *l, list_node *pos) {
     next->prev = prev;
     prev->next = next;
 
-    l->length -= 1;
+    l->size -= 1;
     list_node_free(pos);
 }

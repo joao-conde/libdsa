@@ -12,7 +12,7 @@ vector* vector_with_capacity(size_t type_size, size_t capacity);
 
 void vector_free(vector *v);
 
-size_t vector_length(const vector *v);
+size_t vector_size(const vector *v);
 
 size_t vector_capacity(const vector *v);
 

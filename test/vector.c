@@ -8,7 +8,7 @@
 
 void test_vector_init() {
     vector *v = vector_init(sizeof(int));
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_capacity(v) == 512);
     vector_free(v);
 }
@@ -23,7 +23,7 @@ void test_vector_init_fail() {
 
 void test_vector_with_capacity() {
     vector *v = vector_with_capacity(sizeof(int), 10);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_capacity(v) == 10);
     vector_free(v);
 }
@@ -62,15 +62,15 @@ void test_vector_free() {
     vector_free(v);
 }
 
-void test_vector_length() {
+void test_vector_size() {
     float value = 3.5;
     vector *v = vector_init(sizeof(float));
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
 
     vector_push(v, &value);
     vector_push(v, &value);
     vector_push(v, &value);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
 
     vector_free(v);
 }
@@ -100,12 +100,12 @@ void test_vector_clear() {
     vector *v = vector_init(sizeof(double));
     for (int i = 0; i < 7; i++) vector_push(v, values + i);
     assert(!vector_empty(v));
-    assert(vector_length(v) == 7);
+    assert(vector_size(v) == 7);
     assert(vector_capacity(v) == 512);
 
     vector_clear(v);
     assert(vector_empty(v));
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_capacity(v) == 512);
 
     vector_free(v);
@@ -216,7 +216,7 @@ void test_vector_push() {
     result = vector_push(v, &values[4]);
     assert(*result == -1);
 
-    assert(vector_length(v) == 5);
+    assert(vector_size(v) == 5);
     assert(*(int*)vector_at(v, 0) == 51);
     assert(*(int*)vector_at(v, 1) == 12);
     assert(*(int*)vector_at(v, 2) == -123);
@@ -250,29 +250,29 @@ void test_vector_push_resize() {
     int values[5] = {0, -10, 50, 30, -57};
 
     vector *v = vector_with_capacity(sizeof(int), 1);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_capacity(v) == 1);
 
     vector_push(v, &values[0]);
-    assert(vector_length(v) == 1);
+    assert(vector_size(v) == 1);
     assert(vector_capacity(v) == 1);
     assert(*(int*)vector_at(v, 0) == 0);
 
     vector_push(v, &values[1]);
-    assert(vector_length(v) == 2);
+    assert(vector_size(v) == 2);
     assert(vector_capacity(v) == 2);
     assert(*(int*)vector_at(v, 0) == 0);
     assert(*(int*)vector_at(v, 1) == -10);
 
     vector_push(v, &values[2]);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
     assert(vector_capacity(v) == 4);
     assert(*(int*)vector_at(v, 0) == 0);
     assert(*(int*)vector_at(v, 1) == -10);
     assert(*(int*)vector_at(v, 2) == 50);
 
     vector_push(v, &values[3]);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
     assert(vector_capacity(v) == 4);
     assert(*(int*)vector_at(v, 0) == 0);
     assert(*(int*)vector_at(v, 1) == -10);
@@ -280,7 +280,7 @@ void test_vector_push_resize() {
     assert(*(int*)vector_at(v, 3) == 30);
 
     vector_push(v, &values[4]);
-    assert(vector_length(v) == 5);
+    assert(vector_size(v) == 5);
     assert(vector_capacity(v) == 8);
     assert(*(int*)vector_at(v, 0) == 0);
     assert(*(int*)vector_at(v, 1) == -10);
@@ -295,7 +295,7 @@ void test_vector_pop() {
     int *result, values[4] = {15, 21, 30, 69};
     vector *v = vector_init(sizeof(int));
     for (int i = 0; i < 4; i++) vector_push(v, values + i);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(*(int*)vector_at(v, 1) == 21);
     assert(*(int*)vector_at(v, 2) == 30);
@@ -303,7 +303,7 @@ void test_vector_pop() {
 
     result = vector_pop(v);
     assert(*result == 69);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(*(int*)vector_at(v, 1) == 21);
     assert(*(int*)vector_at(v, 2) == 30);
@@ -311,7 +311,7 @@ void test_vector_pop() {
 
     result = vector_pop(v);
     assert(*result == 30);
-    assert(vector_length(v) == 2);
+    assert(vector_size(v) == 2);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(*(int*)vector_at(v, 1) == 21);
     assert(vector_at(v, 2) == NULL);
@@ -319,7 +319,7 @@ void test_vector_pop() {
 
     result = vector_pop(v);
     assert(*result == 21);
-    assert(vector_length(v) == 1);
+    assert(vector_size(v) == 1);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(vector_at(v, 1) == NULL);
     assert(vector_at(v, 2) == NULL);
@@ -327,7 +327,7 @@ void test_vector_pop() {
 
     result = vector_pop(v);
     assert(*result == 15);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_at(v, 0) == NULL);
     assert(vector_at(v, 1) == NULL);
     assert(vector_at(v, 2) == NULL);
@@ -335,7 +335,7 @@ void test_vector_pop() {
 
     result = vector_pop(v);
     assert(result == NULL);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_at(v, 0) == NULL);
     assert(vector_at(v, 1) == NULL);
     assert(vector_at(v, 2) == NULL);
@@ -348,7 +348,7 @@ void test_vector_insert() {
     int *result, values[4] = {15, 21, 30, 69};
     vector *v = vector_init(sizeof(int));
     for (int i = 0; i < 4; i++) vector_push(v, values + i);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(*(int*)vector_at(v, 1) == 21);
     assert(*(int*)vector_at(v, 2) == 30);
@@ -356,7 +356,7 @@ void test_vector_insert() {
 
     result = vector_insert(v, 2, &values[3]);
     assert(*result == 69);
-    assert(vector_length(v) == 5);
+    assert(vector_size(v) == 5);
     assert(*(int*)vector_at(v, 0) == 15);
     assert(*(int*)vector_at(v, 1) == 21);
     assert(*(int*)vector_at(v, 2) == 69);
@@ -365,7 +365,7 @@ void test_vector_insert() {
 
     result = vector_insert(v, 0, &values[2]);
     assert(*result == 30);
-    assert(vector_length(v) == 6);
+    assert(vector_size(v) == 6);
     assert(*(int*)vector_at(v, 0) == 30);
     assert(*(int*)vector_at(v, 1) == 15);
     assert(*(int*)vector_at(v, 2) == 21);
@@ -375,7 +375,7 @@ void test_vector_insert() {
 
     result = vector_insert(v, 6, &values[0]);
     assert(*result == 15);
-    assert(vector_length(v) == 7);
+    assert(vector_size(v) == 7);
     assert(*(int*)vector_at(v, 0) == 30);
     assert(*(int*)vector_at(v, 1) == 15);
     assert(*(int*)vector_at(v, 2) == 21);
@@ -386,7 +386,7 @@ void test_vector_insert() {
 
     result = vector_insert(v, 1000, &values[0]);
     assert(result == NULL);
-    assert(vector_length(v) == 7);
+    assert(vector_size(v) == 7);
     assert(*(int*)vector_at(v, 0) == 30);
     assert(*(int*)vector_at(v, 1) == 15);
     assert(*(int*)vector_at(v, 2) == 21);
@@ -420,27 +420,27 @@ void test_vector_insert_void_ptrs() {
 void test_vector_insert_resize() {
     int values[4] = {15, 21, 30, 69};
     vector *v = vector_with_capacity(sizeof(int), 1);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_capacity(v) == 1);
 
     vector_insert(v, 0, &values[0]);
-    assert(vector_length(v) == 1);
+    assert(vector_size(v) == 1);
     assert(vector_capacity(v) == 1);
 
     vector_insert(v, 0, &values[1]);
-    assert(vector_length(v) == 2);
+    assert(vector_size(v) == 2);
     assert(vector_capacity(v) == 2);
 
     vector_insert(v, 0, &values[2]);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
     assert(vector_capacity(v) == 4);
 
     vector_insert(v, 0, &values[3]);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
     assert(vector_capacity(v) == 4);
 
     vector_insert(v, 0, &values[0]);
-    assert(vector_length(v) == 5);
+    assert(vector_size(v) == 5);
     assert(vector_capacity(v) == 8);
 
     assert(*(int*)vector_at(v, 0) == 15);
@@ -456,7 +456,7 @@ void test_vector_erase() {
     double *result, values[7] = {15.5, 21.7, 30.1, 69.10, -1.56, 10.0, 28.2};
     vector *v = vector_init(sizeof(double));
     for (int i = 0; i < 7; i++) vector_push(v, values + i);
-    assert(vector_length(v) == 7);
+    assert(vector_size(v) == 7);
     assert(*(double*)vector_at(v, 0) == 15.5);
     assert(*(double*)vector_at(v, 1) == 21.7);
     assert(*(double*)vector_at(v, 2) == 30.1);
@@ -467,7 +467,7 @@ void test_vector_erase() {
 
     result = vector_erase(v, 3);
     assert(*result == -1.56);
-    assert(vector_length(v) == 6);
+    assert(vector_size(v) == 6);
     assert(*(double*)vector_at(v, 0) == 15.5);
     assert(*(double*)vector_at(v, 1) == 21.7);
     assert(*(double*)vector_at(v, 2) == 30.1);
@@ -478,7 +478,7 @@ void test_vector_erase() {
 
     result = vector_erase(v, 4);
     assert(*result == 28.2);
-    assert(vector_length(v) == 5);
+    assert(vector_size(v) == 5);
     assert(*(double*)vector_at(v, 0) == 15.5);
     assert(*(double*)vector_at(v, 1) == 21.7);
     assert(*(double*)vector_at(v, 2) == 30.1);
@@ -489,7 +489,7 @@ void test_vector_erase() {
 
     result = vector_erase(v, 0);
     assert(*result == 21.7);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
     assert(*(double*)vector_at(v, 0) == 21.7);
     assert(*(double*)vector_at(v, 1) == 30.1);
     assert(*(double*)vector_at(v, 2) == -1.56);
@@ -500,7 +500,7 @@ void test_vector_erase() {
 
     result = vector_erase(v, 3);
     assert(result != NULL);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
     assert(*(double*)vector_at(v, 0) == 21.7);
     assert(*(double*)vector_at(v, 1) == 30.1);
     assert(*(double*)vector_at(v, 2) == -1.56);
@@ -511,7 +511,7 @@ void test_vector_erase() {
 
     result = vector_erase(v, 10.000);
     assert(result == NULL);
-    assert(vector_length(v) == 3);
+    assert(vector_size(v) == 3);
     assert(*(double*)vector_at(v, 0) == 21.7);
     assert(*(double*)vector_at(v, 1) == 30.1);
     assert(*(double*)vector_at(v, 2) == -1.56);
@@ -529,7 +529,7 @@ void test_vector_erase() {
     result = vector_erase(v, 0);
     assert(result != NULL);
 
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
     assert(vector_at(v, 0) == NULL);
     assert(vector_at(v, 1) == NULL);
     assert(vector_at(v, 2) == NULL);
@@ -549,12 +549,12 @@ void test_vector_resize() {
     vector_push(v, "all");
 
     assert(vector_capacity(v) == 512);
-    assert(vector_length(v) == 4);
+    assert(vector_size(v) == 4);
 
     void *result = vector_resize(v, 2);
     assert(result != NULL);
     assert(vector_capacity(v) == 2);
-    assert(vector_length(v) == 2);
+    assert(vector_size(v) == 2);
 
     assert(strcmp(vector_at(v, 0), "hello") == 0);
     assert(strcmp(vector_at(v, 1), "world") == 0);
@@ -563,16 +563,16 @@ void test_vector_resize() {
     result = vector_resize(v, 0);
     assert(result == NULL);
     assert(vector_capacity(v) == 0);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
 
     result = vector_resize(v, 512);
     assert(result != NULL);
     assert(vector_capacity(v) == 512);
-    assert(vector_length(v) == 0);
+    assert(vector_size(v) == 0);
 
     result = vector_push(v, "hello");
     assert(vector_capacity(v) == 512);
-    assert(vector_length(v) == 1);
+    assert(vector_size(v) == 1);
     assert(strcmp(result, "hello") == 0);
     assert(strcmp(vector_at(v, 0), "hello") == 0);
 
@@ -583,14 +583,14 @@ void test_vector_load() {
     unsigned int seed = time(NULL);
     int random, nelements = 100000;
     bool empty;
-    size_t length, capacity;
+    size_t size, capacity;
     int *at, *set, *pushed, *popped, *inserted, *erased, *begin, *back, *end;
 
     vector *v = vector_init(sizeof(int));
 
     for (int i = 0; i < nelements; i++) {
         pushed = vector_push(v, &i);
-        length = vector_length(v);
+        size = vector_size(v);
         capacity = vector_capacity(v);
         empty = vector_empty(v);
         at = vector_at(v, i);
@@ -599,7 +599,7 @@ void test_vector_load() {
         back = vector_back(v);
         end = vector_end(v);
         assert(*pushed == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(capacity >= 512);
         assert(!empty);
         assert(*at == i);
@@ -611,7 +611,7 @@ void test_vector_load() {
 
     for (int i = 0; i < nelements / 2; i++) {
         popped = vector_pop(v);
-        length = vector_length(v);
+        size = vector_size(v);
         capacity = vector_capacity(v);
         empty = vector_empty(v);
         at = vector_at(v, i);
@@ -620,7 +620,7 @@ void test_vector_load() {
         back = vector_back(v);
         end = vector_end(v);
         assert(*popped == nelements - i - 1);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(capacity >= 512);
         assert(!empty);
         assert(*at == i);
@@ -631,19 +631,19 @@ void test_vector_load() {
     }
 
     vector_clear(v);
-    length = vector_length(v);
+    size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
     assert(capacity == 131072);
 
     for (int i = 0; i < nelements; i++) {
-        length = vector_length(v);
-        random = rand_r(&seed) % (length > 0 ? length : 1);
+        size = vector_size(v);
+        random = rand_r(&seed) % (size > 0 ? size : 1);
 
         inserted = vector_insert(v, random, &i);
-        length = vector_length(v);
+        size = vector_size(v);
         capacity = vector_capacity(v);
         empty = vector_empty(v);
         at = vector_at(v, i);
@@ -651,7 +651,7 @@ void test_vector_load() {
         back = vector_back(v);
         end = vector_end(v);
         assert(*inserted == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(capacity == 131072);
         assert(!empty);
         assert(*at == i);
@@ -660,11 +660,11 @@ void test_vector_load() {
     }
 
     for (int i = 0; i < nelements / 2; i++) {
-        length = vector_length(v);
-        random = rand_r(&seed) % (length > 0 ? length : 1);
+        size = vector_size(v);
+        random = rand_r(&seed) % (size > 0 ? size : 1);
 
         erased = vector_erase(v, random);
-        length = vector_length(v);
+        size = vector_size(v);
         capacity = vector_capacity(v);
         empty = vector_empty(v);
         at = vector_at(v, i);
@@ -672,7 +672,7 @@ void test_vector_load() {
         back = vector_back(v);
         end = vector_end(v);
         assert(erased != NULL);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(capacity == 131072);
         assert(!empty);
         assert(*at == i);
@@ -681,34 +681,34 @@ void test_vector_load() {
     }
 
     vector_resize(v, 100000);
-    length = vector_length(v);
+    size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(length == nelements / 2);
+    assert(size == nelements / 2);
     assert(!empty);
     assert(capacity == 100000);
 
     vector_resize(v, 1000);
-    length = vector_length(v);
+    size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(length == 1000);
+    assert(size == 1000);
     assert(!empty);
     assert(capacity == 1000);
 
     vector_resize(v, 1);
-    length = vector_length(v);
+    size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(length == 1);
+    assert(size == 1);
     assert(!empty);
     assert(capacity == 1);
 
     vector_resize(v, 0);
-    length = vector_length(v);
+    size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
     assert(capacity == 0);
 
@@ -722,7 +722,7 @@ void test_vector() {
     test_vector_with_capacity_fail();
     test_vector_void_ptrs();
     test_vector_free();
-    test_vector_length();
+    test_vector_size();
     test_vector_capacity();
     test_vector_empty();
     test_vector_clear();

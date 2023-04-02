@@ -10,7 +10,7 @@ stack* stack_init(size_t type_size);
 
 void stack_free(stack *s);
 
-size_t stack_length(const stack *s);
+size_t stack_size(const stack *s);
 
 bool stack_empty(const stack *s);
 

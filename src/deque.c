@@ -8,7 +8,7 @@
 #define CHUNK_CAPACITY 512
 
 struct deque {
-    size_t length;
+    size_t size;
     size_t type_size;
     size_t front_chunk;
     size_t back_chunk;
@@ -34,7 +34,7 @@ deque* deque_init(size_t type_size) {
     // saves the first and only chunk pointer for now
     vector_push(chunks, &chunk);
 
-    dq->length = 0;
+    dq->size = 0;
     dq->type_size = type_size;
     dq->front_chunk = 0;
     dq->back_chunk = 0;
@@ -47,7 +47,7 @@ deque* deque_init(size_t type_size) {
 void deque_free(deque *dq) {
     if (dq != NULL && dq->chunks != NULL) {
         // free each allocated chunk
-        for (size_t i = 0; i < vector_length(dq->chunks); i++) {
+        for (size_t i = 0; i < vector_size(dq->chunks); i++) {
             void *chunk = *(void**)vector_at(dq->chunks, i);
             free(chunk);
         }
@@ -59,16 +59,16 @@ void deque_free(deque *dq) {
     free(dq);
 }
 
-size_t deque_length(const deque *dq) {
-    return dq->length;
+size_t deque_size(const deque *dq) {
+    return dq->size;
 }
 
 bool deque_empty(const deque *dq) {
-    return dq->length == 0;
+    return dq->size == 0;
 }
 
 void deque_clear(deque *dq) {
-    dq->length = 0;
+    dq->size = 0;
     dq->front_chunk = 0;
     dq->back_chunk = 0;
     dq->front = 0;
@@ -76,7 +76,7 @@ void deque_clear(deque *dq) {
 }
 
 void* deque_at(const deque *dq, size_t index) {
-    if (index >= dq->length) return NULL;
+    if (index >= dq->size) return NULL;
     size_t i = dq->front_chunk * CHUNK_CAPACITY + dq->front + index;
     size_t chunk_i = i / CHUNK_CAPACITY;
     size_t value_i = i % CHUNK_CAPACITY;
@@ -91,13 +91,13 @@ void* deque_front(const deque *dq) {
 
 void* deque_back(const deque *dq) {
     if (deque_empty(dq)) return deque_front(dq);
-    return deque_at(dq, dq->length - 1);
+    return deque_at(dq, dq->size - 1);
 }
 
 void* deque_push_back(deque *dq, const void *value) {
     // if current back chunk is in use, allocate
     // a new one in the back
-    if (dq->back_chunk == vector_length(dq->chunks) - 1) {
+    if (dq->back_chunk == vector_size(dq->chunks) - 1) {
         void *chunk = malloc(CHUNK_CAPACITY * dq->type_size);
         if (chunk == NULL) return NULL;
         vector_push(dq->chunks, &chunk);
@@ -112,8 +112,8 @@ void* deque_push_back(deque *dq, const void *value) {
         dq->back += deque_empty(dq) ? 0 : 1;
     }
 
-    dq->length += 1;
-    void *dst = deque_at(dq, dq->length - 1);
+    dq->size += 1;
+    void *dst = deque_at(dq, dq->size - 1);
     return memcpy(dst, value, dq->type_size);
 }
 
@@ -137,7 +137,7 @@ void* deque_push_front(deque *dq, const void *value) {
         dq->front -= deque_empty(dq) ? 0 : 1;
     }
 
-    dq->length += 1;
+    dq->size += 1;
     void *dst = deque_at(dq, 0);
     return memcpy(dst, value, dq->type_size);
 }
@@ -145,7 +145,7 @@ void* deque_push_front(deque *dq, const void *value) {
 void* deque_pop_back(deque *dq) {
     if (deque_empty(dq)) return NULL;
 
-    void *popped = deque_at(dq, dq->length - 1);
+    void *popped = deque_at(dq, dq->size - 1);
 
     // if the current back chunk is empty after the pop, update
     // indexes to point to the last element of the previous chunk
@@ -156,7 +156,7 @@ void* deque_pop_back(deque *dq) {
         dq->back -= 1;
     }
 
-    dq->length -= 1;
+    dq->size -= 1;
     return popped;
 }
 
@@ -174,6 +174,6 @@ void* deque_pop_front(deque *dq) {
         dq->front += 1;
     }
 
-    dq->length -= 1;
+    dq->size -= 1;
     return popped;
 }

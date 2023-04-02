@@ -24,15 +24,15 @@ void test_queue_free() {
     queue_free(q);
 }
 
-void test_queue_length() {
+void test_queue_size() {
     float value = 3.5;
     queue *q = queue_init(sizeof(float));
-    assert(queue_length(q) == 0);
+    assert(queue_size(q) == 0);
 
     queue_push(q, &value);
     queue_push(q, &value);
     queue_push(q, &value);
-    assert(queue_length(q) == 3);
+    assert(queue_size(q) == 3);
 
     queue_free(q);
 }
@@ -57,10 +57,10 @@ void test_queue_clear() {
     queue_push(q, &value);
     queue_push(q, &value);
     queue_push(q, &value);
-    assert(queue_length(q) == 3);
+    assert(queue_size(q) == 3);
 
     queue_clear(q);
-    assert(queue_length(q) == 0);
+    assert(queue_size(q) == 0);
 
     queue_free(q);
 }
@@ -187,7 +187,7 @@ void test_queue_push() {
     result = queue_push(q, &values[4]);
     assert(*result == -1);
 
-    assert(queue_length(q) == 5);
+    assert(queue_size(q) == 5);
 
     queue_free(q);
 }
@@ -201,30 +201,30 @@ void test_queue_pop() {
     queue_push(q, &values[3]);
     queue_push(q, &values[4]);
 
-    assert(queue_length(q) == 5);
+    assert(queue_size(q) == 5);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 4);
+    assert(queue_size(q) == 4);
     assert(*result == 51);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 3);
+    assert(queue_size(q) == 3);
     assert(*result == 12);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 2);
+    assert(queue_size(q) == 2);
     assert(*result == -123);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 1);
+    assert(queue_size(q) == 1);
     assert(*result == 1000);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 0);
+    assert(queue_size(q) == 0);
     assert(*result == -1);
 
     result = queue_pop(q);
-    assert(queue_length(q) == 0);
+    assert(queue_size(q) == 0);
     assert(result == NULL);
 
     queue_free(q);
@@ -233,20 +233,20 @@ void test_queue_pop() {
 void test_queue_load() {
     int nelements = 100000;
     bool empty;
-    size_t length;
+    size_t size;
     int *at, *pushed, *popped, *front, *back;
 
     queue *q = queue_init(sizeof(int));
 
     for (int i = 0; i < nelements; i++) {
         pushed = queue_push(q, &i);
-        length = queue_length(q);
+        size = queue_size(q);
         empty = queue_empty(q);
         at = queue_at(q, i);
         front = queue_front(q);
         back = queue_back(q);
         assert(*pushed == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(!empty);
         assert(*at == i);
         assert(*front == 0);
@@ -258,10 +258,10 @@ void test_queue_load() {
         front = queue_front(q);
         back = queue_back(q);
         popped = queue_pop(q);
-        length = queue_length(q);
+        size = queue_size(q);
         empty = queue_empty(q);
         assert(*popped == i);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(!empty);
         assert(*at == *popped);
         assert(*front == i);
@@ -269,9 +269,9 @@ void test_queue_load() {
     }
 
     queue_clear(q);
-    length = queue_length(q);
+    size = queue_size(q);
     empty = queue_empty(q);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
 
     queue_free(q);
@@ -281,7 +281,7 @@ void test_queue() {
     test_queue_init();
     test_queue_init_fail();
     test_queue_free();
-    test_queue_length();
+    test_queue_size();
     test_queue_empty();
     test_queue_clear();
     test_queue_at();

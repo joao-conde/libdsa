@@ -23,8 +23,8 @@ void queue_free(queue *q) {
     free(q);
 }
 
-size_t queue_length(const queue *q) {
-    return deque_length(q->data);
+size_t queue_size(const queue *q) {
+    return deque_size(q->data);
 }
 
 bool queue_empty(const queue *q) {

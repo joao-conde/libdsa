@@ -24,15 +24,15 @@ void test_stack_free() {
     stack_free(s);
 }
 
-void test_stack_length() {
+void test_stack_size() {
     float value = 3.5;
     stack *s = stack_init(sizeof(float));
-    assert(stack_length(s) == 0);
+    assert(stack_size(s) == 0);
 
     stack_push(s, &value);
     stack_push(s, &value);
     stack_push(s, &value);
-    assert(stack_length(s) == 3);
+    assert(stack_size(s) == 3);
 
     stack_free(s);
 }
@@ -57,10 +57,10 @@ void test_stack_clear() {
     stack_push(s, &value);
     stack_push(s, &value);
     stack_push(s, &value);
-    assert(stack_length(s) == 3);
+    assert(stack_size(s) == 3);
 
     stack_clear(s);
-    assert(stack_length(s) == 0);
+    assert(stack_size(s) == 0);
 
     stack_free(s);
 }
@@ -117,7 +117,7 @@ void test_stack_push() {
     result = stack_push(s, &values[4]);
     assert(*result == -1);
 
-    assert(stack_length(s) == 5);
+    assert(stack_size(s) == 5);
 
     stack_free(s);
 }
@@ -150,30 +150,30 @@ void test_stack_pop() {
     stack_push(s, &values[3]);
     stack_push(s, &values[4]);
 
-    assert(stack_length(s) == 5);
+    assert(stack_size(s) == 5);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 4);
+    assert(stack_size(s) == 4);
     assert(*result == -1);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 3);
+    assert(stack_size(s) == 3);
     assert(*result == 1000);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 2);
+    assert(stack_size(s) == 2);
     assert(*result == -123);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 1);
+    assert(stack_size(s) == 1);
     assert(*result == 12);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 0);
+    assert(stack_size(s) == 0);
     assert(*result == 51);
 
     result = stack_pop(s);
-    assert(stack_length(s) == 0);
+    assert(stack_size(s) == 0);
     assert(result == NULL);
 
     stack_free(s);
@@ -182,18 +182,18 @@ void test_stack_pop() {
 void test_stack_load() {
     int nelements = 100000;
     bool empty;
-    size_t length;
+    size_t size;
     int *top, *pushed, *popped;
 
     stack *s = stack_init(sizeof(int));
 
     for (int i = 0; i < nelements; i++) {
         pushed = stack_push(s, &i);
-        length = stack_length(s);
+        size = stack_size(s);
         empty = stack_empty(s);
         top = stack_top(s);
         assert(*pushed == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(!empty);
         assert(*top == i);
     }
@@ -201,18 +201,18 @@ void test_stack_load() {
     for (int i = 0; i < nelements / 2; i++) {
         top = stack_top(s);
         popped = stack_pop(s);
-        length = stack_length(s);
+        size = stack_size(s);
         empty = stack_empty(s);
         assert(*popped == nelements - i - 1);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(!empty);
         assert(*top == *popped);
     }
 
     stack_clear(s);
-    length = stack_length(s);
+    size = stack_size(s);
     empty = stack_empty(s);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
 
     stack_free(s);
@@ -222,7 +222,7 @@ void test_stack() {
     test_stack_init();
     test_stack_init_fail();
     test_stack_free();
-    test_stack_length();
+    test_stack_size();
     test_stack_empty();
     test_stack_clear();
     test_stack_top();

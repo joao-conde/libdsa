@@ -22,7 +22,7 @@ list* list_init(size_t type_size);
 
 void list_free(list *l);
 
-size_t list_length(const list *l);
+size_t list_size(const list *l);
 
 bool list_empty(const list *l);
 

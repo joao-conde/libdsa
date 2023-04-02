@@ -24,15 +24,15 @@ void test_deque_free() {
     deque_free(dq);
 }
 
-void test_deque_length() {
+void test_deque_size() {
     float value = 3.5;
     deque *dq = deque_init(sizeof(float));
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
 
     deque_push_back(dq, &value);
     deque_push_back(dq, &value);
     deque_push_back(dq, &value);
-    assert(deque_length(dq) == 3);
+    assert(deque_size(dq) == 3);
 
     deque_free(dq);
 }
@@ -57,10 +57,10 @@ void test_deque_clear() {
     deque_push_back(dq, &value);
     deque_push_back(dq, &value);
     deque_push_back(dq, &value);
-    assert(deque_length(dq) == 3);
+    assert(deque_size(dq) == 3);
 
     deque_clear(dq);
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
 
     deque_free(dq);
 }
@@ -204,7 +204,7 @@ void test_deque_push_back() {
     result = deque_push_back(dq, &values[4]);
     assert(*result == -1);
 
-    assert(deque_length(dq) == 5);
+    assert(deque_size(dq) == 5);
 
     deque_free(dq);
 }
@@ -228,7 +228,7 @@ void test_deque_push_front() {
     result = deque_push_front(dq, &values[4]);
     assert(*result == -1);
 
-    assert(deque_length(dq) == 5);
+    assert(deque_size(dq) == 5);
 
     deque_free(dq);
 }
@@ -242,30 +242,30 @@ void test_deque_pop_back() {
     deque_push_back(dq, &values[3]);
     deque_push_back(dq, &values[4]);
 
-    assert(deque_length(dq) == 5);
+    assert(deque_size(dq) == 5);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 4);
+    assert(deque_size(dq) == 4);
     assert(*result == -1);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 3);
+    assert(deque_size(dq) == 3);
     assert(*result == 1000);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 2);
+    assert(deque_size(dq) == 2);
     assert(*result == -123);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 1);
+    assert(deque_size(dq) == 1);
     assert(*result == 12);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
     assert(*result == 51);
 
     result = deque_pop_back(dq);
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
     assert(result == NULL);
 
     deque_free(dq);
@@ -280,30 +280,30 @@ void test_deque_pop_front() {
     deque_push_front(dq, &values[3]);
     deque_push_front(dq, &values[4]);
 
-    assert(deque_length(dq) == 5);
+    assert(deque_size(dq) == 5);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 4);
+    assert(deque_size(dq) == 4);
     assert(*result == -1);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 3);
+    assert(deque_size(dq) == 3);
     assert(*result == 1000);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 2);
+    assert(deque_size(dq) == 2);
     assert(*result == -123);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 1);
+    assert(deque_size(dq) == 1);
     assert(*result == 12);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
     assert(*result == 51);
 
     result = deque_pop_front(dq);
-    assert(deque_length(dq) == 0);
+    assert(deque_size(dq) == 0);
     assert(result == NULL);
 
     deque_free(dq);
@@ -312,20 +312,20 @@ void test_deque_pop_front() {
 void test_deque_load() {
     int nelements = 100000;
     bool empty;
-    size_t length;
+    size_t size;
     int *at, *pushed, *popped, *front, *back;
 
     deque *dq = deque_init(sizeof(int));
 
     for (int i = 0; i < nelements; i++) {
         pushed = deque_push_back(dq, &i);
-        length = deque_length(dq);
+        size = deque_size(dq);
         empty = deque_empty(dq);
         at = deque_at(dq, i);
         front = deque_front(dq);
         back = deque_back(dq);
         assert(*pushed == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(!empty);
         assert(*at == i);
         assert(*front == 0);
@@ -334,13 +334,13 @@ void test_deque_load() {
 
     for (int i = 0; i < nelements / 2; i++) {
         popped = deque_pop_back(dq);
-        length = deque_length(dq);
+        size = deque_size(dq);
         empty = deque_empty(dq);
         at = deque_at(dq, i);
         front = deque_front(dq);
         back = deque_back(dq);
         assert(*popped == nelements - i - 1);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(!empty);
         assert(*at == i);
         assert(*front == 0);
@@ -348,37 +348,37 @@ void test_deque_load() {
     }
 
     deque_clear(dq);
-    length = deque_length(dq);
+    size = deque_size(dq);
     empty = deque_empty(dq);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
 
     for (int i = 0; i < nelements; i++) {
         pushed = deque_push_front(dq, &i);
-        length = deque_length(dq);
+        size = deque_size(dq);
         empty = deque_empty(dq);
         at = deque_at(dq, i);
         back = deque_back(dq);
         assert(*pushed == i);
-        assert(length == i + 1);
+        assert(size == i + 1);
         assert(!empty);
         assert(*at == 0);
     }
 
     for (int i = 0; i < nelements - 1; i++) {
         popped = deque_pop_front(dq);
-        length = deque_length(dq);
+        size = deque_size(dq);
         empty = deque_empty(dq);
         back = deque_back(dq);
         assert(*popped == nelements - i - 1);
-        assert(length == nelements - i - 1);
+        assert(size == nelements - i - 1);
         assert(!empty);
     }
 
     deque_clear(dq);
-    length = deque_length(dq);
+    size = deque_size(dq);
     empty = deque_empty(dq);
-    assert(length == 0);
+    assert(size == 0);
     assert(empty);
 
     deque_free(dq);
@@ -388,7 +388,7 @@ void test_deque() {
     test_deque_init();
     test_deque_init_fail();
     test_deque_free();
-    test_deque_length();
+    test_deque_size();
     test_deque_empty();
     test_deque_clear();
     test_deque_at();

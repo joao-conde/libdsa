@@ -7,7 +7,7 @@
 #include "../include/map.h"
 
 struct map {
-    size_t length;
+    size_t size;
     size_t nbuckets;
     size_t key_size;
     size_t value_size;
@@ -37,7 +37,7 @@ map* map_with_buckets(size_t key_size, size_t value_size, hash_fn *hasher, size_
         buckets[i] = list_init(PAIR_SIZE);
     }
 
-    m->length = 0;
+    m->size = 0;
     m->nbuckets = nbuckets;
     m->key_size = key_size;
     m->value_size = value_size;
@@ -61,17 +61,17 @@ void map_set_max_load_factor(map *m, float factor) {
 
     // if the current load of the hashmap exceeds
     // the limit we resize and rehash every entry
-    if (m->length * m->max_load_factor >= m->nbuckets) {
+    if (m->size * m->max_load_factor >= m->nbuckets) {
         map_rehash(m, m->nbuckets * ALLOC_FACTOR);
     }
 }
 
 float map_load_factor(const map *m) {
-    return (float) m->length / (float) m->nbuckets;
+    return (float) m->size / (float) m->nbuckets;
 }
 
-size_t map_length(const map *m) {
-    return m->length;
+size_t map_size(const map *m) {
+    return m->size;
 }
 
 size_t map_buckets(const map *m) {
@@ -79,7 +79,7 @@ size_t map_buckets(const map *m) {
 }
 
 bool map_empty(const map *m) {
-    return m->length == 0;
+    return m->size == 0;
 }
 
 void map_clear(map *m) {
@@ -99,7 +99,7 @@ void map_clear(map *m) {
         list_clear(bucket);
     }
 
-    m->length = 0;
+    m->size = 0;
 }
 
 bool map_has(const map *m, const void *key) {
@@ -125,7 +125,7 @@ void* map_get(const map *m, const void *key) {
 pair* map_insert(map *m, const void *key, const void *value) {
     // if the current load of the hashmap exceeds
     // the limit we resize and rehash every entry
-    if (m->length * m->max_load_factor >= m->nbuckets) {
+    if (m->size * m->max_load_factor >= m->nbuckets) {
         map_rehash(m, m->nbuckets * ALLOC_FACTOR);
     }
 
@@ -147,7 +147,7 @@ pair* map_insert(map *m, const void *key, const void *value) {
 
     if (inserted == NULL) return NULL;
 
-    m->length += 1;
+    m->size += 1;
     return (pair*) inserted->data;
 }
 
@@ -165,19 +165,19 @@ void map_erase(map *m, const void *key) {
     // remove the key-value node from the bucket
     list_erase(bucket, cur);
 
-    m->length -= 1;
+    m->size -= 1;
 }
 
 void map_rehash(map *m, size_t nbuckets) {
     // compute minimum number of buckets to rehash to
-    size_t minbuckets = 1 + m->length / m->max_load_factor;
+    size_t minbuckets = 1 + m->size / m->max_load_factor;
     nbuckets = nbuckets > minbuckets ? nbuckets : minbuckets;
 
     map *rehashed = map_with_buckets(m->key_size, m->value_size, m->hasher, nbuckets);
     if (rehashed == NULL) return;
 
     // insert the key-value pairs in a new map with nbuckets
-    for (size_t i = 0; i < m->length; i++) {
+    for (size_t i = 0; i < m->size; i++) {
         list *bucket = m->buckets[i];
 
         list_node *cur = list_front(bucket);
@@ -193,7 +193,7 @@ void map_rehash(map *m, size_t nbuckets) {
     // free the original buckets which are no longer valid
     _map_free_buckets(m);
 
-    m->length = rehashed->length;
+    m->size = rehashed->size;
     m->nbuckets = rehashed->nbuckets;
     m->buckets = rehashed->buckets;
 

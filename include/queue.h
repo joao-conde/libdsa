@@ -10,7 +10,7 @@ queue* queue_init(size_t type_size);
 
 void queue_free(queue *q);
 
-size_t queue_length(const queue *q);
+size_t queue_size(const queue *q);
 
 bool queue_empty(const queue *q);
 

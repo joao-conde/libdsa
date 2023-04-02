@@ -7,7 +7,7 @@
 #define ALLOC_FACTOR 2
 
 struct vector {
-    size_t length;
+    size_t size;
     size_t capacity;
     size_t type_size;
     void *data;
@@ -29,7 +29,7 @@ vector* vector_with_capacity(size_t type_size, size_t capacity) {
         return NULL;
     }
 
-    v->length = 0;
+    v->size = 0;
     v->capacity = capacity;
     v->type_size = type_size;
     v->data = data;
@@ -41,8 +41,8 @@ void vector_free(vector *v) {
     free(v);
 }
 
-size_t vector_length(const vector *v) {
-    return v->length;
+size_t vector_size(const vector *v) {
+    return v->size;
 }
 
 size_t vector_capacity(const vector *v) {
@@ -50,20 +50,20 @@ size_t vector_capacity(const vector *v) {
 }
 
 bool vector_empty(const vector *v) {
-    return v->length == 0;
+    return v->size == 0;
 }
 
 void vector_clear(vector *v) {
-    v->length = 0;
+    v->size = 0;
 }
 
 void* vector_at(const vector *v, size_t index) {
-    if (index >= v->length) return NULL;
+    if (index >= v->size) return NULL;
     return (uint8_t*) v->data + index * v->type_size;
 }
 
 void* vector_set(const vector *v, size_t index, const void *value) {
-    if (index >= v->length) return NULL;
+    if (index >= v->size) return NULL;
     void *dst = (uint8_t*) v->data + index * v->type_size;
     return memcpy(dst, value, v->type_size);
 }
@@ -74,7 +74,7 @@ void* vector_begin(const vector *v) {
 
 void* vector_back(const vector *v) {
     if (vector_empty(v)) return vector_begin(v);
-    return vector_at(v, v->length - 1);
+    return vector_at(v, v->size - 1);
 }
 
 void* vector_end(const vector *v) {
@@ -84,29 +84,29 @@ void* vector_end(const vector *v) {
 void* vector_push(vector *v, const void *value) {
     // if the vector is at capacity already we resize it
     // if the resizing fails the push operation halts
-    if (v->length >= v->capacity) {
+    if (v->size >= v->capacity) {
         size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
         void *resized = vector_resize(v, capacity);
         if (resized == NULL) return NULL;
     }
 
-    void *dst = (uint8_t*) v->data + v->length * v->type_size;
-    v->length += 1;
+    void *dst = (uint8_t*) v->data + v->size * v->type_size;
+    v->size += 1;
     return memcpy(dst, value, v->type_size);
 }
 
 void* vector_pop(vector *v) {
     if (vector_empty(v)) return NULL;
-    v->length -= 1;
-    return (uint8_t*) v->data + v->length * v->type_size;
+    v->size -= 1;
+    return (uint8_t*) v->data + v->size * v->type_size;
 }
 
 void* vector_insert(vector *v, size_t index, const void *value) {
-    if (index > v->length) return NULL;
+    if (index > v->size) return NULL;
 
     // if the vector is at capacity already we resize it
     // if the resizing fails the insert operation halts
-    if (v->length >= v->capacity) {
+    if (v->size >= v->capacity) {
         size_t capacity = v->capacity > 0 ? v->capacity * ALLOC_FACTOR : CAPACITY;
         void *resized = vector_resize(v, capacity);
         if (resized == NULL) return NULL;
@@ -114,7 +114,7 @@ void* vector_insert(vector *v, size_t index, const void *value) {
 
     // computes the number of elements to copy and the
     // position of insertion
-    size_t to_copy = v->length - index;
+    size_t to_copy = v->size - index;
     uint8_t *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements right from the insertion position forward
@@ -123,16 +123,16 @@ void* vector_insert(vector *v, size_t index, const void *value) {
     void *moved = memmove(pos + v->type_size, pos, to_copy * v->type_size);
     if (moved == NULL) return NULL;
 
-    v->length += 1;
+    v->size += 1;
     return memcpy(pos, value, v->type_size);
 }
 
 void* vector_erase(vector *v, size_t index) {
-    if (index > v->length) return NULL;
+    if (index > v->size) return NULL;
 
     // computes the number of elements to copy and the
     // position of deletion
-    size_t to_copy = v->length - index;
+    size_t to_copy = v->size - index;
     uint8_t *pos = (uint8_t*) v->data + index * v->type_size;
 
     // shifts all elements left from the deletion position forward
@@ -142,7 +142,7 @@ void* vector_erase(vector *v, size_t index) {
 
     // returns a pointer to the position of the erased
     // element where a new element resides
-    v->length -= 1;
+    v->size -= 1;
     return moved;
 }
 
@@ -156,7 +156,7 @@ void* vector_resize(vector *v, size_t capacity) {
     void *data = realloc(v->data, v->type_size * capacity);
     if (capacity != 0 && data == NULL) return NULL;
 
-    v->length = v->length > capacity ? capacity : v->length;
+    v->size = v->size > capacity ? capacity : v->size;
     v->capacity = capacity;
     v->data = data;
     return data;
