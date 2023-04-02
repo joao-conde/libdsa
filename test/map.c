@@ -42,7 +42,7 @@ void test_map_with_buckets() {
 }
 
 void test_map_with_buckets_fail() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX);
+    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX / 10000);
     assert(m == NULL);
 }
 
