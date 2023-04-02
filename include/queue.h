@@ -12,7 +12,7 @@ void queue_free(queue *q);
 
 size_t queue_length(const queue *q);
 
-bool queue_is_empty(const queue *q);
+bool queue_empty(const queue *q);
 
 void queue_clear(queue *q);
 

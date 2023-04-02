@@ -78,7 +78,7 @@ size_t map_buckets(const map *m) {
     return m->nbuckets;
 }
 
-bool map_is_empty(const map *m) {
+bool map_empty(const map *m) {
     return m->length == 0;
 }
 

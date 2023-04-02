@@ -24,7 +24,7 @@ void list_free(list *l);
 
 size_t list_length(const list *l);
 
-bool list_is_empty(const list *l);
+bool list_empty(const list *l);
 
 void list_clear(list *l);
 

@@ -61,7 +61,7 @@ size_t list_length(const list *l) {
     return l->length;
 }
 
-bool list_is_empty(const list *l) {
+bool list_empty(const list *l) {
     return l->length == 0;
 }
 
@@ -78,12 +78,12 @@ void list_clear(list *l) {
 }
 
 list_node* list_front(const list *l) {
-    if (list_is_empty(l)) return NULL;
+    if (list_empty(l)) return NULL;
     return l->front;
 }
 
 list_node* list_back(const list *l) {
-    if (list_is_empty(l)) return NULL;
+    if (list_empty(l)) return NULL;
     return l->back;
 }
 
@@ -91,7 +91,7 @@ list_node* list_push_back(list *l, const void *value) {
     list_node *n = list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
-    if (list_is_empty(l)) {
+    if (list_empty(l)) {
         l->front = n;
         l->back = n;
     } else {
@@ -108,7 +108,7 @@ list_node* list_push_front(list *l, const void *value) {
     list_node *n = list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
-    if (list_is_empty(l)) {
+    if (list_empty(l)) {
         l->front = n;
         l->back = n;
     } else {
@@ -122,7 +122,7 @@ list_node* list_push_front(list *l, const void *value) {
 }
 
 void list_pop_back(list *l) {
-    if (list_is_empty(l)) return;
+    if (list_empty(l)) return;
 
     list_node *back = l->back;
     list_node *prev = back->prev;
@@ -135,7 +135,7 @@ void list_pop_back(list *l) {
 }
 
 void list_pop_front(list *l) {
-    if (list_is_empty(l)) return;
+    if (list_empty(l)) return;
 
     list_node *front = l->front;
     list_node *next = front->next;

@@ -12,7 +12,7 @@ void stack_free(stack *s);
 
 size_t stack_length(const stack *s);
 
-bool stack_is_empty(const stack *s);
+bool stack_empty(const stack *s);
 
 void stack_clear(stack *s);
 

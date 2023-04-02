@@ -12,7 +12,7 @@ void deque_free(deque *dq);
 
 size_t deque_length(const deque *dq);
 
-bool deque_is_empty(const deque *dq);
+bool deque_empty(const deque *dq);
 
 void deque_clear(deque *dq);
 

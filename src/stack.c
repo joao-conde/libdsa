@@ -27,8 +27,8 @@ size_t stack_length(const stack *s) {
     return vector_length(s->data);
 }
 
-bool stack_is_empty(const stack *s) {
-    return vector_is_empty(s->data);
+bool stack_empty(const stack *s) {
+    return vector_empty(s->data);
 }
 
 void stack_clear(stack *s) {

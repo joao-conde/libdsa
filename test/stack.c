@@ -5,7 +5,7 @@
 
 void test_stack_init() {
     stack *s = stack_init(sizeof(int));
-    assert(stack_is_empty(s));
+    assert(stack_empty(s));
     stack_free(s);
 }
 
@@ -37,16 +37,16 @@ void test_stack_length() {
     stack_free(s);
 }
 
-void test_stack_is_empty() {
+void test_stack_empty() {
     stack *s = stack_init(sizeof(int));
-    assert(stack_is_empty(s));
+    assert(stack_empty(s));
 
     int value = -10;
     stack_push(s, &value);
-    assert(!stack_is_empty(s));
+    assert(!stack_empty(s));
 
     stack_pop(s);
-    assert(stack_is_empty(s));
+    assert(stack_empty(s));
 
     stack_free(s);
 }
@@ -181,7 +181,7 @@ void test_stack_pop() {
 
 void test_stack_load() {
     int nelements = 100000;
-    bool is_empty;
+    bool empty;
     size_t length;
     int *top, *pushed, *popped;
 
@@ -190,11 +190,11 @@ void test_stack_load() {
     for (int i = 0; i < nelements; i++) {
         pushed = stack_push(s, &i);
         length = stack_length(s);
-        is_empty = stack_is_empty(s);
+        empty = stack_empty(s);
         top = stack_top(s);
         assert(*pushed == i);
         assert(length == i + 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(*top == i);
     }
 
@@ -202,18 +202,18 @@ void test_stack_load() {
         top = stack_top(s);
         popped = stack_pop(s);
         length = stack_length(s);
-        is_empty = stack_is_empty(s);
+        empty = stack_empty(s);
         assert(*popped == nelements - i - 1);
         assert(length == nelements - i - 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(*top == *popped);
     }
 
     stack_clear(s);
     length = stack_length(s);
-    is_empty = stack_is_empty(s);
+    empty = stack_empty(s);
     assert(length == 0);
-    assert(is_empty);
+    assert(empty);
 
     stack_free(s);
 }
@@ -223,7 +223,7 @@ void test_stack() {
     test_stack_init_fail();
     test_stack_free();
     test_stack_length();
-    test_stack_is_empty();
+    test_stack_empty();
     test_stack_clear();
     test_stack_top();
     test_stack_push();

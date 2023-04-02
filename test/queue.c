@@ -5,7 +5,7 @@
 
 void test_queue_init() {
     queue *q = queue_init(sizeof(int));
-    assert(queue_is_empty(q));
+    assert(queue_empty(q));
     queue_free(q);
 }
 
@@ -37,16 +37,16 @@ void test_queue_length() {
     queue_free(q);
 }
 
-void test_queue_is_empty() {
+void test_queue_empty() {
     queue *q = queue_init(sizeof(int));
-    assert(queue_is_empty(q));
+    assert(queue_empty(q));
 
     int value = -10;
     queue_push(q, &value);
-    assert(!queue_is_empty(q));
+    assert(!queue_empty(q));
 
     queue_pop(q);
-    assert(queue_is_empty(q));
+    assert(queue_empty(q));
 
     queue_free(q);
 }
@@ -232,7 +232,7 @@ void test_queue_pop() {
 
 void test_queue_load() {
     int nelements = 100000;
-    bool is_empty;
+    bool empty;
     size_t length;
     int *at, *pushed, *popped, *front, *back;
 
@@ -241,13 +241,13 @@ void test_queue_load() {
     for (int i = 0; i < nelements; i++) {
         pushed = queue_push(q, &i);
         length = queue_length(q);
-        is_empty = queue_is_empty(q);
+        empty = queue_empty(q);
         at = queue_at(q, i);
         front = queue_front(q);
         back = queue_back(q);
         assert(*pushed == i);
         assert(length == i + 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(*at == i);
         assert(*front == 0);
         assert(*back == i);
@@ -259,10 +259,10 @@ void test_queue_load() {
         back = queue_back(q);
         popped = queue_pop(q);
         length = queue_length(q);
-        is_empty = queue_is_empty(q);
+        empty = queue_empty(q);
         assert(*popped == i);
         assert(length == nelements - i - 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(*at == *popped);
         assert(*front == i);
         assert(*back == nelements - 1);
@@ -270,9 +270,9 @@ void test_queue_load() {
 
     queue_clear(q);
     length = queue_length(q);
-    is_empty = queue_is_empty(q);
+    empty = queue_empty(q);
     assert(length == 0);
-    assert(is_empty);
+    assert(empty);
 
     queue_free(q);
 }
@@ -282,7 +282,7 @@ void test_queue() {
     test_queue_init_fail();
     test_queue_free();
     test_queue_length();
-    test_queue_is_empty();
+    test_queue_empty();
     test_queue_clear();
     test_queue_at();
     test_queue_front();

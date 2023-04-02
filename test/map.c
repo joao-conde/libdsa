@@ -137,22 +137,22 @@ void test_map_buckets() {
     map_free(m);
 }
 
-void test_map_is_empty() {
+void test_map_empty() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
-    assert(map_is_empty(m));
+    assert(map_empty(m));
 
     map_insert(m, "key", "value");
-    assert(!map_is_empty(m));
+    assert(!map_empty(m));
 
     map_erase(m, "key");
-    assert(map_is_empty(m));
+    assert(map_empty(m));
 
     map_free(m);
 }
 
 void test_map_clear() {
     map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
-    assert(map_is_empty(m));
+    assert(map_empty(m));
 
     map_insert(m, "key1", "value1");
     map_insert(m, "key2", "value2");
@@ -323,7 +323,7 @@ void test_map_rehash() {
 
 void test_map_load() {
     int nelements = 100000;
-    bool has, is_empty;
+    bool has, empty;
     size_t length;
     float max_load_factor, load_factor;
     pair *inserted;
@@ -333,14 +333,14 @@ void test_map_load() {
     for (int i = 0; i < nelements; i++) {
         inserted = map_insert(m, &i, &i);
         length = map_length(m);
-        is_empty = map_is_empty(m);
+        empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(*(int*) pair_first(inserted) == i);
         assert(*(int*) pair_second(inserted) == i);
         assert(length == i + 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(has);
         assert(load_factor <= max_load_factor);
     }
@@ -348,21 +348,21 @@ void test_map_load() {
     for (int i = 0; i < nelements / 2; i++) {
         map_erase(m, &i);
         length = map_length(m);
-        is_empty = map_is_empty(m);
+        empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(length == nelements - i - 1);
-        assert(!is_empty);
+        assert(!empty);
         assert(!has);
         assert(load_factor <= max_load_factor);
     }
 
     map_clear(m);
     length = map_length(m);
-    is_empty = map_is_empty(m);
+    empty = map_empty(m);
     assert(length == 0);
-    assert(is_empty);
+    assert(empty);
 
     map_free(m);
 }
@@ -378,7 +378,7 @@ void test_map() {
     test_map_load_factor();
     test_map_length();
     test_map_buckets();
-    test_map_is_empty();
+    test_map_empty();
     test_map_clear();
     test_map_has();
     test_map_find();

@@ -63,7 +63,7 @@ size_t deque_length(const deque *dq) {
     return dq->length;
 }
 
-bool deque_is_empty(const deque *dq) {
+bool deque_empty(const deque *dq) {
     return dq->length == 0;
 }
 
@@ -90,7 +90,7 @@ void* deque_front(const deque *dq) {
 }
 
 void* deque_back(const deque *dq) {
-    if (deque_is_empty(dq)) return deque_front(dq);
+    if (deque_empty(dq)) return deque_front(dq);
     return deque_at(dq, dq->length - 1);
 }
 
@@ -109,7 +109,7 @@ void* deque_push_back(deque *dq, const void *value) {
         dq->back_chunk += 1;
         dq->back = 0;
     } else {
-        dq->back += deque_is_empty(dq) ? 0 : 1;
+        dq->back += deque_empty(dq) ? 0 : 1;
     }
 
     dq->length += 1;
@@ -134,7 +134,7 @@ void* deque_push_front(deque *dq, const void *value) {
         dq->front_chunk -= 1;
         dq->front = CHUNK_CAPACITY - 1;
     } else {
-        dq->front -= deque_is_empty(dq) ? 0 : 1;
+        dq->front -= deque_empty(dq) ? 0 : 1;
     }
 
     dq->length += 1;
@@ -143,7 +143,7 @@ void* deque_push_front(deque *dq, const void *value) {
 }
 
 void* deque_pop_back(deque *dq) {
-    if (deque_is_empty(dq)) return NULL;
+    if (deque_empty(dq)) return NULL;
 
     void *popped = deque_at(dq, dq->length - 1);
 
@@ -161,7 +161,7 @@ void* deque_pop_back(deque *dq) {
 }
 
 void* deque_pop_front(deque *dq) {
-    if (deque_is_empty(dq)) return NULL;
+    if (deque_empty(dq)) return NULL;
 
     void *popped = deque_at(dq, 0);
 

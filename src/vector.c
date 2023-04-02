@@ -49,7 +49,7 @@ size_t vector_capacity(const vector *v) {
     return v->capacity;
 }
 
-bool vector_is_empty(const vector *v) {
+bool vector_empty(const vector *v) {
     return v->length == 0;
 }
 
@@ -73,7 +73,7 @@ void* vector_begin(const vector *v) {
 }
 
 void* vector_back(const vector *v) {
-    if (vector_is_empty(v)) return vector_begin(v);
+    if (vector_empty(v)) return vector_begin(v);
     return vector_at(v, v->length - 1);
 }
 
@@ -96,7 +96,7 @@ void* vector_push(vector *v, const void *value) {
 }
 
 void* vector_pop(vector *v) {
-    if (vector_is_empty(v)) return NULL;
+    if (vector_empty(v)) return NULL;
     v->length -= 1;
     return (uint8_t*) v->data + v->length * v->type_size;
 }

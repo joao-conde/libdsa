@@ -27,8 +27,8 @@ size_t queue_length(const queue *q) {
     return deque_length(q->data);
 }
 
-bool queue_is_empty(const queue *q) {
-    return deque_is_empty(q->data);
+bool queue_empty(const queue *q) {
+    return deque_empty(q->data);
 }
 
 void queue_clear(queue *q) {

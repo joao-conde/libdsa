@@ -26,7 +26,7 @@ size_t map_length(const map *m);
 
 size_t map_buckets(const map *m);
 
-bool map_is_empty(const map *m);
+bool map_empty(const map *m);
 
 void map_clear(map *m);
 
