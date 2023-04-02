@@ -4,12 +4,12 @@
 
 extern mytype m1, m2, m3;
 
-size_t hash_int(const void *key) {
-    return *(size_t*) key;
+size_t hash(const void *key) {
+    return *(int*) key;
 }
 
 int main() {
-    map *m = map_init(sizeof(int), sizeof(mytype), hash_int);
+    map *m = map_init(sizeof(int), sizeof(mytype), hash);
 
     map_insert(m, &m1.id, &m1);
     map_insert(m, &m2.id, &m2);
