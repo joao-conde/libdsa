@@ -5,7 +5,7 @@
 #include "../include/pair.h"
 
 void test_pair_size() {
-    assert(PAIR_SIZE);
+    assert(PAIR_SIZE == 32);
 }
 
 void test_pair_init() {
