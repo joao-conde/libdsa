@@ -4,9 +4,10 @@ INSTALL_INCLUDE = /usr/include
 
 SHELL = /bin/bash
 
-DEBUG_FLAGS = -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
+DEBUG_FLAGS = -g -Wall -fsanitize=address,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = -g -Wall --coverage
+MEMCHECK_FLAGS = -g -Wall -fsanitize=address,undefined
 
 SRC = src
 HDR = include
@@ -70,8 +71,8 @@ lint:
 
 memcheck:
 	$(MAKE) clean
-	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	g++ -o runner-bench $(TEST_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	gcc -o runner-test $(MEMCHECK_FLAGS) $(TEST)/runner.c $(SRCS)
+	g++ -o runner-bench $(MEMCHECK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner-test
 	valgrind --error-exitcode=1 --leak-check=full -s ./runner-bench
 
