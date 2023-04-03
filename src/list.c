@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "internal/list.h"
+
 #include "../include/list.h"
 
 struct list {
@@ -9,30 +11,6 @@ struct list {
     list_node *front;
     list_node *back;
 };
-
-list_node* list_node_init(size_t type_size, const void *value) {
-    // checks for overflow of amount of requested memory
-    if (type_size > PTRDIFF_MAX) return NULL;
-
-    list_node *n = (list_node*) malloc(sizeof(list_node));
-    void *data = malloc(type_size);
-    if (n == NULL || data == NULL) {
-        free(data);
-        free(n);
-        return NULL;
-    }
-
-    memcpy(data, value, type_size);
-    n->data = data;
-    n->prev = NULL;
-    n->next = NULL;
-    return n;
-}
-
-void list_node_free(list_node *n) {
-    if (n != NULL) free(n->data);
-    free(n);
-}
 
 list* list_init(size_t type_size) {
     list *l = (list*) malloc(sizeof(list));
@@ -50,7 +28,7 @@ void list_free(list *l) {
         list_node *front = l->front;
         while (front != NULL) {
             list_node *tmp = front->next;
-            list_node_free(front);
+            _list_node_free(front);
             front = tmp;
         }
     }
@@ -69,7 +47,7 @@ void list_clear(list *l) {
     list_node *cur = l->front;
     while (cur != NULL) {
         list_node *next = cur->next;
-        list_node_free(cur);
+        _list_node_free(cur);
         cur = next;
     }
     l->size = 0;
@@ -88,7 +66,7 @@ list_node* list_back(const list *l) {
 }
 
 list_node* list_push_back(list *l, const void *value) {
-    list_node *n = list_node_init(l->type_size, value);
+    list_node *n = _list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (list_empty(l)) {
@@ -105,7 +83,7 @@ list_node* list_push_back(list *l, const void *value) {
 }
 
 list_node* list_push_front(list *l, const void *value) {
-    list_node *n = list_node_init(l->type_size, value);
+    list_node *n = _list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (list_empty(l)) {
@@ -131,7 +109,7 @@ void list_pop_back(list *l) {
     if (l->front == back) l->front = prev;
 
     l->size -= 1;
-    list_node_free(back);
+    _list_node_free(back);
 }
 
 void list_pop_front(list *l) {
@@ -144,11 +122,11 @@ void list_pop_front(list *l) {
     if (l->back == front) l->back = next;
 
     l->size -= 1;
-    list_node_free(front);
+    _list_node_free(front);
 }
 
 list_node* list_insert(list *l, list_node *pos, const void *value) {
-    list_node *n = list_node_init(l->type_size, value);
+    list_node *n = _list_node_init(l->type_size, value);
     if (n == NULL) return NULL;
 
     if (pos == l->back) {
@@ -180,5 +158,29 @@ void list_erase(list *l, list_node *pos) {
     prev->next = next;
 
     l->size -= 1;
-    list_node_free(pos);
+    _list_node_free(pos);
+}
+
+list_node* _list_node_init(size_t type_size, const void *value) {
+    // checks for overflow of amount of requested memory
+    if (type_size > PTRDIFF_MAX) return NULL;
+
+    list_node *n = (list_node*) malloc(sizeof(list_node));
+    void *data = malloc(type_size);
+    if (n == NULL || data == NULL) {
+        free(data);
+        free(n);
+        return NULL;
+    }
+
+    memcpy(data, value, type_size);
+    n->data = data;
+    n->prev = NULL;
+    n->next = NULL;
+    return n;
+}
+
+void _list_node_free(list_node *n) {
+    if (n != NULL) free(n->data);
+    free(n);
 }
