@@ -7,8 +7,8 @@ SHELL = /bin/bash
 DEBUG_FLAGS = -g -Wall -fsanitize=address,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = -g -Wall --coverage
-MEMCHECK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
-BENCHMARK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
+MEMCHECK_FLAGS = -s -O3 -finline-functions
+BENCHMARK_FLAGS = -s -O3 -finline-functions
 
 SRC = src
 HDR = include
