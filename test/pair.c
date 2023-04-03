@@ -5,6 +5,7 @@
 #include "../include/pair.h"
 
 #define MAX_VAL_SIZE 10
+#define TEST_LOAD 100000
 
 void test_pair_size() {
     assert(PAIR_SIZE == 32);
@@ -75,9 +76,8 @@ void test_pair_set_second() {
 }
 
 void test_pair_load() {
-    int nelements = 100000;
     int *first, *second;
-    for (int i = 0; i < nelements; i++) {
+    for (int i = 0; i < TEST_LOAD; i++) {
         pair *p = pair_init(&i, &i, sizeof(int), sizeof(int));
         first = pair_first(p);
         second = pair_second(p);

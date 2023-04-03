@@ -3,6 +3,8 @@
 
 #include "../include/queue.h"
 
+#define TEST_LOAD 100000
+
 void test_queue_init() {
     queue *q = queue_init(sizeof(int));
     assert(queue_empty(q));
@@ -231,14 +233,13 @@ void test_queue_pop() {
 }
 
 void test_queue_load() {
-    int nelements = 100000;
     bool empty;
     size_t size;
     int *at, *pushed, *popped, *front, *back;
 
     queue *q = queue_init(sizeof(int));
 
-    for (int i = 0; i < nelements; i++) {
+    for (int i = 0; i < TEST_LOAD; i++) {
         pushed = queue_push(q, &i);
         size = queue_size(q);
         empty = queue_empty(q);
@@ -253,7 +254,7 @@ void test_queue_load() {
         assert(*back == i);
     }
 
-    for (int i = 0; i < nelements / 2; i++) {
+    for (int i = 0; i < TEST_LOAD / 2; i++) {
         at = queue_at(q, 0);
         front = queue_front(q);
         back = queue_back(q);
@@ -261,11 +262,11 @@ void test_queue_load() {
         size = queue_size(q);
         empty = queue_empty(q);
         assert(*popped == i);
-        assert(size == nelements - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*at == *popped);
         assert(*front == i);
-        assert(*back == nelements - 1);
+        assert(*back == TEST_LOAD - 1);
     }
 
     queue_clear(q);

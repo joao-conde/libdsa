@@ -3,6 +3,8 @@
 
 #include "../include/stack.h"
 
+#define TEST_LOAD 100000
+
 void test_stack_init() {
     stack *s = stack_init(sizeof(int));
     assert(stack_empty(s));
@@ -180,14 +182,13 @@ void test_stack_pop() {
 }
 
 void test_stack_load() {
-    int nelements = 100000;
     bool empty;
     size_t size;
     int *top, *pushed, *popped;
 
     stack *s = stack_init(sizeof(int));
 
-    for (int i = 0; i < nelements; i++) {
+    for (int i = 0; i < TEST_LOAD; i++) {
         pushed = stack_push(s, &i);
         size = stack_size(s);
         empty = stack_empty(s);
@@ -198,13 +199,13 @@ void test_stack_load() {
         assert(*top == i);
     }
 
-    for (int i = 0; i < nelements / 2; i++) {
+    for (int i = 0; i < TEST_LOAD / 2; i++) {
         top = stack_top(s);
         popped = stack_pop(s);
         size = stack_size(s);
         empty = stack_empty(s);
-        assert(*popped == nelements - i - 1);
-        assert(size == nelements - i - 1);
+        assert(*popped == TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*top == *popped);
     }

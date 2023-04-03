@@ -8,6 +8,7 @@
 
 #define MAX_KEY_SIZE 10
 #define MAX_VAL_SIZE 10
+#define TEST_LOAD 100000
 
 size_t hash_str(const void *key) {
     size_t hash = 0;
@@ -325,7 +326,6 @@ void test_map_rehash() {
 }
 
 void test_map_load() {
-    int nelements = 100000;
     bool has, empty;
     size_t size;
     float max_load_factor, load_factor;
@@ -333,7 +333,7 @@ void test_map_load() {
 
     map *m = map_init(sizeof(int), sizeof(int), hash_int);
 
-    for (int i = 0; i < nelements; i++) {
+    for (int i = 0; i < TEST_LOAD; i++) {
         inserted = map_insert(m, &i, &i);
         size = map_size(m);
         empty = map_empty(m);
@@ -348,14 +348,14 @@ void test_map_load() {
         assert(load_factor <= max_load_factor);
     }
 
-    for (int i = 0; i < nelements / 2; i++) {
+    for (int i = 0; i < TEST_LOAD / 2; i++) {
         map_erase(m, &i);
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
-        assert(size == nelements - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(!has);
         assert(load_factor <= max_load_factor);
