@@ -1,10 +1,9 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "../include/vector.h"
+#include "internal/vector.h"
 
-#define CAPACITY 512
-#define ALLOC_FACTOR 2
+#include "../include/vector.h"
 
 struct vector {
     size_t size;
