@@ -1,0 +1,6 @@
+#ifndef SRC_INTERNAL_DEQUE_H_
+#define SRC_INTERNAL_DEQUE_H_
+
+#define CHUNK_CAPACITY 512
+
+#endif // SRC_INTERNAL_DEQUE_H_

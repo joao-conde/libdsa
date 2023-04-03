@@ -2,10 +2,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "internal/deque.h"
+
 #include "../include/deque.h"
 #include "../include/vector.h"
-
-#define CHUNK_CAPACITY 512
 
 struct deque {
     size_t size;
