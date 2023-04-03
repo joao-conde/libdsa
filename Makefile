@@ -7,6 +7,8 @@ SHELL = /bin/bash
 DEBUG_FLAGS = -g -Wall -fsanitize=address,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = -g -Wall --coverage
+MEMCHECK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
+BENCHMARK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
 
 SRC = src
 HDR = include
@@ -55,7 +57,7 @@ uninstall:
 test:
 	$(MAKE) clean
 	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	./runner-test
+	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
 
 coverage:
 	$(MAKE) test
@@ -70,14 +72,14 @@ lint:
 
 memcheck:
 	$(MAKE) clean
-	gcc -o runner-test $(RELEASE_FLAGS) $(TEST)/runner.c $(SRCS)
-	g++ -o runner-bench $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	gcc -o runner-test $(MEMCHECK_FLAGS) $(TEST)/runner.c $(SRCS)
+	g++ -o runner-bench $(MEMCHECK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-test
 	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-bench
 
 benchmark:
 	$(MAKE) clean
-	g++ -o runner $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	g++ -o runner $(BENCHMARK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
 	./runner
 
 clean:
