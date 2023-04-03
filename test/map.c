@@ -6,6 +6,9 @@
 
 #include "../include/map.h"
 
+#define MAX_KEY_SIZE 10
+#define MAX_VAL_SIZE 10
+
 size_t hash_str(const void *key) {
     size_t hash = 0;
     char *str = (char*) key;
@@ -26,7 +29,7 @@ bool fequals(float f1, float f2) {
 }
 
 void test_map_init() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     map_free(m);
 }
 
@@ -36,31 +39,31 @@ void test_map_init_fail() {
 }
 
 void test_map_with_buckets() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 512);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 512);
     assert(map_buckets(m) == 512);
     map_free(m);
 }
 
 void test_map_with_buckets_fail() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, SIZE_MAX / 10000);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, SIZE_MAX / 10000);
     assert(m == NULL);
 }
 
 void test_map_free() {
     map_free(NULL);
 
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     map_free(m);
 }
 
 void test_map_max_load_factor() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 1);
     assert(map_max_load_factor(m) == 1.0);
     map_free(m);
 }
 
 void test_map_set_max_load_factor() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 1);
     assert(map_max_load_factor(m) == 1.0);
 
     map_set_max_load_factor(m, 2.01);
@@ -79,7 +82,7 @@ void test_map_set_max_load_factor() {
 }
 
 void test_map_load_factor() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 1);
     assert(map_buckets(m) == 1);
     assert(map_load_factor(m) == 0.0);
 
@@ -102,7 +105,7 @@ void test_map_load_factor() {
 }
 
 void test_map_size() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_size(m) == 0);
 
     map_insert(m, "key1", "value1");
@@ -119,7 +122,7 @@ void test_map_size() {
 }
 
 void test_map_buckets() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 1);
     assert(map_buckets(m) == 1);
 
     map_insert(m, "key1", "value1");
@@ -138,7 +141,7 @@ void test_map_buckets() {
 }
 
 void test_map_empty() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_empty(m));
 
     map_insert(m, "key", "value");
@@ -151,7 +154,7 @@ void test_map_empty() {
 }
 
 void test_map_clear() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_empty(m));
 
     map_insert(m, "key1", "value1");
@@ -169,7 +172,7 @@ void test_map_clear() {
 }
 
 void test_map_has() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(!map_has(m, "key1"));
     assert(!map_has(m, "key2"));
     assert(!map_has(m, "key3"));
@@ -188,7 +191,7 @@ void test_map_has() {
 }
 
 void test_map_find() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_find(m, "key") == NULL);
 
     map_insert(m, "key", "value");
@@ -200,7 +203,7 @@ void test_map_find() {
 }
 
 void test_map_get() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_get(m, "key") == NULL);
 
     map_insert(m, "key", "value");
@@ -211,7 +214,7 @@ void test_map_get() {
 }
 
 void test_map_insert() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_size(m) == 0);
 
     pair *entry = map_find(m, "key1");
@@ -244,7 +247,7 @@ void test_map_insert() {
 }
 
 void test_map_erase() {
-    map *m = map_init(sizeof(char*), sizeof(char*), hash_terribly);
+    map *m = map_init(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly);
     assert(map_size(m) == 0);
 
     map_insert(m, "key1", "value1");
@@ -284,7 +287,7 @@ void test_map_erase() {
 }
 
 void test_map_rehash() {
-    map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 10);
+    map *m = map_with_buckets(MAX_KEY_SIZE, MAX_VAL_SIZE, hash_terribly, 10);
     assert(map_buckets(m) == 10);
     assert(map_size(m) == 0);
 
