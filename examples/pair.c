@@ -1,5 +1,4 @@
 #include <dsa.h>
-#include <pair.h>
 
 #include "mytype.h"
 

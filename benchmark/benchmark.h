@@ -1,6 +1,10 @@
 #ifndef BENCHMARK_BENCHMARK_H_
 #define BENCHMARK_BENCHMARK_H_
 
+#include <iostream>
+
+#include "../include/dsa.h"
+
 #define DEQUE_LOAD 1000000UL
 #define LIST_LOAD 1000000UL
 #define MAP_LOAD 1000000UL
@@ -11,10 +15,6 @@
 #define VECTOR_LOAD_INSERT 100000UL
 
 #define TABLE_WIDTH 20
-
-#include <iostream>
-
-#include "../include/dsa.h"
 
 int64_t benchmark(void (fn)());
 void print_benchmark_header();

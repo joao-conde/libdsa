@@ -1,5 +1,4 @@
 #include <dsa.h>
-#include <list.h>
 
 #include "mytype.h"
 
