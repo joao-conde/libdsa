@@ -57,7 +57,7 @@ uninstall:
 test:
 	$(MAKE) clean
 	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
+	./runner-test
 
 coverage:
 	$(MAKE) test
