@@ -68,6 +68,7 @@ void* vector_set(const vector *v, size_t index, const void *value) {
 }
 
 void* vector_begin(const vector *v) {
+    if (vector_empty(v)) return v->data;
     return vector_at(v, 0);
 }
 
