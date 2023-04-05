@@ -4,11 +4,11 @@ INSTALL_INCLUDE = /usr/include
 
 SHELL = /bin/bash
 
-DEBUG_FLAGS = -g -Wall -fsanitize=address,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
+DEBUG_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
-TEST_FLAGS = -g -Wall -fsanitize=address,undefined --coverage
+TEST_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined --coverage
 MEMCHECK_FLAGS = -s -O3 -finline-functions
-BENCHMARK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
+BENCHMARK_FLAGS = -s -O3 -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -finline-functions
 
 SRC = src
 HDR = include
