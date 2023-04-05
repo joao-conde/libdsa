@@ -6,9 +6,9 @@ SHELL = /bin/bash
 
 DEBUG_FLAGS = -g -Wall -fsanitize=address,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
-TEST_FLAGS = -g -Wall --coverage
-MEMCHECK_FLAGS = -s -O3 -finline-functions
-BENCHMARK_FLAGS = -s -O3 -finline-functions
+TEST_FLAGS = -g -Wall -fsanitize=address,undefined --coverage
+MEMCHECK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
+BENCHMARK_FLAGS = -s -O3 -fsanitize=address,undefined -finline-functions
 
 SRC = src
 HDR = include
@@ -57,7 +57,7 @@ uninstall:
 test:
 	$(MAKE) clean
 	gcc -o runner-test $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	./runner-test
+	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
 
 coverage:
 	$(MAKE) test

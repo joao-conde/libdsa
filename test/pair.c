@@ -4,7 +4,6 @@
 
 #include "../include/pair.h"
 
-#define MAX_VAL_SIZE 10
 #define TEST_LOAD 100000
 
 void test_pair_size() {
@@ -15,7 +14,7 @@ void test_pair_init() {
     int first = 1;
     char *second = "value";
 
-    pair *p = pair_init(&first, second, sizeof(int), MAX_VAL_SIZE);
+    pair *p = pair_init(&first, &second, sizeof(int), sizeof(char*));
     assert(p != NULL);
 
     pair_free(p);
@@ -32,14 +31,14 @@ void test_pair_free() {
 
     int first = 1;
     char *second = "value";
-    pair *p = pair_init(&first, second, sizeof(int), MAX_VAL_SIZE);
+    pair *p = pair_init(&first, &second, sizeof(int), sizeof(char*));
     pair_free(p);
 }
 
 void test_pair_first() {
     int first = 1;
     char *second = "value";
-    pair *p = pair_init(&first, second, sizeof(int), MAX_VAL_SIZE);
+    pair *p = pair_init(&first, &second, sizeof(int), sizeof(char*));
 
     assert(*(int*)pair_first(p) == first);
 
@@ -49,28 +48,32 @@ void test_pair_first() {
 void test_pair_second() {
     int first = 1;
     char *second = "value";
-    pair *p = pair_init(&first, second, sizeof(int), MAX_VAL_SIZE);
-    assert(strcmp(pair_second(p), "value") == 0);
+    pair *p = pair_init(&first, &second, sizeof(int), sizeof(char*));
+    assert(strcmp(*(char**) pair_second(p), "value") == 0);
 
     pair_free(p);
 }
 
 void test_pair_set_first() {
-    pair *p = pair_init("first", "second", MAX_VAL_SIZE, MAX_VAL_SIZE);
-    assert(strcmp(pair_first(p), "first") == 0);
+    char *first = "first", *second = "second";
+    pair *p = pair_init(&first, &second, sizeof(char*), sizeof(char*));
+    assert(strcmp(*(char**) pair_first(p), "first") == 0);
 
-    pair_set_first(p, "changed");
-    assert(strcmp(pair_first(p), "changed") == 0);
+    char *changed = "changed";
+    pair_set_first(p, &changed);
+    assert(strcmp(*(char**) pair_first(p), "changed") == 0);
 
     pair_free(p);
 }
 
 void test_pair_set_second() {
-    pair *p = pair_init("first", "second", MAX_VAL_SIZE, MAX_VAL_SIZE);
-    assert(strcmp(pair_second(p), "second") == 0);
+    char *first = "first", *second = "second";
+    pair *p = pair_init(&first, &second, sizeof(char*), sizeof(char*));
+    assert(strcmp(*(char**) pair_first(p), "first") == 0);
 
-    pair_set_second(p, "changed");
-    assert(strcmp(pair_second(p), "changed") == 0);
+    char *changed = "changed";
+    pair_set_second(p, &changed);
+    assert(strcmp(*(char**) pair_second(p), "changed") == 0);
 
     pair_free(p);
 }
