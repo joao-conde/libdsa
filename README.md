@@ -11,7 +11,7 @@ A personal endeavor to **learn the inner workings** of different **data structur
 - **C generic** data structures leveraging **void pointers**
 - Benchmarked and compared with the C++ STL
 - 100% code coverage
-- Memory-leak free (analyzed with Valgrind and [Google Sanitizers](https://github.com/google/sanitizers))
+- Memory-leak free (analyzed with [Google Sanitizers](https://github.com/google/sanitizers))
 - Google's C/C++ style
 
 ## Examples

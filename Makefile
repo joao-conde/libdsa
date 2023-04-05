@@ -7,7 +7,8 @@ SHELL = /bin/bash
 DEBUG_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -s -O3 -finline-functions
 TEST_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined --coverage
-MEMCHECK_FLAGS = -s -O3 -finline-functions
+COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
+LINT_FLAGS = --extensions=c,cc,h --recursive
 BENCHMARK_FLAGS = -s -O3 -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -finline-functions
 
 SRC = src
@@ -22,7 +23,7 @@ INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
 COVS = $(patsubst %.c, runner-test-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
-.PHONY: usage debug release clean install uninstall test coverage coverage-report lint memcheck benchmark
+.PHONY: usage debug release clean install uninstall test coverage coverage-report lint benchmark
 
 default: usage
 
@@ -36,7 +37,6 @@ usage:
 	@echo make coverage - run all test suites and measure coverage
 	@echo make coverage-report - run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
-	@echo make memcheck - analyze memory usage and report memory leaks
 	@echo make benchmark - run $(LIB) benchmarks comparing with C++ STL 
 
 debug:
@@ -65,17 +65,10 @@ coverage:
 
 coverage-report:
 	$(MAKE) test
-	gcov --function-summaries --use-colors --stdout $(COVS)
+	gcov $(COVERAGE_REPORT_FLAGS) $(COVS)
 
 lint:
-	cpplint --extensions=c,cc,h --recursive $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
-
-memcheck:
-	$(MAKE) clean
-	gcc -o runner-test $(MEMCHECK_FLAGS) $(TEST)/runner.c $(SRCS)
-	g++ -o runner-bench $(MEMCHECK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
-	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-test
-	valgrind --error-exitcode=1 --leak-check=full --track-origins=yes -s ./runner-bench
+	cpplint $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
 
 benchmark:
 	$(MAKE) clean
