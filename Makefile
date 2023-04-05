@@ -12,10 +12,10 @@ RELEASE_FLAGS = -fPIC -shared -s -O3 -finline-functions
 TEST_FLAGS = -g -Wall --coverage
 COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
 LINT_FLAGS = --extensions=c,cc,h --recursive
-ASAN_FLAGS = -fsanitize=address
-LSAN_FLAGS = -fsanitize=leak
-MSAN_FLAGS = -fsanitize=memory
-UBSAN_FLAGS = -fsanitize=undefined
+ASAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=address
+LSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=leak
+MSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=memory 
+UBSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=undefined
 BENCHMARK_FLAGS = -x c++ -s -O3 -finline-functions
 
 SRC = src
@@ -84,10 +84,10 @@ lint:
 	cpplint $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
 
 sanitize:
-	$(CC) -o runner-asan $(ASAN_FLAGS) $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	$(CC) -o runner-lsan $(LSAN_FLAGS) $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	$(CC) -o runner-msan $(MSAN_FLAGS) $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
-	$(CC) -o runner-ubsan $(UBSAN_FLAGS) $(TEST_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-asan $(ASAN_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-lsan $(LSAN_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-msan $(MSAN_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-ubsan $(UBSAN_FLAGS) $(TEST)/runner.c $(SRCS)
 	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-asan
 	LSAN_OPTIONS=allocator_may_return_null=1 ./runner-lsan
 	MSAN_OPTIONS=allocator_may_return_null=1 ./runner-msan
