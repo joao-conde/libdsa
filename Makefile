@@ -1,15 +1,16 @@
+SHELL = /bin/bash
+
 LIB = libdsa
 INSTALL_BIN = /usr/lib
 INSTALL_INCLUDE = /usr/include
 
-SHELL = /bin/bash
-
-DEBUG_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
-RELEASE_FLAGS = -s -O3 -finline-functions
-TEST_FLAGS = -g -Wall -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined --coverage
+SANITIZER_FLAGS = -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined
+DEBUG_FLAGS = $(SANITIZER_FLAGS) -fPIC -shared -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
+RELEASE_FLAGS = -fPIC -shared -s -O3 -finline-functions
+TEST_FLAGS = $(SANITIZER_FLAGS) -g -Wall --coverage
 COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
 LINT_FLAGS = --extensions=c,cc,h --recursive
-BENCHMARK_FLAGS = -s -O3 -fsanitize=address,float-cast-overflow,float-divide-by-zero,undefined -finline-functions
+BENCHMARK_FLAGS = $(SANITIZER_FLAGS) -s -O3 -finline-functions
 
 SRC = src
 HDR = include
@@ -40,10 +41,10 @@ usage:
 	@echo make benchmark - run $(LIB) benchmarks comparing with C++ STL 
 
 debug:
-	gcc $(DEBUG_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
+	gcc -o $(LIB).so $(DEBUG_FLAGS) $(SRCS)
 
 release:
-	gcc $(RELEASE_FLAGS) -fPIC -shared -o $(LIB).so $(SRCS)
+	gcc -o $(LIB).so $(RELEASE_FLAGS) $(SRCS)
 
 install:
 	cp $(LIB).so $(INSTALL_BIN)
@@ -72,7 +73,7 @@ lint:
 
 benchmark:
 	$(MAKE) clean
-	g++ -o runner $(BENCHMARK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS)
+	g++ -o runner $(BENCHMARK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS) 
 	./runner
 
 clean:
