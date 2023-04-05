@@ -544,11 +544,13 @@ void test_vector_erase() {
 }
 
 void test_vector_resize() {
-    vector *v = vector_init(sizeof(char*));
-    vector_push(v, "hello");
-    vector_push(v, "world");
-    vector_push(v, "welcome");
-    vector_push(v, "all");
+    int values[5] = {1, 2, 3, 4, 5};
+
+    vector *v = vector_init(sizeof(int));
+    vector_push(v, &values[0]);
+    vector_push(v, &values[1]);
+    vector_push(v, &values[2]);
+    vector_push(v, &values[3]);
 
     assert(vector_capacity(v) == 512);
     assert(vector_size(v) == 4);
@@ -558,8 +560,8 @@ void test_vector_resize() {
     assert(vector_capacity(v) == 2);
     assert(vector_size(v) == 2);
 
-    assert(strcmp(vector_at(v, 0), "hello") == 0);
-    assert(strcmp(vector_at(v, 1), "world") == 0);
+    assert(*(int*) vector_at(v, 0) == 1);
+    assert(*(int*) vector_at(v, 1) == 2);
     assert(vector_at(v, 2) == NULL);
 
     result = vector_resize(v, 0);
@@ -572,11 +574,11 @@ void test_vector_resize() {
     assert(vector_capacity(v) == 512);
     assert(vector_size(v) == 0);
 
-    result = vector_push(v, "hello");
+    result = vector_push(v, &values[4]);
     assert(vector_capacity(v) == 512);
     assert(vector_size(v) == 1);
-    assert(strcmp(result, "hello") == 0);
-    assert(strcmp(vector_at(v, 0), "hello") == 0);
+    assert(*(int*) result == 5);
+    assert(*(int*) vector_at(v, 0) == 5);
 
     vector_free(v);
 }
