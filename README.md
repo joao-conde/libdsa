@@ -9,9 +9,9 @@ A personal endeavor to **learn the inner workings** of different **data structur
 - **Opaque data types**
 - **PIMPL** design pattern
 - **C generics** leveraging **void pointers**
-- Benchmarked and compared with the C++ STL
-- [Google Sanitizers](https://github.com/google/sanitizers) compliance
-- [Google's C/C++ style](https://github.com/cpplint/cpplint) compliance
+- Benchmarks versus the C++ STL
+- Compliance with [Google's Sanitizers](https://github.com/google/sanitizers)
+- Compliance with [Google's C/C++ style](https://github.com/cpplint/cpplint)
 - 100% code coverage
 
 ## Examples
