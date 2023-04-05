@@ -177,7 +177,7 @@ void map_rehash(map *m, size_t nbuckets) {
     if (rehashed == NULL) return;
 
     // insert the key-value pairs in a new map with nbuckets
-    for (size_t i = 0; i < m->size; i++) {
+    for (size_t i = 0; i < m->nbuckets; i++) {
         list *bucket = m->buckets[i];
 
         list_node *cur = list_front(bucket);
