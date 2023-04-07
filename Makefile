@@ -30,22 +30,23 @@ MSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=memory
 UBSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=undefined
 BENCHMARK_FLAGS = -x c++ -s -O3 -finline-functions
 
-.PHONY: usage debug release clean install uninstall test coverage coverage-report lint sanitize benchmark
+.PHONY: usage debug release clean install uninstall test coverage coverage-report lint sanitize benchmark examples
 
 default: usage
 
 usage:
-	@echo make debug - build $(LIB)
-	@echo make release - build optimized $(LIB)
+	@echo make debug - compile $(LIB)
+	@echo make release - compile $(LIB) with optimizations
 	@echo make clean - clean build, test and other artifacts
 	@echo make install - install $(LIB) in \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
-	@echo make test - run all test suites
-	@echo make coverage - run all test suites and measure coverage
-	@echo make coverage-report - run all test suites, measure coverage and display detailed report
+	@echo make test - compile and run all test suites
+	@echo make coverage - compile and run all test suites and measure coverage
+	@echo make coverage-report - compile and run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
-	@echo make sanitize - check for memory leaks, undefined behavior and other vulnerabilities
-	@echo make benchmark - run $(LIB) benchmarks comparing with C++ STL 
+	@echo make sanitize - compile and run all test suites and check for memory leaks, undefined behavior and other vulnerabilities
+	@echo make benchmark - compile and run $(LIB) benchmarks comparing with C++ STL 
+	@echo make examples - compile and run examples
 
 debug:
 	$(CC) -o $(LIB).so $(DEBUG_FLAGS) $(SRCS)
@@ -96,3 +97,19 @@ sanitize:
 benchmark:
 	$(CXX) -o runner-bench $(BENCHMARK_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS) 
 	./runner-bench
+
+examples:
+	$(CC) -o runner-deque $(EXAMP)/deque.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-list $(EXAMP)/list.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-map $(EXAMP)/map.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-pair $(EXAMP)/pair.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-queue $(EXAMP)/queue.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-stack $(EXAMP)/stack.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-vector $(EXAMP)/vector.c $(EXAMP)/mytype.c $(SRCS)
+	./runner-deque
+	./runner-list
+	./runner-map
+	./runner-pair
+	./runner-queue
+	./runner-stack
+	./runner-vector
