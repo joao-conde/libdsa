@@ -11,5 +11,6 @@ jobs:
       - run: make debug
       - run: make release
       - run: sudo make install
+      - run: make examples
       - run: sudo make uninstall
       - run: make clean
