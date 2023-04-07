@@ -7,17 +7,6 @@ LIB = libdsa
 INSTALL_BIN = /usr/lib
 INSTALL_INCLUDE = /usr/include
 
-DEBUG_FLAGS = -fPIC -shared -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
-RELEASE_FLAGS = -fPIC -shared -s -O3 -finline-functions
-TEST_FLAGS = -g -Wall --coverage
-COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
-LINT_FLAGS = --extensions=c,cc,h --recursive
-ASAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=address
-LSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=leak
-MSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=memory 
-UBSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=undefined
-BENCHMARK_FLAGS = -x c++ -s -O3 -finline-functions
-
 SRC = src
 HDR = include
 TEST = test
@@ -29,6 +18,17 @@ HDRS = $(shell find $(HDR) -name "*.h")
 INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
 COVS = $(patsubst %.c, runner-test-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+
+DEBUG_FLAGS = -fPIC -shared -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
+RELEASE_FLAGS = -fPIC -shared -s -O3 -finline-functions
+TEST_FLAGS = -g -Wall --coverage
+COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
+LINT_FLAGS = --extensions=c,cc,h --recursive
+ASAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=address
+LSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=leak
+MSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=memory 
+UBSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=undefined
+BENCHMARK_FLAGS = -x c++ -s -O3 -finline-functions
 
 .PHONY: usage debug release clean install uninstall test coverage coverage-report lint sanitize benchmark
 
