@@ -2,43 +2,45 @@
 
 #include "benchmark.h"
 
-void bcc_map_insert() {
-    std::unordered_map<size_t, std::string> m;
+void* bcc_map_init() {
+    std::unordered_map<size_t, std::string> *m = new std::unordered_map<size_t, std::string>();
     for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.insert({i, "value"});
+        m->insert({i, "value"});
+    }
+    return m;
+}
+
+void bcc_map_free(void *data) {
+    free((std::unordered_map<size_t, std::string>*) data);
+}
+
+void bcc_map_insert(void *data) {
+    std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
+    for (size_t i = MAP_LOAD; i < 2 * MAP_LOAD; i++) {
+        m->insert({i, "value"});
     }
 }
 
-void bcc_map_insert_erase() {
-    std::unordered_map<size_t, std::string> m;
+void bcc_map_erase(void *data) {
+    std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
     for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.insert({i, "value"});
-    }
-    for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.erase(i);
+        m->erase(i);
     }
 }
 
-void bcc_map_insert_get() {
-    std::unordered_map<size_t, std::string> m;
+void bcc_map_get(void *data) {
+    std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
     for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.insert({i, "value"});
-        std::string x = m[i];
+        std::string x = m->at(i);
     }
 }
 
-void bcc_map_insert_clear() {
-    std::unordered_map<size_t, std::string> m;
-    for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.insert({i, "value"});
-    }
-    m.clear();
+void bcc_map_clear(void *data) {
+    std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
+    m->clear();
 }
 
-void bcc_map_insert_rehash() {
-    std::unordered_map<size_t, std::string> m;
-    for (size_t i = 0; i < MAP_LOAD; i++) {
-        m.insert({i, "value"});
-    }
-    m.rehash(1);
+void bcc_map_rehash(void *data) {
+    std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
+    m->rehash(1);
 }

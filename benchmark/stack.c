@@ -1,20 +1,27 @@
 #include "benchmark.h"
 
-void bc_stack_push() {
+void* bc_stack_init() {
     stack *s = stack_init(sizeof(size_t));
     for (size_t i = 0; i < STACK_LOAD; i++) {
         stack_push(s, &i);
     }
-    stack_free(s);
+    return s;
 }
 
-void bc_stack_push_pop() {
-    stack *s = stack_init(sizeof(size_t));
+void bc_stack_free(void *data) {
+    stack_free((stack*) data);
+}
+
+void bc_stack_push(void *data) {
+    stack *s = (stack*) data;
     for (size_t i = 0; i < STACK_LOAD; i++) {
         stack_push(s, &i);
     }
+}
+
+void bc_stack_pop(void *data) {
+    stack *s = (stack*) data;
     for (size_t i = 0; i < STACK_LOAD; i++) {
         stack_pop(s);
     }
-    stack_free(s);
 }
