@@ -5,7 +5,7 @@
 
 #include "../include/dsa.h"
 
-extern size_t LOAD;
+extern size_t BENCH_LOAD;
 
 #define TABLE_WIDTH 20
 #define TABLE_SEPARATOR ","

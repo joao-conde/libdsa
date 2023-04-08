@@ -6,7 +6,7 @@ size_t hash(const void *key) {
 
 void* c_map_init() {
     map *m = map_init(sizeof(size_t), sizeof(char*), hash);
-    for (size_t i = 0; i < LOAD; i++) {
+    for (size_t i = 0; i < BENCH_LOAD; i++) {
         char const *value = "value";
         map_insert(m, &i, &value);
     }
@@ -19,7 +19,7 @@ void c_map_free(void *data) {
 
 void c_map_insert(void *data) {
     map *m = (map*) data;
-    for (size_t i = LOAD; i < 2 * LOAD; i++) {
+    for (size_t i = BENCH_LOAD; i < 2 * BENCH_LOAD; i++) {
         char const *value = "value";
         map_insert(m, &i, &value);
     }
@@ -27,14 +27,14 @@ void c_map_insert(void *data) {
 
 void c_map_erase(void *data) {
     map *m = (map*) data;
-    for (size_t i = 0; i < LOAD; i++) {
+    for (size_t i = 0; i < BENCH_LOAD; i++) {
         map_erase(m, &i);
     }
 }
 
 void c_map_get(void *data) {
     map *m = (map*) data;
-    for (size_t i = 0; i < LOAD; i++) {
+    for (size_t i = 0; i < BENCH_LOAD; i++) {
         char *x = (char*) map_get(m, &i);
     }
 }

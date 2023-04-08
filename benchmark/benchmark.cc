@@ -3,7 +3,7 @@
 
 #include "benchmark.h"
 
-size_t LOAD = getenv("LOAD") != NULL ? std::stoi(getenv("LOAD")) : 1000000UL;
+size_t BENCH_LOAD = getenv("BENCH_LOAD") != NULL ? std::stoi(getenv("BENCH_LOAD")) : 1000000UL;
 
 int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*)) {
     // sets up necessary test data for the function being benchmarked
