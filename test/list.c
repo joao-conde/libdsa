@@ -412,7 +412,7 @@ void test_list_erase() {
     list_free(l);
 }
 
-void test_LOAD() {
+void test_list_load() {
     bool empty;
     size_t size;
     list_node *pushed, *inserted, *erased, *front, *back, *current;
@@ -542,5 +542,5 @@ void test_list() {
     test_list_insert();
     test_list_insert_fail();
     test_list_erase();
-    test_LOAD();
+    test_list_load();
 }

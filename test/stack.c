@@ -181,7 +181,7 @@ void test_stack_pop() {
     stack_free(s);
 }
 
-void test_LOAD() {
+void test_stack_load() {
     bool empty;
     size_t size;
     size_t *top, *pushed, *popped;
@@ -230,5 +230,5 @@ void test_stack() {
     test_stack_push();
     test_stack_push_void_ptrs();
     test_stack_pop();
-    test_LOAD();
+    test_stack_load();
 }

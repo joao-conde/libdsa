@@ -352,7 +352,7 @@ void test_map_rehash() {
     map_free(m);
 }
 
-void test_LOAD() {
+void test_map_load() {
     bool has, empty;
     size_t size;
     float max_load_factor, load_factor;
@@ -416,5 +416,5 @@ void test_map() {
     test_map_insert();
     test_map_erase();
     test_map_rehash();
-    test_LOAD();
+    test_map_load();
 }

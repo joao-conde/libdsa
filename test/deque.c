@@ -311,7 +311,7 @@ void test_deque_pop_front() {
     deque_free(dq);
 }
 
-void test_LOAD() {
+void test_deque_load() {
     bool empty;
     size_t size;
     size_t *at, *pushed, *popped, *front, *back;
@@ -400,5 +400,5 @@ void test_deque() {
     test_deque_push_front();
     test_deque_pop_back();
     test_deque_pop_front();
-    test_LOAD();
+    test_deque_load();
 }

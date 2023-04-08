@@ -232,7 +232,7 @@ void test_queue_pop() {
     queue_free(q);
 }
 
-void test_LOAD() {
+void test_queue_load() {
     bool empty;
     size_t size;
     size_t *at, *pushed, *popped, *front, *back;
@@ -291,5 +291,5 @@ void test_queue() {
     test_queue_pointers();
     test_queue_push();
     test_queue_pop();
-    test_LOAD();
+    test_queue_load();
 }

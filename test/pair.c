@@ -78,7 +78,7 @@ void test_pair_set_second() {
     pair_free(p);
 }
 
-void test_LOAD() {
+void test_pair_load() {
     int *first, *second;
     for (int i = 0; i < TEST_LOAD; i++) {
         pair *p = pair_init(&i, &i, sizeof(int), sizeof(int));
@@ -99,5 +99,5 @@ void test_pair() {
     test_pair_second();
     test_pair_set_first();
     test_pair_set_second();
-    test_LOAD();
+    test_pair_load();
 }
