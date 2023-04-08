@@ -3,9 +3,9 @@
 
 #include "benchmark.h"
 
-int64_t benchmark(void* (init)(), void (free)(void*), void (fn)(void*)) {
+int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*)) {
     // sets up necessary pre-conditions for the function being benchmarked
-    void *data = init();
+    void *data = init_fn();
 
     // runs the function being benchmarked keeping track of starting and
     // ending times
@@ -14,7 +14,7 @@ int64_t benchmark(void* (init)(), void (free)(void*), void (fn)(void*)) {
     auto end = std::chrono::high_resolution_clock::now();
 
     // cleans up previously set up data
-    free(data);
+    free_fn(data);
 
     // converts the duration to milliseconds and returns it
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

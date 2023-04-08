@@ -11,7 +11,7 @@ void* bcc_queue_init() {
 }
 
 void bcc_queue_free(void *data) {
-    free((std::queue<size_t>*) data);
+    delete ((std::queue<size_t>*) data);
 }
 
 void bcc_queue_push(void *data) {

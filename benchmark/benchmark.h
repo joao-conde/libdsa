@@ -16,7 +16,7 @@
 #define TABLE_WIDTH 20
 #define SEPARATOR ","
 
-int64_t benchmark(void* (init)(), void (free)(void*), void (fn)(void*));
+int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*));
 void print_benchmark_header();
 void print_benchmark(
     std::string name,

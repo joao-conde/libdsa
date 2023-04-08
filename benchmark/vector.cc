@@ -11,7 +11,7 @@ void* bcc_vector_init() {
 }
 
 void bcc_vector_free(void *data) {
-    free((std::vector<size_t>*) data);
+    delete ((std::vector<size_t>*) data);
 }
 
 void bcc_vector_push(void *data) {
