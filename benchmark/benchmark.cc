@@ -3,6 +3,8 @@
 
 #include "benchmark.h"
 
+size_t LOAD = getenv("LOAD") != NULL ? std::stoi(getenv("LOAD")) : 1000000UL;
+
 int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*)) {
     // sets up necessary test data for the function being benchmarked
     void *data = init_fn();
@@ -25,8 +27,7 @@ void print_benchmark_header() {
     std::cout << std::right << std::setw(TABLE_WIDTH) << "benchmark" << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << "c (ms)" << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << "cc (ms)" << TABLE_SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << "diff (ms)";
-    std::cout << std::endl;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << "diff (ms)" << std::endl;
 }
 
 void print_benchmark(
@@ -47,5 +48,5 @@ void print_benchmark(
     std::cout << std::right << std::setw(TABLE_WIDTH) << name << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(c) << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(cc) << TABLE_SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(diff) << endl;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(diff) << std::endl;
 }

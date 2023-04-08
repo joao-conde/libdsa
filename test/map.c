@@ -72,38 +72,38 @@ void test_map_set_max_load_factor() {
 
     map_insert(m, &key1, &value1);
     map_insert(m, &key2, &value2);
-    assert(fequals(map_load_factor(m), 1.0));
+    assert(fequals(LOAD_factor(m), 1.0));
     assert(fequals(map_max_load_factor(m), 2.01));
 
     map_set_max_load_factor(m, 1.0);
-    assert(fequals(map_load_factor(m), 0.5));
+    assert(fequals(LOAD_factor(m), 0.5));
     assert(fequals(map_max_load_factor(m), 1.0));
 
     map_free(m);
 }
 
-void test_map_load_factor() {
+void test_LOAD_factor() {
     char *key1 = "key1", *value1 = "value1";
     char *key2 = "key2", *value2 = "value2";
     char *key3 = "key3", *value3 = "value3";
     map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
     assert(map_buckets(m) == 1);
-    assert(map_load_factor(m) == 0.0);
+    assert(LOAD_factor(m) == 0.0);
 
     map_insert(m, &key1, &value1);
     assert(map_size(m) == 1);
     assert(map_buckets(m) == 1);
-    assert(map_load_factor(m) == 1.0);
+    assert(LOAD_factor(m) == 1.0);
 
     map_insert(m, &key2, &value2);
     assert(map_size(m) == 2);
     assert(map_buckets(m) == 2);
-    assert(map_load_factor(m) == 1.0);
+    assert(LOAD_factor(m) == 1.0);
 
     map_insert(m, &key3, &value3);
     assert(map_size(m) == 3);
     assert(map_buckets(m) == 4);
-    assert(map_load_factor(m) == 0.75);
+    assert(LOAD_factor(m) == 0.75);
 
     map_free(m);
 }
@@ -352,7 +352,7 @@ void test_map_rehash() {
     map_free(m);
 }
 
-void test_map_load() {
+void test_LOAD() {
     bool has, empty;
     size_t size;
     float max_load_factor, load_factor;
@@ -365,7 +365,7 @@ void test_map_load() {
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
-        load_factor = map_load_factor(m);
+        load_factor = LOAD_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(*(size_t*) pair_first(inserted) == i);
         assert(*(size_t*) pair_second(inserted) == i);
@@ -380,7 +380,7 @@ void test_map_load() {
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
-        load_factor = map_load_factor(m);
+        load_factor = LOAD_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(size == MAP_TEST_LOAD - i - 1);
         assert(!empty);
@@ -405,7 +405,7 @@ void test_map() {
     test_map_free();
     test_map_max_load_factor();
     test_map_set_max_load_factor();
-    test_map_load_factor();
+    test_LOAD_factor();
     test_map_size();
     test_map_buckets();
     test_map_empty();
@@ -416,5 +416,5 @@ void test_map() {
     test_map_insert();
     test_map_erase();
     test_map_rehash();
-    test_map_load();
+    test_LOAD();
 }

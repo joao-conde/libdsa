@@ -583,7 +583,7 @@ void test_vector_resize() {
     vector_free(v);
 }
 
-void test_vector_load() {
+void test_LOAD() {
     unsigned int seed = time(NULL);
     int random;
     bool empty;
@@ -747,5 +747,5 @@ void test_vector() {
     test_vector_insert_resize();
     test_vector_erase();
     test_vector_resize();
-    test_vector_load();
+    test_LOAD();
 }

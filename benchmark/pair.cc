@@ -13,28 +13,28 @@ void cc_pair_free(void *data) {
 
 void cc_pair_first(void *data) {
     std::pair<std::string, std::string> *p = (std::pair<std::string, std::string>*) data;
-    for (size_t i = 0; i < PAIR_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         std::string first = p->first;
     }
 }
 
 void cc_pair_second(void *data) {
     std::pair<std::string, std::string> *p = (std::pair<std::string, std::string>*) data;
-    for (size_t i = 0; i < PAIR_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         std::string second = p->second;
     }
 }
 
 void cc_pair_set_first(void *data) {
     std::pair<std::string, std::string> *p = (std::pair<std::string, std::string>*) data;
-    for (size_t i = 0; i < PAIR_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         p->first = "key";
     }
 }
 
 void cc_pair_set_second(void *data) {
     std::pair<std::string, std::string> *p = (std::pair<std::string, std::string>*) data;
-    for (size_t i = 0; i < PAIR_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         p->second = "value";
     }
 }

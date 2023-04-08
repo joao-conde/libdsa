@@ -2,7 +2,7 @@
 
 void* c_queue_init() {
     queue *q = queue_init(sizeof(size_t));
-    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         queue_push(q, &i);
     }
     return q;
@@ -14,14 +14,14 @@ void c_queue_free(void *data) {
 
 void c_queue_push(void *data) {
     queue *q = (queue*) data;
-    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         queue_push(q, &i);
     }
 }
 
 void c_queue_pop(void *data) {
     queue *q = (queue*) data;
-    for (size_t i = 0; i < QUEUE_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         queue_pop(q);
     }
 }

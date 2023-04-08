@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update
-      - run: make benchmark
+      - run: LOAD=1000000 make benchmark

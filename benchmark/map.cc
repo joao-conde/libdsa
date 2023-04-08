@@ -4,7 +4,7 @@
 
 void* cc_map_init() {
     std::unordered_map<size_t, std::string> *m = new std::unordered_map<size_t, std::string>();
-    for (size_t i = 0; i < MAP_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         m->insert({i, "value"});
     }
     return m;
@@ -16,21 +16,21 @@ void cc_map_free(void *data) {
 
 void cc_map_insert(void *data) {
     std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
-    for (size_t i = MAP_LOAD; i < 2 * MAP_LOAD; i++) {
+    for (size_t i = LOAD; i < 2 * LOAD; i++) {
         m->insert({i, "value"});
     }
 }
 
 void cc_map_erase(void *data) {
     std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
-    for (size_t i = 0; i < MAP_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         m->erase(i);
     }
 }
 
 void cc_map_get(void *data) {
     std::unordered_map<size_t, std::string> *m = (std::unordered_map<size_t, std::string>*) data;
-    for (size_t i = 0; i < MAP_LOAD; i++) {
+    for (size_t i = 0; i < LOAD; i++) {
         std::string x = m->at(i);
     }
 }

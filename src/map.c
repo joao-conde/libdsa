@@ -66,7 +66,7 @@ void map_set_max_load_factor(map *m, float factor) {
     }
 }
 
-float map_load_factor(const map *m) {
+float LOAD_factor(const map *m) {
     return (float) m->size / (float) m->nbuckets;
 }
 

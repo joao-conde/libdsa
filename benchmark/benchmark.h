@@ -5,16 +5,10 @@
 
 #include "../include/dsa.h"
 
+extern size_t LOAD;
+
 #define TABLE_WIDTH 20
 #define TABLE_SEPARATOR ","
-
-#define DEQUE_LOAD 10000000UL
-#define LIST_LOAD 10000000UL
-#define MAP_LOAD 10000000UL
-#define PAIR_LOAD 10000000UL
-#define QUEUE_LOAD 10000000UL
-#define STACK_LOAD 10000000UL
-#define VECTOR_LOAD 10000000UL
 
 int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*));
 void print_benchmark_header();
