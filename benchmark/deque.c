@@ -1,57 +1,53 @@
 #include "benchmark.h"
 
-void bc_deque_push_back() {
+void* bc_deque_init() {
     deque *dq = deque_init(sizeof(size_t));
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
         deque_push_back(dq, &i);
     }
-    deque_free(dq);
+    return dq;
 }
 
-void bc_deque_push_front() {
-    deque *dq = deque_init(sizeof(size_t));
+void bc_deque_free(void *data) {
+    deque_free((deque*) data);
+}
+
+void bc_deque_push_back(void *data) {
+    deque *dq = (deque*) data;
+    for (size_t i = 0; i < DEQUE_LOAD; i++) {
+        deque_push_back(dq, &i);
+    }
+}
+
+void bc_deque_push_front(void *data) {
+    deque *dq = (deque*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
         deque_push_front(dq, &i);
     }
-    deque_free(dq);
 }
 
-void bc_deque_push_pop_back() {
-    deque *dq = deque_init(sizeof(size_t));
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        deque_push_back(dq, &i);
-    }
+void bc_deque_pop_back(void *data) {
+    deque *dq = (deque*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
         deque_pop_back(dq);
     }
-    deque_free(dq);
 }
 
-void bc_deque_push_pop_front() {
-    deque *dq = deque_init(sizeof(size_t));
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        deque_push_front(dq, &i);
-    }
+void bc_deque_pop_front(void *data) {
+    deque *dq = (deque*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
         deque_pop_front(dq);
     }
-    deque_free(dq);
 }
 
-void bc_deque_push_at() {
-    deque *dq = deque_init(sizeof(size_t));
+void bc_deque_at(void *data) {
+    deque *dq = (deque*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        deque_push_front(dq, &i);
         size_t *x = (size_t*) deque_at(dq, i);
     }
-    deque_free(dq);
 }
 
-void bc_deque_push_clear() {
-    deque *dq = deque_init(sizeof(size_t));
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        deque_push_back(dq, &i);
-    }
+void bc_deque_clear(void *data) {
+    deque *dq = (deque*) data;
     deque_clear(dq);
-    deque_free(dq);
 }
