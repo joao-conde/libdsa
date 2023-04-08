@@ -6,7 +6,7 @@
 
 #include "../include/map.h"
 
-#define TEST_LOAD 100000
+#define MAP_TEST_LOAD 100000
 
 size_t hash_str(const void *key) {
     size_t hash = 0;
@@ -358,31 +358,31 @@ void test_map_load() {
     float max_load_factor, load_factor;
     pair *inserted;
 
-    map *m = map_init(sizeof(int), sizeof(int), hash_int);
+    map *m = map_init(sizeof(size_t), sizeof(size_t), hash_int);
 
-    for (int i = 0; i < TEST_LOAD; i++) {
+    for (size_t i = 0; i < MAP_TEST_LOAD; i++) {
         inserted = map_insert(m, &i, &i);
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
-        assert(*(int*) pair_first(inserted) == i);
-        assert(*(int*) pair_second(inserted) == i);
+        assert(*(size_t*) pair_first(inserted) == i);
+        assert(*(size_t*) pair_second(inserted) == i);
         assert(size == i + 1);
         assert(!empty);
         assert(has);
         assert(load_factor <= max_load_factor);
     }
 
-    for (int i = 0; i < TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < MAP_TEST_LOAD / 2; i++) {
         map_erase(m, &i);
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
-        assert(size == TEST_LOAD - i - 1);
+        assert(size == MAP_TEST_LOAD - i - 1);
         assert(!empty);
         assert(!has);
         assert(load_factor <= max_load_factor);
