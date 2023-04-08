@@ -1,6 +1,6 @@
 # libdsa
 
-**C data structures and algorithms library**, based on the **C++ STL**.
+**C data structures** and **algorithms** library.
 
 A personal endeavor to **learn the inner workings** of different **data structures** and **algorithms**. Consider using production-ready C template container libraries.
 
