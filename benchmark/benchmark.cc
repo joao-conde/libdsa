@@ -22,9 +22,9 @@ int64_t benchmark(void* (init_fn)(), void (free_fn)(void*), void (fn)(void*)) {
 }
 
 void print_benchmark_header() {
-    std::cout << std::right << std::setw(TABLE_WIDTH) << "benchmark" << SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << "c (libdsa)" << SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << "cc (stl)" << SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << "benchmark" << TABLE_SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << "c (libdsa)" << TABLE_SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << "cc (stl)" << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << "diff";
     std::cout << std::endl;
 }
@@ -44,9 +44,9 @@ void print_benchmark(
     int64_t diff = cc - c;
 
     // print benchmark information and final results
-    std::cout << std::right << std::setw(TABLE_WIDTH) << name << SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(c) + "ms" << SEPARATOR;
-    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(cc) + "ms" << SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << name << TABLE_SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(c) + "ms" << TABLE_SEPARATOR;
+    std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(cc) + "ms" << TABLE_SEPARATOR;
     std::cout << std::right << std::setw(TABLE_WIDTH) << std::to_string(diff) + "ms";
     std::cout << std::endl;
 }

@@ -6,7 +6,7 @@
 #include "../include/dsa.h"
 
 #define TABLE_WIDTH 20
-#define SEPARATOR ","
+#define TABLE_SEPARATOR ","
 
 #define DEQUE_LOAD 10000000UL
 #define LIST_LOAD 10000000UL
