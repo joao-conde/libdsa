@@ -2,52 +2,54 @@
 
 #include "benchmark.h"
 
-void bcc_deque_push_back() {
-    std::deque<size_t> dq;
+void* bcc_deque_init() {
+    std::deque<size_t> *dq = new std::deque<size_t>();
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_back(i);
+        dq->push_back(i);
+    }
+    return dq;
+}
+
+void bcc_deque_free(void *data) {
+    free((std::deque<size_t>*) data);
+}
+
+void bcc_deque_push_back(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
+    for (size_t i = 0; i < DEQUE_LOAD; i++) {
+        dq->push_back(i);
     }
 }
 
-void bcc_deque_push_front() {
-    std::deque<size_t> dq;
+void bcc_deque_push_front(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_front(i);
+        dq->push_front(i);
     }
 }
 
-void bcc_deque_push_pop_back() {
-    std::deque<size_t> dq;
+void bcc_deque_pop_back(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_back(i);
-    }
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.pop_back();
+        dq->pop_back();
     }
 }
 
-void bcc_deque_push_pop_front() {
-    std::deque<size_t> dq;
+void bcc_deque_pop_front(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_front(i);
-    }
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.pop_front();
+        dq->pop_front();
     }
 }
 
-void bcc_deque_push_at() {
-    std::deque<size_t> dq;
+void bcc_deque_at(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
     for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_front(i);
-        size_t x = dq.at(i);
+        size_t x = dq->at(i);
     }
 }
 
-void bcc_deque_push_clear() {
-    std::deque<size_t> dq;
-    for (size_t i = 0; i < DEQUE_LOAD; i++) {
-        dq.push_back(i);
-    }
-    dq.clear();
+void bcc_deque_clear(void *data) {
+    std::deque<size_t> *dq = (std::deque<size_t>*) data;
+    dq->clear();
 }

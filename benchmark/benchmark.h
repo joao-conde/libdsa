@@ -5,7 +5,7 @@
 
 #include "../include/dsa.h"
 
-#define DEQUE_LOAD 1000000UL
+#define DEQUE_LOAD 10000000UL
 #define LIST_LOAD 1000000UL
 #define MAP_LOAD 1000000UL
 #define PAIR_LOAD 1000000UL
@@ -15,17 +15,27 @@
 #define VECTOR_LOAD_INSERT 100000UL
 
 #define TABLE_WIDTH 20
+#define SEPARATOR ","
 
-int64_t benchmark(void (fn)());
+int64_t benchmark(void* (init)(), void (free)(void*), void (fn)(void*));
 void print_benchmark_header();
-void print_benchmark(std::string name, void (c_fn)(), void (cc_fn)());
+void print_benchmark(
+    std::string name,
+    void* (c_init)(),
+    void (c_free)(void*),
+    void (c_fn)(void*),
+    void* (cc_init)(),
+    void (cc_free)(void*),
+    void (cc_fn)(void*));
 
-void bc_deque_push_back();
-void bc_deque_push_front();
-void bc_deque_push_pop_back();
-void bc_deque_push_pop_front();
-void bc_deque_push_at();
-void bc_deque_push_clear();
+void* bc_deque_init();
+void bc_deque_free(void *data);
+void bc_deque_push_back(void *data);
+void bc_deque_push_front(void *data);
+void bc_deque_pop_back(void *data);
+void bc_deque_pop_front(void *data);
+void bc_deque_at(void *data);
+void bc_deque_clear(void *data);
 void bc_list_push_back();
 void bc_list_push_front();
 void bc_list_push_pop_back();
@@ -56,12 +66,14 @@ void bc_vector_insert_erase();
 void bc_vector_push_at();
 void bc_vector_push_clear();
 
-void bcc_deque_push_back();
-void bcc_deque_push_front();
-void bcc_deque_push_pop_back();
-void bcc_deque_push_pop_front();
-void bcc_deque_push_at();
-void bcc_deque_push_clear();
+void* bcc_deque_init();
+void bcc_deque_free(void *data);
+void bcc_deque_push_back(void *data);
+void bcc_deque_push_front(void *data);
+void bcc_deque_pop_back(void *data);
+void bcc_deque_pop_front(void *data);
+void bcc_deque_at(void *data);
+void bcc_deque_clear(void *data);
 void bcc_list_push_back();
 void bcc_list_push_front();
 void bcc_list_push_pop_back();
