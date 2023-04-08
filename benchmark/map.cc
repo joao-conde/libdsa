@@ -11,7 +11,7 @@ void* bcc_map_init() {
 }
 
 void bcc_map_free(void *data) {
-    free((std::unordered_map<size_t, std::string>*) data);
+    delete ((std::unordered_map<size_t, std::string>*) data);
 }
 
 void bcc_map_insert(void *data) {

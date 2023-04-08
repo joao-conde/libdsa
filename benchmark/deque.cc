@@ -11,7 +11,7 @@ void* bcc_deque_init() {
 }
 
 void bcc_deque_free(void *data) {
-    free((std::deque<size_t>*) data);
+    delete ((std::deque<size_t>*) data);
 }
 
 void bcc_deque_push_back(void *data) {

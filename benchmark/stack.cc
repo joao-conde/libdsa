@@ -11,7 +11,7 @@ void* bcc_stack_init() {
 }
 
 void bcc_stack_free(void *data) {
-    free((std::stack<size_t>*) data);
+    delete ((std::stack<size_t>*) data);
 }
 
 void bcc_stack_push(void *data) {

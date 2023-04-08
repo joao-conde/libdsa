@@ -11,7 +11,7 @@ void* bcc_list_init() {
 }
 
 void bcc_list_free(void *data) {
-    free((std::list<size_t>*) data);
+    delete ((std::list<size_t>*) data);
 }
 
 void bcc_list_push_back(void *data) {

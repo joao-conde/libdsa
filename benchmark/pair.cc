@@ -8,7 +8,7 @@ void* bcc_pair_init() {
 }
 
 void bcc_pair_free(void *data) {
-    free((std::pair<std::string, std::string>*) data);
+    delete ((std::pair<std::string, std::string>*) data);
 }
 
 void bcc_pair_first(void *data) {
