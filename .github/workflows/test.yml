@@ -8,4 +8,3 @@ jobs:
       - run: sudo apt-get update
       - run: make test
       - run: make coverage
-      - run: make coverage-report

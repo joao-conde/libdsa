@@ -2,6 +2,8 @@ SHELL = /bin/bash
 
 CC = clang
 CXX = clang++
+COV = llvm-cov gcov
+LINT = cpplint
 
 LIB = libdsa
 INSTALL_BIN = /usr/lib
@@ -17,12 +19,11 @@ SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
 INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
 OBJS = $(SRCS:.c=.o)
-COVS = $(patsubst %.c, runner-test-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+COVS = $(foreach src, $(SRCS), $(lastword $(subst /, , $(src))))
 
 DEBUG_FLAGS = -fPIC -shared -g -Wall -Werror -Wextra -pedantic -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wstrict-prototypes
 RELEASE_FLAGS = -fPIC -shared -s -O3 -finline-functions
-TEST_FLAGS = -g -Wall --coverage
-COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
+TEST_FLAGS = -g -Wall -O0 -fprofile-arcs -ftest-coverage
 LINT_FLAGS = --extensions=c,cc,h --recursive
 ASAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=address
 LSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=leak
@@ -30,7 +31,7 @@ MSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=memory
 UBSAN_FLAGS = -g -Wall -fno-sanitize-recover=all -fsanitize=undefined
 BENCHMARK_FLAGS = -x c++ -s -O3 -finline-functions
 
-.PHONY: usage debug release clean install uninstall test coverage coverage-report lint sanitize benchmark examples
+.PHONY: usage debug release clean install uninstall test coverage lint sanitize benchmark examples
 
 default: usage
 
@@ -42,7 +43,6 @@ usage:
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make test - compile and run all test suites
 	@echo make coverage - compile and run all test suites and measure coverage
-	@echo make coverage-report - compile and run all test suites, measure coverage and display detailed report
 	@echo make lint - lint headers, source and test files
 	@echo make sanitize - compile and run all test suites and check for memory leaks, undefined behavior and other vulnerabilities
 	@echo make benchmark - compile and run $(LIB) benchmarks comparing with C++ STL 
@@ -75,14 +75,10 @@ test:
 
 coverage:
 	$(MAKE) test
-	gcov $(COVS)
-
-coverage-report:
-	$(MAKE) test
-	gcov $(COVERAGE_REPORT_FLAGS) $(COVS)
+	$(COV) $(COVS)
 
 lint:
-	cpplint $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
+	$(LINT) $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
 
 sanitize:
 	$(CC) -o runner-asan $(ASAN_FLAGS) $(TEST)/runner.c $(SRCS)
