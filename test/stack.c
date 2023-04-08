@@ -1,9 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-
-#include "../include/stack.h"
-
-#define STACK_TEST_LOAD 100000
+#include "test.h"
 
 void test_stack_init() {
     stack *s = stack_init(sizeof(int));
@@ -188,7 +183,7 @@ void test_stack_load() {
 
     stack *s = stack_init(sizeof(size_t));
 
-    for (size_t i = 0; i < STACK_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = stack_push(s, &i);
         size = stack_size(s);
         empty = stack_empty(s);
@@ -199,13 +194,13 @@ void test_stack_load() {
         assert(*top == i);
     }
 
-    for (size_t i = 0; i < STACK_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         top = stack_top(s);
         popped = stack_pop(s);
         size = stack_size(s);
         empty = stack_empty(s);
-        assert(*popped == STACK_TEST_LOAD - i - 1);
-        assert(size == STACK_TEST_LOAD - i - 1);
+        assert(*popped == TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*top == *popped);
     }

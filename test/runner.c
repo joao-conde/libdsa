@@ -1,10 +1,4 @@
-#include "./deque.c"
-#include "./list.c"
-#include "./map.c"
-#include "./pair.c"
-#include "./queue.c"
-#include "./stack.c"
-#include "./vector.c"
+#include "test.h"
 
 int main() {
     test_deque();

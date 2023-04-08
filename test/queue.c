@@ -1,9 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-
-#include "../include/queue.h"
-
-#define QUEUE_TEST_LOAD 100000
+#include "test.h"
 
 void test_queue_init() {
     queue *q = queue_init(sizeof(int));
@@ -239,7 +234,7 @@ void test_queue_load() {
 
     queue *q = queue_init(sizeof(size_t));
 
-    for (size_t i = 0; i < QUEUE_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = queue_push(q, &i);
         size = queue_size(q);
         empty = queue_empty(q);
@@ -254,7 +249,7 @@ void test_queue_load() {
         assert(*back == i);
     }
 
-    for (size_t i = 0; i < QUEUE_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         at = queue_at(q, 0);
         front = queue_front(q);
         back = queue_back(q);
@@ -262,11 +257,11 @@ void test_queue_load() {
         size = queue_size(q);
         empty = queue_empty(q);
         assert(*popped == i);
-        assert(size == QUEUE_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*at == *popped);
         assert(*front == i);
-        assert(*back == QUEUE_TEST_LOAD - 1);
+        assert(*back == TEST_LOAD - 1);
     }
 
     queue_clear(q);

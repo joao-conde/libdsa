@@ -1,9 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-
-#include "../include/deque.h"
-
-#define DEQUE_TEST_LOAD 100000
+#include "test.h"
 
 void test_deque_init() {
     deque *dq = deque_init(sizeof(int));
@@ -318,7 +313,7 @@ void test_deque_load() {
 
     deque *dq = deque_init(sizeof(size_t));
 
-    for (size_t i = 0; i < DEQUE_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = deque_push_back(dq, &i);
         size = deque_size(dq);
         empty = deque_empty(dq);
@@ -333,19 +328,19 @@ void test_deque_load() {
         assert(*back == i);
     }
 
-    for (size_t i = 0; i < DEQUE_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         popped = deque_pop_back(dq);
         size = deque_size(dq);
         empty = deque_empty(dq);
         at = deque_at(dq, i);
         front = deque_front(dq);
         back = deque_back(dq);
-        assert(*popped == DEQUE_TEST_LOAD - i - 1);
-        assert(size == DEQUE_TEST_LOAD - i - 1);
+        assert(*popped == TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*at == i);
         assert(*front == 0);
-        assert(*back == DEQUE_TEST_LOAD - i - 2);
+        assert(*back == TEST_LOAD - i - 2);
     }
 
     deque_clear(dq);
@@ -354,7 +349,7 @@ void test_deque_load() {
     assert(size == 0);
     assert(empty);
 
-    for (size_t i = 0; i < DEQUE_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = deque_push_front(dq, &i);
         size = deque_size(dq);
         empty = deque_empty(dq);
@@ -366,13 +361,13 @@ void test_deque_load() {
         assert(*at == 0);
     }
 
-    for (size_t i = 0; i < DEQUE_TEST_LOAD - 1; i++) {
+    for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         popped = deque_pop_front(dq);
         size = deque_size(dq);
         empty = deque_empty(dq);
         back = deque_back(dq);
-        assert(*popped == DEQUE_TEST_LOAD - i - 1);
-        assert(size == DEQUE_TEST_LOAD - i - 1);
+        assert(*popped == TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
     }
 

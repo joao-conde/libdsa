@@ -1,10 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-#include <string.h>
-
-#include "../include/pair.h"
-
-#define PAIR_TEST_LOAD 100000
+#include "test.h"
 
 void test_pair_size() {
     assert(PAIR_SIZE == 32);
@@ -79,9 +73,9 @@ void test_pair_set_second() {
 }
 
 void test_pair_load() {
-    int *first, *second;
-    for (int i = 0; i < PAIR_TEST_LOAD; i++) {
-        pair *p = pair_init(&i, &i, sizeof(int), sizeof(int));
+    size_t *first, *second;
+    for (size_t i = 0; i < TEST_LOAD; i++) {
+        pair *p = pair_init(&i, &i, sizeof(size_t), sizeof(size_t));
         first = pair_first(p);
         second = pair_second(p);
         assert(*first == i);

@@ -1,9 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-
-#include "../include/list.h"
-
-#define LIST_TEST_LOAD 100000
+#include "test.h"
 
 void test_list_init() {
     list *l = list_init(sizeof(int));
@@ -419,7 +414,7 @@ void test_list_load() {
 
     list *l = list_init(sizeof(size_t));
 
-    for (size_t i = 0; i < LIST_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = list_push_back(l, &i);
         size = list_size(l);
         empty = list_empty(l);
@@ -432,16 +427,16 @@ void test_list_load() {
         assert(*(size_t*)back->data == i);
     }
 
-    for (size_t i = 0; i < LIST_TEST_LOAD - 1; i++) {
+    for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         list_pop_back(l);
         size = list_size(l);
         empty = list_empty(l);
         front = list_front(l);
         back = list_back(l);
-        assert(size == LIST_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(*(size_t*)front->data == 0);
-        assert(*(size_t*)back->data == LIST_TEST_LOAD - i - 2);
+        assert(*(size_t*)back->data == TEST_LOAD - i - 2);
     }
 
     list_pop_back(l);
@@ -452,7 +447,7 @@ void test_list_load() {
     assert(list_front(l) == NULL);
     assert(list_back(l) == NULL);
 
-    for (size_t i = 0; i < LIST_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = list_push_front(l, &i);
         size = list_size(l);
         empty = list_empty(l);
@@ -465,15 +460,15 @@ void test_list_load() {
         assert(*(size_t*)back->data == 0);
     }
 
-    for (size_t i = 0; i < LIST_TEST_LOAD - 1; i++) {
+    for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         list_pop_front(l);
         size = list_size(l);
         empty = list_empty(l);
         front = list_front(l);
         back = list_back(l);
-        assert(size == LIST_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
-        assert(*(size_t*)front->data == LIST_TEST_LOAD - i - 2);
+        assert(*(size_t*)front->data == TEST_LOAD - i - 2);
         assert(*(size_t*)back->data == 0);
     }
 
@@ -486,7 +481,7 @@ void test_list_load() {
     assert(list_back(l) == NULL);
 
     current = list_push_front(l, &pushed);
-    for (size_t i = 0; i < LIST_TEST_LOAD - 1; i++) {
+    for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         inserted = list_insert(l, current, &i);
         size = list_size(l);
         empty = list_empty(l);
@@ -500,7 +495,7 @@ void test_list_load() {
     }
 
     current = list_front(l);
-    for (size_t i = 0; i < LIST_TEST_LOAD - 1; i++) {
+    for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         erased = current;
         current = current->next != NULL ? current->next : current->prev;
         list_erase(l, erased);
@@ -508,7 +503,7 @@ void test_list_load() {
         empty = list_empty(l);
         front = list_front(l);
         back = list_back(l);
-        assert(size == LIST_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(front != NULL);
         assert(back != NULL);

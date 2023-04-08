@@ -1,12 +1,4 @@
-#include <assert.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
-#include <time.h>
-
-#include "../include/vector.h"
-
-#define VECTOR_TEST_LOAD 100000UL
+#include "test.h"
 
 void test_vector_init() {
     vector *v = vector_init(sizeof(int));
@@ -592,7 +584,7 @@ void test_vector_load() {
 
     vector *v = vector_init(sizeof(size_t));
 
-    for (size_t i = 0; i < VECTOR_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         pushed = vector_push(v, &i);
         size = vector_size(v);
         capacity = vector_capacity(v);
@@ -613,7 +605,7 @@ void test_vector_load() {
         assert(end == back + 1);
     }
 
-    for (size_t i = 0; i < VECTOR_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         popped = vector_pop(v);
         size = vector_size(v);
         capacity = vector_capacity(v);
@@ -623,14 +615,14 @@ void test_vector_load() {
         begin = vector_begin(v);
         back = vector_back(v);
         end = vector_end(v);
-        assert(*popped == VECTOR_TEST_LOAD - i - 1);
-        assert(size == VECTOR_TEST_LOAD - i - 1);
+        assert(*popped == TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(capacity >= 512);
         assert(!empty);
         assert(*at == i);
         assert(*set == i);
         assert(*begin == 0);
-        assert(*back == VECTOR_TEST_LOAD - i - 2);
+        assert(*back == TEST_LOAD - i - 2);
         assert(end == back + 1);
     }
 
@@ -642,7 +634,7 @@ void test_vector_load() {
     assert(empty);
     assert(capacity == 131072);
 
-    for (size_t i = 0; i < VECTOR_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         size = vector_size(v);
         random = rand_r(&seed) % (size > 0 ? size : 1);
 
@@ -663,7 +655,7 @@ void test_vector_load() {
         assert(end == back + 1);
     }
 
-    for (size_t i = 0; i < VECTOR_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         size = vector_size(v);
         random = rand_r(&seed) % (size > 0 ? size : 1);
 
@@ -676,7 +668,7 @@ void test_vector_load() {
         back = vector_back(v);
         end = vector_end(v);
         assert(erased != NULL);
-        assert(size == VECTOR_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(capacity == 131072);
         assert(!empty);
         assert(*at == i);
@@ -688,7 +680,7 @@ void test_vector_load() {
     size = vector_size(v);
     empty = vector_empty(v);
     capacity = vector_capacity(v);
-    assert(size == VECTOR_TEST_LOAD / 2);
+    assert(size == TEST_LOAD / 2);
     assert(!empty);
     assert(capacity == 100000);
 

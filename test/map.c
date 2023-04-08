@@ -1,12 +1,4 @@
-#include <assert.h>
-#include <float.h>
-#include <math.h>
-#include <stdint.h>
-#include <string.h>
-
-#include "../include/map.h"
-
-#define MAP_TEST_LOAD 100000
+#include "test.h"
 
 size_t hash_str(const void *key) {
     size_t hash = 0;
@@ -360,7 +352,7 @@ void test_map_load() {
 
     map *m = map_init(sizeof(size_t), sizeof(size_t), hash_int);
 
-    for (size_t i = 0; i < MAP_TEST_LOAD; i++) {
+    for (size_t i = 0; i < TEST_LOAD; i++) {
         inserted = map_insert(m, &i, &i);
         size = map_size(m);
         empty = map_empty(m);
@@ -375,14 +367,14 @@ void test_map_load() {
         assert(load_factor <= max_load_factor);
     }
 
-    for (size_t i = 0; i < MAP_TEST_LOAD / 2; i++) {
+    for (size_t i = 0; i < TEST_LOAD / 2; i++) {
         map_erase(m, &i);
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
         load_factor = LOAD_factor(m);
         max_load_factor = map_max_load_factor(m);
-        assert(size == MAP_TEST_LOAD - i - 1);
+        assert(size == TEST_LOAD - i - 1);
         assert(!empty);
         assert(!has);
         assert(load_factor <= max_load_factor);

@@ -66,11 +66,11 @@ uninstall:
 	-@$(RM) $(INSTALL_HDRS)
 
 test:
-	$(CC) -o runner-test $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-test $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(TEST)/*.c $(SRCS)
 	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
 
 coverage:
-	$(CC) -o runner-coverage $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(TEST)/runner.c $(SRCS)
+	$(CC) -o runner-coverage $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(TEST)/*.c $(SRCS)
 	./runner-coverage
 	$(COV) $(COVS)
 
