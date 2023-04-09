@@ -47,9 +47,11 @@ usage:
 	@echo make examples - compile and run examples
 
 debug:
+	$(MAKE) clean
 	$(CC) -o $(LIB).so $(LIB_FLAGS) $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(SRCS)
 
 release:
+	$(MAKE) clean
 	$(CC) -o $(LIB).so $(LIB_FLAGS) $(RELEASE_FLAGS) $(SRCS)
 
 clean:
@@ -68,16 +70,19 @@ uninstall:
 	-@$(RM) $(INSTALL_HDRS)
 
 test:
+	$(MAKE) clean
 	$(CC) -o runner-test $(DEBUG_FLAGS) $(SANITIZER_FLAGS) $(TEST)/*.c $(SRCS)
 	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
 
 coverage:
+	$(MAKE) clean
 	$(CC) -c $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(SRCS)
 	$(CC) -o runner-coverage $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(TEST)/*.c $(OBJS)
 	./runner-coverage
 	$(COV) $(COVS)
 
 coverage-report:
+	$(MAKE) clean
 	$(CC) -c $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(SRCS)
 	$(CC) -o runner-coverage-report $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(TEST)/*.c $(OBJS)
 	./runner-coverage-report
@@ -87,10 +92,12 @@ lint:
 	$(LINT) $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
 
 benchmark:
+	$(MAKE) clean
 	$(CXX) -o runner-bench $(RELEASE_FLAGS) $(BENCH)/*.cc $(BENCH)/*.c $(SRCS) 
 	./runner-bench
 
 examples:
+	$(MAKE) clean
 	$(CC) -o runner-deque $(SANITIZER_FLAGS) $(EXAMP)/deque.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-list $(SANITIZER_FLAGS) $(EXAMP)/list.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-map $(SANITIZER_FLAGS) $(EXAMP)/map.c $(EXAMP)/mytype.c $(SRCS)
