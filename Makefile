@@ -18,17 +18,18 @@ EXAMP = examples
 SRCS = $(shell find $(SRC) -name "*.c")
 HDRS = $(shell find $(HDR) -name "*.h")
 INSTALL_HDRS = $(patsubst $(HDR)/%.h, "$(INSTALL_INCLUDE)/%.h", $(HDRS))
-OBJS = $(SRCS:.c=.o)
-COVS = $(patsubst %.c, runner-coverage-%.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+OBJS = $(patsubst %.c, %.o, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
+COVS = $(patsubst %.c, %.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $(src)))))
 
 LIB_FLAGS = -fPIC -shared
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -Wpedantic
 RELEASE_FLAGS = -O3 -s -finline-functions
 SANITIZER_FLAGS = -fno-sanitize-recover=all -fsanitize=address -fsanitize=leak -fsanitize=undefined
-COVERAGE_FLAGS = -fprofile-arcs -ftest-coverage
+COVERAGE_FLAGS = --coverage
+COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
 LINT_FLAGS = --recursive --extensions=c,cc,h
 
-.PHONY: usage debug release clean install uninstall test coverage lint benchmark examples
+.PHONY: usage debug release clean install uninstall test coverage coverage-report lint benchmark examples
 
 default: usage
 
@@ -40,7 +41,8 @@ usage:
 	@echo make uninstall - uninstall $(LIB) from \'$(INSTALL_BIN)\' and \'$(INSTALL_INCLUDE)\'
 	@echo make test - compile and run all test suites
 	@echo make coverage - compile and run all test suites and measure coverage
-	@echo make lint - lint headers, source and test files
+	@echo make coverage-report - compile and run all test suites and display coverage report
+	@echo make lint - lint headers and source files
 	@echo make benchmark - compile and run $(LIB) benchmarks comparing with C++ STL 
 	@echo make examples - compile and run examples
 
@@ -70,9 +72,16 @@ test:
 	ASAN_OPTIONS=allocator_may_return_null=1 ./runner-test
 
 coverage:
-	$(CC) -o runner-coverage $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(TEST)/*.c $(SRCS)
+	$(CC) -c $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(SRCS)
+	$(CC) -o runner-coverage $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(TEST)/*.c $(OBJS)
 	./runner-coverage
 	$(COV) $(COVS)
+
+coverage-report:
+	$(CC) -c $(DEBUG_FLAGS) $(COVERAGE_FLAGS) $(SRCS)
+	$(CC) -o runner-coverage-report $(COVERAGE_FLAGS) $(DEBUG_FLAGS) $(TEST)/*.c $(OBJS)
+	./runner-coverage-report
+	$(COV) $(COVERAGE_REPORT_FLAGS) $(COVS)
 
 lint:
 	$(LINT) $(LINT_FLAGS) $(HDR) $(SRC) $(TEST) $(BENCH) $(EXAMP)
