@@ -1,4 +1,9 @@
+#include <assert.h>
+#include <stdint.h>
+
 #include "test.h"
+
+#include "../include/queue.h"
 
 void test_queue_init() {
     queue *q = queue_init(sizeof(int));

@@ -1,4 +1,10 @@
+#include <assert.h>
+#include <stdint.h>
+#include <string.h>
+
 #include "test.h"
+
+#include "../include/pair.h"
 
 void test_pair_size() {
     assert(PAIR_SIZE == 32);

@@ -1,4 +1,9 @@
+#include <assert.h>
+#include <stdint.h>
+
 #include "test.h"
+
+#include "../include/stack.h"
 
 void test_stack_init() {
     stack *s = stack_init(sizeof(int));

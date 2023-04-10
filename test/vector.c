@@ -1,4 +1,10 @@
+#include <assert.h>
+#include <stdint.h>
+#include <time.h>
+
 #include "test.h"
+
+#include "../include/vector.h"
 
 void test_vector_init() {
     vector *v = vector_init(sizeof(int));

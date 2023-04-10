@@ -1,4 +1,9 @@
+#include <assert.h>
+#include <stdint.h>
+
 #include "test.h"
+
+#include "../include/list.h"
 
 void test_list_init() {
     list *l = list_init(sizeof(int));

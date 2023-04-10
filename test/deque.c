@@ -1,4 +1,9 @@
+#include <assert.h>
+#include <stdint.h>
+
 #include "test.h"
+
+#include "../include/deque.h"
 
 void test_deque_init() {
     deque *dq = deque_init(sizeof(int));
