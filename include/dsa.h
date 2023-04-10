@@ -1,8 +1,6 @@
 #ifndef INCLUDE_DSA_H_
 #define INCLUDE_DSA_H_
 
-#define DSA_VERSION "0.8.0"
-
 #include "deque.h"
 #include "list.h"
 #include "map.h"
@@ -10,5 +8,7 @@
 #include "queue.h"
 #include "stack.h"
 #include "vector.h"
+
+#define DSA_VERSION "0.9.0"
 
 #endif // INCLUDE_DSA_H_
