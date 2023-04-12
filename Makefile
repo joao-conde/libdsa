@@ -103,6 +103,7 @@ examples:
 	$(CC) -o runner-map $(SANITIZER_FLAGS) $(EXAMP)/map.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-pair $(SANITIZER_FLAGS) $(EXAMP)/pair.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-queue $(SANITIZER_FLAGS) $(EXAMP)/queue.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-set $(SANITIZER_FLAGS) $(EXAMP)/set.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-stack $(SANITIZER_FLAGS) $(EXAMP)/stack.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-vector $(SANITIZER_FLAGS) $(EXAMP)/vector.c $(EXAMP)/mytype.c $(SRCS)
 	./runner-deque
@@ -110,5 +111,6 @@ examples:
 	./runner-map
 	./runner-pair
 	./runner-queue
+	./runner-set
 	./runner-stack
 	./runner-vector
