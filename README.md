@@ -57,5 +57,6 @@ $ gcc yourcode.c -ldsa
 - map: https://en.cppreference.com/w/cpp/container/unordered_map
 - pair: https://en.cppreference.com/w/cpp/utility/pair
 - queue: https://en.cppreference.com/w/cpp/container/queue
+- set: https://en.cppreference.com/w/cpp/container/unordered_set
 - stack: https://en.cppreference.com/w/cpp/container/stack
 - vector: https://en.cppreference.com/w/cpp/container/vector
