@@ -51,11 +51,11 @@ void test_map_set_max_load_factor() {
 
     map_insert(m, &key1, &value1);
     map_insert(m, &key2, &value2);
-    assert(fequals(LOAD_factor(m), 1.0));
+    assert(fequals(map_load_factor(m), 1.0));
     assert(fequals(map_max_load_factor(m), 2.01));
 
     map_set_max_load_factor(m, 1.0);
-    assert(fequals(LOAD_factor(m), 0.5));
+    assert(fequals(map_load_factor(m), 0.5));
     assert(fequals(map_max_load_factor(m), 1.0));
 
     map_free(m);
@@ -67,22 +67,22 @@ void test_LOAD_factor() {
     char *key3 = "key3", *value3 = "value3";
     map *m = map_with_buckets(sizeof(char*), sizeof(char*), hash_terribly, 1);
     assert(map_buckets(m) == 1);
-    assert(LOAD_factor(m) == 0.0);
+    assert(map_load_factor(m) == 0.0);
 
     map_insert(m, &key1, &value1);
     assert(map_size(m) == 1);
     assert(map_buckets(m) == 1);
-    assert(LOAD_factor(m) == 1.0);
+    assert(map_load_factor(m) == 1.0);
 
     map_insert(m, &key2, &value2);
     assert(map_size(m) == 2);
     assert(map_buckets(m) == 2);
-    assert(LOAD_factor(m) == 1.0);
+    assert(map_load_factor(m) == 1.0);
 
     map_insert(m, &key3, &value3);
     assert(map_size(m) == 3);
     assert(map_buckets(m) == 4);
-    assert(LOAD_factor(m) == 0.75);
+    assert(map_load_factor(m) == 0.75);
 
     map_free(m);
 }
@@ -344,7 +344,7 @@ void test_map_load() {
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
-        load_factor = LOAD_factor(m);
+        load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(*(size_t*) pair_first(inserted) == i);
         assert(*(size_t*) pair_second(inserted) == i);
@@ -359,7 +359,7 @@ void test_map_load() {
         size = map_size(m);
         empty = map_empty(m);
         has = map_has(m, &i);
-        load_factor = LOAD_factor(m);
+        load_factor = map_load_factor(m);
         max_load_factor = map_max_load_factor(m);
         assert(size == TEST_LOAD - i - 1);
         assert(!empty);
