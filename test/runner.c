@@ -6,6 +6,7 @@ int main() {
     test_map();
     test_pair();
     test_queue();
+    test_set();
     test_stack();
     test_vector();
 }

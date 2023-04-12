@@ -11,6 +11,7 @@ void test_list();
 void test_map();
 void test_pair();
 void test_queue();
+void test_set();
 void test_stack();
 void test_vector();
 
