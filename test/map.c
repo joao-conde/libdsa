@@ -61,7 +61,7 @@ void test_map_set_max_load_factor() {
     map_free(m);
 }
 
-void test_LOAD_factor() {
+void test_load_factor() {
     char *key1 = "key1", *value1 = "value1";
     char *key2 = "key2", *value2 = "value2";
     char *key3 = "key3", *value3 = "value3";
@@ -384,7 +384,7 @@ void test_map() {
     test_map_free();
     test_map_max_load_factor();
     test_map_set_max_load_factor();
-    test_LOAD_factor();
+    test_load_factor();
     test_map_size();
     test_map_buckets();
     test_map_empty();
