@@ -9,6 +9,6 @@
 #include "stack.h"
 #include "vector.h"
 
-#define DSA_VERSION "0.9.0"
+#define DSA_VERSION "0.9.1"
 
 #endif // INCLUDE_DSA_H_
