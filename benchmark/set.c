@@ -1,11 +1,11 @@
 #include "benchmark.h"
 
-size_t hash(const void *key) {
+size_t c_set_hash(const void *key) {
     return *(size_t*) key;
 }
 
 void* c_set_init() {
-    set *s = set_init(sizeof(size_t), hash);
+    set *s = set_init(sizeof(size_t), c_set_hash);
     for (size_t i = 0; i < BENCH_LOAD; i++) {
         set_insert(s, &i);
     }

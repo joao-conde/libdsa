@@ -1,11 +1,11 @@
 #include "benchmark.h"
 
-size_t hash(const void *key) {
+size_t c_map_hash(const void *key) {
     return *(size_t*) key;
 }
 
 void* c_map_init() {
-    map *m = map_init(sizeof(size_t), sizeof(char*), hash);
+    map *m = map_init(sizeof(size_t), sizeof(char*), c_map_hash);
     for (size_t i = 0; i < BENCH_LOAD; i++) {
         char const *value = "value";
         map_insert(m, &i, &value);
