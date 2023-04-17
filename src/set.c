@@ -62,7 +62,9 @@ bool set_has(const set *s, const void *value) {
 }
 
 void* set_insert(set *s, const void *value) {
-    return map_insert(s->data, value, value);
+    pair *inserted = map_insert(s->data, value, value);
+    if (inserted == NULL) return NULL;
+    return pair_first(inserted);
 }
 
 void set_erase(set *s, const void *value) {
