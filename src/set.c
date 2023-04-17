@@ -13,7 +13,7 @@ set* set_init(size_t type_size, hash_fn *hasher) {
 
 set* set_with_buckets(size_t type_size, hash_fn *hasher, size_t nbuckets) {
     set *s = (set*) malloc(sizeof(set));
-    map *data = map_with_buckets(type_size, type_size, hasher, nbuckets);
+    map *data = map_with_buckets(type_size, 0, hasher, nbuckets);
     if (s == NULL || data == NULL) {
         map_free(data);
         free(s);
