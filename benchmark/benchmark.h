@@ -61,6 +61,14 @@ void c_queue_push(void *data);
 void c_queue_pop(void *data);
 void c_queue_clear(void *data);
 
+void* c_set_init();
+void c_set_free(void *data);
+void c_set_insert(void *data);
+void c_set_erase(void *data);
+void c_set_has(void *data);
+void c_set_clear(void *data);
+void c_set_rehash(void *data);
+
 void* c_stack_init();
 void c_stack_free(void *data);
 void c_stack_push(void *data);
@@ -116,6 +124,14 @@ void cc_queue_free(void *data);
 void cc_queue_push(void *data);
 void cc_queue_pop(void *data);
 void cc_queue_clear(void *data);
+
+void* cc_set_init();
+void cc_set_free(void *data);
+void cc_set_insert(void *data);
+void cc_set_erase(void *data);
+void cc_set_has(void *data);
+void cc_set_clear(void *data);
+void cc_set_rehash(void *data);
 
 void* cc_stack_init();
 void cc_stack_free(void *data);

@@ -233,6 +233,52 @@ int main() {
         cc_queue_free,
         cc_queue_clear);
 
+    // benchmark set module
+    print_benchmark(
+        "set_insert",
+        c_set_init,
+        c_set_free,
+        c_set_insert,
+        cc_set_init,
+        cc_set_free,
+        cc_set_insert);
+
+    print_benchmark(
+        "set_erase",
+        c_set_init,
+        c_set_free,
+        c_set_erase,
+        cc_set_init,
+        cc_set_free,
+        cc_set_erase);
+
+    print_benchmark(
+        "set_has",
+        c_set_init,
+        c_set_free,
+        c_set_has,
+        cc_set_init,
+        cc_set_free,
+        cc_set_has);
+
+    print_benchmark(
+        "set_clear",
+        c_set_init,
+        c_set_free,
+        c_set_clear,
+        cc_set_init,
+        cc_set_free,
+        cc_set_clear);
+
+    print_benchmark(
+        "set_rehash",
+        c_set_init,
+        c_set_free,
+        c_set_rehash,
+        cc_set_init,
+        cc_set_free,
+        cc_set_rehash);
+
     // benchmark stack module
     print_benchmark(
         "stack_push",
