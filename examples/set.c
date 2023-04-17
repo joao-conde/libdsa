@@ -18,7 +18,7 @@ int main() {
 
     bool x = set_has(s, &m1);
 
-    set_erase(s, &m2.id);
+    set_erase(s, &m2);
 
     set_clear(s);
 
