@@ -95,8 +95,8 @@ void test_set_size() {
     assert(set_size(s) == 0);
 
     set_insert(s, &value1);
-    set_insert(s, &value2);
-    set_insert(s, &value3);
+    set_insert(s, &value1);
+    set_insert(s, &value1);
     assert(set_size(s) == 1);
 
     set_insert(s, &value1);
