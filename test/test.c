@@ -4,19 +4,19 @@
 
 #include "test.h"
 
-size_t hash_str(const void *key) {
+size_t hash_str(const void *value) {
     size_t hash = 0;
-    char *str = (char*) key;
+    char *str = (char*) value;
     for (int i = 0; str[i] != 0; i++) hash += (i + 1) * (uint8_t) str[i];
     return hash;
 }
 
-size_t hash_int(const void *key) {
-    return *(int*) key;
+size_t hash_int(const void *value) {
+    return *(int*) value;
 }
 
-size_t hash_terribly(const void *key) {
-    return hash_str(key) % 4;
+size_t hash_terribly(const void *value) {
+    return hash_str(value) % 4;
 }
 
 bool fequals(float f1, float f2) {

@@ -1,7 +1,7 @@
 #include "benchmark.h"
 
-size_t c_set_hash(const void *key) {
-    return *(size_t*) key;
+size_t c_set_hash(const void *value) {
+    return *(size_t*) value;
 }
 
 void* c_set_init() {

@@ -5,8 +5,8 @@
 
 extern mytype m1, m2, m3;
 
-size_t hash(const void *key) {
-    return (size_t) ((mytype*) key)->id;
+size_t hash(const void *value) {
+    return (size_t) ((mytype*) value)->id;
 }
 
 int main() {
