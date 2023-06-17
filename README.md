@@ -55,6 +55,7 @@ $ gcc yourcode.c -ldsa
 ## References
 
 - deque: https://en.cppreference.com/w/cpp/container/deque
+- heap: https://en.cppreference.com/w/cpp/algorithm/make_heap, https://en.cppreference.com/w/cpp/algorithm/push_heap, https://en.cppreference.com/w/cpp/algorithm/pop_heap
 - list: https://en.cppreference.com/w/cpp/container/list
 - map: https://en.cppreference.com/w/cpp/container/unordered_map
 - pair: https://en.cppreference.com/w/cpp/utility/pair
