@@ -37,6 +37,7 @@ void heap_clear(heap *h) {
 }
 
 void* heap_max(const heap *h) {
+    if (heap_empty(h)) return NULL;
     return vector_at(h->data, 0);
 }
 
@@ -58,11 +59,14 @@ void heap_push(heap *h, const void *value) {
 }
 
 void heap_pop(heap *h) {
+    if (heap_empty(h)) return;
+
     void *last = vector_pop(h->data);
     vector_set(h->data, 0, last);
 
     size_t index = 0;
     while (true) {
+        // TODO(joao-conde): careful with out of bounds access to unexistent children
         size_t left_child_index = _left_child_index(index);
         void *left_child = vector_at(h->data, left_child_index);
 
