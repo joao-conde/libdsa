@@ -30,6 +30,13 @@ void c_deque_pop_front(void *data);
 void c_deque_at(void *data);
 void c_deque_clear(void *data);
 
+void* c_heap_init();
+void c_heap_free(void *data);
+void c_heap_max(void *data);
+void c_heap_push(void *data);
+void c_heap_pop(void *data);
+void c_heap_clear(void *data);
+
 void* c_list_init();
 void c_list_free(void *data);
 void c_list_push_back(void *data);
@@ -93,6 +100,13 @@ void cc_deque_pop_back(void *data);
 void cc_deque_pop_front(void *data);
 void cc_deque_at(void *data);
 void cc_deque_clear(void *data);
+
+void* cc_heap_init();
+void cc_heap_free(void *data);
+void cc_heap_max(void *data);
+void cc_heap_push(void *data);
+void cc_heap_pop(void *data);
+void cc_heap_clear(void *data);
 
 void* cc_list_init();
 void cc_list_free(void *data);

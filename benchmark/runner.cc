@@ -58,6 +58,43 @@ int main() {
         cc_deque_free,
         cc_deque_clear);
 
+    // benchmark heap module
+    print_benchmark(
+        "heap_max",
+        c_heap_init,
+        c_heap_free,
+        c_heap_max,
+        cc_heap_init,
+        cc_heap_free,
+        cc_heap_max);
+
+    print_benchmark(
+        "heap_push",
+        c_heap_init,
+        c_heap_free,
+        c_heap_push,
+        cc_heap_init,
+        cc_heap_free,
+        cc_heap_push);
+
+    print_benchmark(
+        "heap_pop",
+        c_heap_init,
+        c_heap_free,
+        c_heap_pop,
+        cc_heap_init,
+        cc_heap_free,
+        cc_heap_pop);
+
+    print_benchmark(
+        "heap_clear",
+        c_heap_init,
+        c_heap_free,
+        c_heap_clear,
+        cc_heap_init,
+        cc_heap_free,
+        cc_heap_clear);
+
     // benchmark list module
     print_benchmark(
         "list_push_back",
