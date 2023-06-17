@@ -2,7 +2,9 @@
 
 **C data structures** and **algorithms** library.
 
-A personal endeavor to **learn the inner workings** of different **data structures** and **algorithms**. Consider using production-ready C template container libraries.
+A personal endeavor to **learn the inner workings** of different **data structures** and **algorithms**.
+
+Consider using production-ready template container libraries focusing on performance as opposed to readability.
 
 ## Features
 
