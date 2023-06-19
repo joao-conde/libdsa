@@ -1,5 +1,3 @@
-#include "internal/heap.h"
-
 #include "../include/heap.h"
 #include "../include/vector.h"
 
@@ -48,7 +46,7 @@ void heap_push(heap *h, const void *value) {
 
     size_t index = vector_size(h->data) - 1;
     while (index > 0) {
-        size_t parent_index = _parent_index(index);
+        size_t parent_index = (index - 1) / 2;
         void *parent = vector_at(h->data, parent_index);
 
         if (h->lesser(value, parent)) break;
@@ -67,8 +65,8 @@ void heap_pop(heap *h) {
 
     size_t index = 0;
     while (true) {
-        size_t left_child_index = _left_child_index(index);
-        size_t right_child_index = _right_child_index(index);
+        size_t left_child_index = 2 * index + 1;
+        size_t right_child_index = 2 * index + 1;
 
         void *left_child = vector_at(h->data, left_child_index);
         void *right_child = vector_at(h->data, right_child_index);
@@ -88,16 +86,4 @@ void heap_pop(heap *h) {
             index = right_child_index;
         }
     }
-}
-
-size_t _parent_index(size_t index) {
-    return (index - 1) / 2;
-}
-
-size_t _left_child_index(size_t index) {
-    return 2 * index + 1;
-}
-
-size_t _right_child_index(size_t index) {
-    return 2 * index + 2;
 }
