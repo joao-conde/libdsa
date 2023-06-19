@@ -5,9 +5,10 @@
 
 struct heap {
     vector *data;
+    lt_fn *lesser;
 };
 
-heap* heap_init(size_t type_size) {
+heap* heap_init(size_t type_size, lt_fn *lesser) {
     heap *h = (heap*) malloc(sizeof(heap));
     vector *data = vector_init(type_size);
     if (h == NULL || data == NULL) {
@@ -17,6 +18,7 @@ heap* heap_init(size_t type_size) {
     }
 
     h->data = data;
+    h->lesser = lesser;
     return h;
 }
 
@@ -49,8 +51,7 @@ void heap_push(heap *h, const void *value) {
         size_t parent_index = _parent_index(index);
         void *parent = vector_at(h->data, parent_index);
 
-        // TODO(joao-conde): comparison must be a function for this type
-        if (value <= parent) break;
+        if (h->lesser(value, parent)) break;
 
         vector_set(h->data, index, parent);
         vector_set(h->data, parent_index, value);
@@ -66,15 +67,16 @@ void heap_pop(heap *h) {
 
     size_t index = 0;
     while (true) {
-        // TODO(joao-conde): careful with out of bounds access to unexistent children
         size_t left_child_index = _left_child_index(index);
-        void *left_child = vector_at(h->data, left_child_index);
-
         size_t right_child_index = _right_child_index(index);
+
+        void *left_child = vector_at(h->data, left_child_index);
         void *right_child = vector_at(h->data, right_child_index);
 
-        // TODO(joao-conde): comparison must be a function for this type
-        if (last >= left_child && last >= right_child) break;
+        if (
+            (left_child == NULL || h->lesser(left_child, last)) &&
+            (right_child == NULL || h->lesser(right_child, last)))
+            break;
 
         if (left_child >= right_child) {
             vector_set(h->data, index, left_child);
