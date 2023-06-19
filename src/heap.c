@@ -45,7 +45,7 @@ void heap_push(heap *h, const void *value) {
     vector_push(h->data, value);
 
     size_t index = vector_size(h->data) - 1;
-    while (true) {
+    while (index > 0) {
         size_t parent_index = _parent_index(index);
         void *parent = vector_at(h->data, parent_index);
 
