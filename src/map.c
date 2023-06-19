@@ -26,7 +26,7 @@ map* map_with_buckets(size_t key_size, size_t value_size, hash_fn *hasher, size_
 
     map *m = (map*) malloc(sizeof(map));
     list **buckets = (list**) malloc(nbuckets * sizeof(list*));
-    if (m == NULL || buckets == NULL) {
+    if (m == NULL || buckets == NULL || hasher == NULL) {
         free(buckets);
         free(m);
         return NULL;

@@ -9,7 +9,7 @@ struct heap {
 heap* heap_init(size_t type_size, lt_fn *lesser) {
     heap *h = (heap*) malloc(sizeof(heap));
     vector *data = vector_init(type_size);
-    if (h == NULL || data == NULL) {
+    if (h == NULL || data == NULL || lesser == NULL) {
         vector_free(data);
         free(h);
         return NULL;

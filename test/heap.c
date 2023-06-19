@@ -15,7 +15,7 @@ void test_heap_init_fail() {
     heap *h = heap_init(SIZE_MAX, NULL);
     assert(h == NULL);
 
-    h = heap_init(SIZE_MAX / 10000, NULL);
+    h = heap_init(SIZE_MAX / 1000, NULL);
     assert(h == NULL);
 }
 
@@ -170,6 +170,7 @@ void test_heap_load() {
 
 void test_heap() {
     test_heap_init();
+    test_heap_init_fail();
     test_heap_free();
     test_heap_size();
     test_heap_empty();
