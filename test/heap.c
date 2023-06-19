@@ -85,7 +85,7 @@ void test_heap_max() {
     assert(*(int*)heap_max(h) == -1);
 
     heap_pop(h);
-    assert(*(int*)heap_max(h) == -1);
+    assert(*(int*)heap_max(h) == -123);
 
     heap_pop(h);
     assert(heap_max(h) == NULL);
@@ -156,7 +156,7 @@ void test_heap_load() {
         max = heap_max(h);
         assert(size == TEST_LOAD - i - 1);
         assert(!empty);
-        assert(*(size_t*) max == i - 1);
+        assert(*(size_t*) max == TEST_LOAD - i - 2);
     }
 
     heap_clear(h);
