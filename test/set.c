@@ -291,7 +291,7 @@ void test_set_load() {
     float max_load_factor, load_factor;
     size_t *inserted;
 
-    set *s = set_init(sizeof(size_t), hash_int);
+    set *s = set_init(sizeof(size_t), hash_size_t);
 
     for (size_t i = 0; i < TEST_LOAD; i++) {
         inserted = set_insert(s, &i);

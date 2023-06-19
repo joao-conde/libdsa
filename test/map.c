@@ -337,7 +337,7 @@ void test_map_load() {
     float max_load_factor, load_factor;
     pair *inserted;
 
-    map *m = map_init(sizeof(size_t), sizeof(size_t), hash_int);
+    map *m = map_init(sizeof(size_t), sizeof(size_t), hash_size_t);
 
     for (size_t i = 0; i < TEST_LOAD; i++) {
         inserted = map_insert(m, &i, &i);
