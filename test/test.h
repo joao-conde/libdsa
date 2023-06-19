@@ -7,6 +7,7 @@
 #define TEST_LOAD 100000UL
 
 void test_deque();
+void test_heap();
 void test_list();
 void test_map();
 void test_pair();
