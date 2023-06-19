@@ -4,9 +4,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+typedef bool (lt_fn)(const void* a, const void* b);
+
 typedef struct heap heap;
 
-heap* heap_init(size_t type_size);
+heap* heap_init(size_t type_size, lt_fn *comparator);
 
 void heap_free(heap *h);
 

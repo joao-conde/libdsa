@@ -1,7 +1,11 @@
 #include "benchmark.h"
 
+bool c_heap_lt(const void *a, const void *b) {
+    return *(size_t*) a < *(size_t*) b;
+}
+
 void* c_heap_init() {
-    heap *h = heap_init(sizeof(size_t));
+    heap *h = heap_init(sizeof(size_t), c_heap_lt);
     for (size_t i = 0; i < BENCH_LOAD; i++) {
         heap_push(h, &i);
     }
