@@ -66,24 +66,31 @@ void heap_pop(heap *h) {
     size_t index = 0;
     while (true) {
         size_t left_child_index = 2 * index + 1;
-        size_t right_child_index = 2 * index + 1;
+        size_t right_child_index = 2 * index + 2;
 
         void *left_child = vector_at(h->data, left_child_index);
         void *right_child = vector_at(h->data, right_child_index);
 
-        if (
-            (left_child == NULL || h->lesser(left_child, last)) &&
-            (right_child == NULL || h->lesser(right_child, last)))
-            break;
+        bool swap_left =
+            left_child != NULL &&
+            h->lesser(last, left_child) &&
+            (right_child == NULL || h->lesser(right_child, left_child));
 
-        if (left_child >= right_child) {
+        bool swap_right =
+            right_child != NULL &&
+            h->lesser(last, right_child) &&
+            (left_child == NULL || h->lesser(left_child, right_child));
+
+        if (swap_left) {
             vector_set(h->data, index, left_child);
             vector_set(h->data, left_child_index, last);
             index = left_child_index;
-        } else {
+        } else if (swap_right) {
             vector_set(h->data, index, right_child);
             vector_set(h->data, right_child_index, last);
             index = right_child_index;
+        } else {
+            break;
         }
     }
 }
