@@ -67,28 +67,28 @@ void test_heap_clear() {
     heap_free(h);
 }
 
-void test_heap_max() {
+void test_heap_top() {
     int values[5] = {51, 12, -123, 1000, -1};
     heap *h = heap_init(sizeof(int), lt_int);
 
     for (int i = 0; i < 5; i++) heap_push(h, values + i);
 
-    assert(*(int*)heap_max(h) == 1000);
+    assert(*(int*)heap_top(h) == 1000);
 
     heap_pop(h);
-    assert(*(int*)heap_max(h) == 51);
+    assert(*(int*)heap_top(h) == 51);
 
     heap_pop(h);
-    assert(*(int*)heap_max(h) == 12);
+    assert(*(int*)heap_top(h) == 12);
 
     heap_pop(h);
-    assert(*(int*)heap_max(h) == -1);
+    assert(*(int*)heap_top(h) == -1);
 
     heap_pop(h);
-    assert(*(int*)heap_max(h) == -123);
+    assert(*(int*)heap_top(h) == -123);
 
     heap_pop(h);
-    assert(heap_max(h) == NULL);
+    assert(heap_top(h) == NULL);
 
     heap_free(h);
 }
@@ -135,7 +135,7 @@ void test_heap_pop() {
 
 void test_heap_load() {
     bool empty;
-    size_t size, *max;
+    size_t size, *top;
 
     heap *h = heap_init(sizeof(size_t), lt_size_t);
 
@@ -143,20 +143,20 @@ void test_heap_load() {
         heap_push(h, &i);
         size = heap_size(h);
         empty = heap_empty(h);
-        max = heap_max(h);
+        top = heap_top(h);
         assert(size == i + 1);
         assert(!empty);
-        assert(*(size_t*) max == i);
+        assert(*(size_t*) top == i);
     }
 
     for (size_t i = 0; i < TEST_LOAD - 1; i++) {
         heap_pop(h);
         size = heap_size(h);
         empty = heap_empty(h);
-        max = heap_max(h);
+        top = heap_top(h);
         assert(size == TEST_LOAD - i - 1);
         assert(!empty);
-        assert(*(size_t*) max == TEST_LOAD - i - 2);
+        assert(*(size_t*) top == TEST_LOAD - i - 2);
     }
 
     heap_clear(h);
@@ -175,7 +175,7 @@ void test_heap() {
     test_heap_size();
     test_heap_empty();
     test_heap_clear();
-    test_heap_max();
+    test_heap_top();
     test_heap_push();
     test_heap_pop();
     test_heap_load();

@@ -32,7 +32,7 @@ void c_deque_clear(void *data);
 
 void* c_heap_init();
 void c_heap_free(void *data);
-void c_heap_max(void *data);
+void c_heap_top(void *data);
 void c_heap_push(void *data);
 void c_heap_pop(void *data);
 void c_heap_clear(void *data);
@@ -103,7 +103,7 @@ void cc_deque_clear(void *data);
 
 void* cc_heap_init();
 void cc_heap_free(void *data);
-void cc_heap_max(void *data);
+void cc_heap_top(void *data);
 void cc_heap_push(void *data);
 void cc_heap_pop(void *data);
 void cc_heap_clear(void *data);

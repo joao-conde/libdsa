@@ -16,10 +16,10 @@ void cc_heap_free(void *data) {
     delete ((std::vector<size_t>*) data);
 }
 
-void cc_heap_max(void *data) {
+void cc_heap_top(void *data) {
     std::vector<size_t> *h = (std::vector<size_t>*) data;
     for (size_t i = 0; i < BENCH_LOAD; i++) {
-        size_t max = h->at(0);
+        size_t top = h->at(0);
     }
 }
 

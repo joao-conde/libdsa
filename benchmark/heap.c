@@ -16,10 +16,10 @@ void c_heap_free(void *data) {
     heap_free((heap*) data);
 }
 
-void c_heap_max(void *data) {
+void c_heap_top(void *data) {
     heap *h = (heap*) data;
     for (size_t i = 0; i < BENCH_LOAD; i++) {
-        size_t *max = (size_t*) heap_max(h);
+        size_t *top = (size_t*) heap_top(h);
     }
 }
 

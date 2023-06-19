@@ -37,7 +37,7 @@ void heap_clear(heap *h) {
     vector_clear(h->data);
 }
 
-void* heap_max(const heap *h) {
+void* heap_top(const heap *h) {
     return vector_at(h->data, 0);
 }
 

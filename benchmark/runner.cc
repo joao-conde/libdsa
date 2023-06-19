@@ -60,13 +60,13 @@ int main() {
 
     // benchmark heap module
     print_benchmark(
-        "heap_max",
+        "heap_top",
         c_heap_init,
         c_heap_free,
-        c_heap_max,
+        c_heap_top,
         cc_heap_init,
         cc_heap_free,
-        cc_heap_max);
+        cc_heap_top);
 
     print_benchmark(
         "heap_push",

@@ -15,7 +15,7 @@ int main() {
     heap_push(h, &m2);
     heap_push(h, &m3);
 
-    mytype *m = (mytype*) heap_max(h);
+    mytype *m = (mytype*) heap_top(h);
 
     heap_pop(h);
 

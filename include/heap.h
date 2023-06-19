@@ -18,7 +18,7 @@ bool heap_empty(const heap *h);
 
 void heap_clear(heap *h);
 
-void* heap_max(const heap *h);
+void* heap_top(const heap *h);
 
 void heap_push(heap *h, const void *value);
 
