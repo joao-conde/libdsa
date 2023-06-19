@@ -24,6 +24,7 @@ Check the [examples folder](./examples) for more uses of libdsa.
 #include <dsa.h>
 
 int main() {
+    mytype m = { .a = 1, .b = "2" };
     vector *v = vector_init(sizeof(mytype));
     vector_push(v, &m);
     vector_pop(v);
