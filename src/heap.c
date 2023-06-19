@@ -1,6 +1,7 @@
+#include "internal/heap.h"
+
 #include "../include/heap.h"
 #include "../include/vector.h"
-#include "internal/heap.h"
 
 struct heap {
     vector *data;
@@ -37,7 +38,6 @@ void heap_clear(heap *h) {
 }
 
 void* heap_max(const heap *h) {
-    if (heap_empty(h)) return NULL;
     return vector_at(h->data, 0);
 }
 
