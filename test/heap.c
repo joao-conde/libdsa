@@ -6,29 +6,29 @@
 #include "../include/heap.h"
 
 void test_heap_init() {
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
     assert(heap_empty(h));
     heap_free(h);
 }
 
 void test_heap_init_fail() {
-    heap *h = heap_init(SIZE_MAX);
+    heap *h = heap_init(SIZE_MAX, NULL);
     assert(h == NULL);
 
-    h = heap_init(SIZE_MAX / 10000);
+    h = heap_init(SIZE_MAX / 10000, NULL);
     assert(h == NULL);
 }
 
 void test_heap_free() {
     heap_free(NULL);
 
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
     heap_free(h);
 }
 
 void test_heap_size() {
     float value = 3.5;
-    heap *h = heap_init(sizeof(float));
+    heap *h = heap_init(sizeof(float), lt_float);
     assert(heap_size(h) == 0);
 
     heap_push(h, &value);
@@ -40,7 +40,7 @@ void test_heap_size() {
 }
 
 void test_heap_empty() {
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
     assert(heap_empty(h));
 
     int value = -10;
@@ -55,7 +55,7 @@ void test_heap_empty() {
 
 void test_heap_clear() {
     float value = 3.5;
-    heap *h = heap_init(sizeof(float));
+    heap *h = heap_init(sizeof(float), lt_float);
     heap_push(h, &value);
     heap_push(h, &value);
     heap_push(h, &value);
@@ -69,7 +69,7 @@ void test_heap_clear() {
 
 void test_heap_max() {
     int values[5] = {51, 12, -123, 1000, -1};
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
 
     for (int i = 0; i < 5; i++) heap_push(h, values + i);
 
@@ -95,7 +95,7 @@ void test_heap_max() {
 
 void test_heap_push() {
     int values[5] = {51, 12, -123, 1000, -1};
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
 
     for (int i = 0; i < 5; i++) heap_push(h, values + i);
 
@@ -106,7 +106,7 @@ void test_heap_push() {
 
 void test_heap_pop() {
     int values[5] = {51, 12, -123, 1000, -1};
-    heap *h = heap_init(sizeof(int));
+    heap *h = heap_init(sizeof(int), lt_int);
 
     for (int i = 0; i < 5; i++) heap_push(h, values + i);
 
@@ -137,7 +137,7 @@ void test_heap_load() {
     bool empty;
     size_t size, *max;
 
-    heap *h = heap_init(sizeof(size_t));
+    heap *h = heap_init(sizeof(size_t), lt_size_t);
 
     for (size_t i = 0; i < TEST_LOAD; i++) {
         heap_push(h, &i);
