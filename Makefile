@@ -99,6 +99,7 @@ benchmark:
 examples:
 	$(MAKE) clean
 	$(CC) -o runner-deque $(SANITIZER_FLAGS) $(EXAMP)/deque.c $(EXAMP)/mytype.c $(SRCS)
+	$(CC) -o runner-heap $(SANITIZER_FLAGS) $(EXAMP)/heap.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-list $(SANITIZER_FLAGS) $(EXAMP)/list.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-map $(SANITIZER_FLAGS) $(EXAMP)/map.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-pair $(SANITIZER_FLAGS) $(EXAMP)/pair.c $(EXAMP)/mytype.c $(SRCS)
@@ -107,6 +108,7 @@ examples:
 	$(CC) -o runner-stack $(SANITIZER_FLAGS) $(EXAMP)/stack.c $(EXAMP)/mytype.c $(SRCS)
 	$(CC) -o runner-vector $(SANITIZER_FLAGS) $(EXAMP)/vector.c $(EXAMP)/mytype.c $(SRCS)
 	./runner-deque
+	./runner-heap
 	./runner-list
 	./runner-map
 	./runner-pair
