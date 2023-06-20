@@ -4,7 +4,7 @@
 
 A personal endeavor to **learn the inner workings** of different **data structures** and **algorithms**.
 
-Consider using production-ready template container libraries focusing on performance as opposed to readability.
+This library has been written for educational purposes. Consider using production-ready template container libraries focused on performance as opposed to readability.
 
 ## Features
 
