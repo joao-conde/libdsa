@@ -17,4 +17,6 @@ void graph_add(graph *g, size_t src, size_t dst, long double cost);
 
 void graph_remove(graph *g, size_t src, size_t dst);
 
+long double graph_dijkstra(const graph *g, size_t src, size_t dst);
+
 #endif // INCLUDE_GRAPH_H_

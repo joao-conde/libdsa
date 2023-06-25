@@ -1,7 +1,10 @@
 #include <math.h>
-#include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
 
 #include "../include/graph.h"
+#include "../include/heap.h"
+#include "../include/pair.h"
 
 struct graph {
     size_t size;
@@ -47,4 +50,52 @@ void graph_add(graph *g, size_t src, size_t dst, long double cost) {
 
 void graph_remove(graph *g, size_t src, size_t dst) {
     g->matrix[src * g->size + dst] = INFINITY;
+}
+
+#include <stdio.h>
+bool min_heap_fn(const void *a, const void *b) {
+    pair *p1 = (pair*) a;
+    pair *p2 = (pair*) b;
+    return pair_first(p1) >= pair_first(p2);
+}
+
+long double graph_dijkstra(const graph *g, size_t src, size_t dst) {
+    bool visited[g->size];
+    long double distances[g->size];
+    for (size_t i = 0; i < g->size; i++) {
+        visited[i] = false;
+        distances[i] = INFINITY;
+    }
+
+    long double cost = 0;
+    pair *source = pair_init(&cost, &src, sizeof(long double), sizeof(size_t));
+
+    heap *pq = heap_init(PAIR_SIZE, min_heap_fn);
+    heap_push(pq, source);
+
+    while (!heap_empty(pq)) {
+        pair *top = (pair*) heap_top(pq);
+        heap_pop(pq);
+
+        long double cur_cost = *(long double*) pair_first(top);
+        size_t cur_node = *(size_t*) pair_second(top);
+
+        if (visited[cur_node]) {
+            continue;
+        }
+        visited[cur_node] = true;
+
+        for (size_t i = 0; i < g->size; i++) {
+            long double alt = distances[cur_node] + cur_cost;
+            if (alt < distances[i]) {
+                distances[i] = alt;
+            }
+            heap_push(pq, pair_init(distances + i, &i, sizeof(long double), sizeof(size_t)));
+        }
+    }
+
+    for (size_t i = 0; i < g->size; i++) printf("%Lf, ", distances[i]);
+    printf("\n");
+
+    return distances[dst];
 }
