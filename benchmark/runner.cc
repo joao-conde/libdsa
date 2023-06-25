@@ -58,6 +58,34 @@ int main() {
         cc_deque_free,
         cc_deque_clear);
 
+    // benchmark graph module
+    print_benchmark(
+        "graph_cost",
+        c_graph_init,
+        c_graph_free,
+        c_graph_cost,
+        cc_graph_init,
+        cc_graph_free,
+        cc_graph_cost);
+
+    print_benchmark(
+        "graph_add",
+        c_graph_init,
+        c_graph_free,
+        c_graph_add,
+        cc_graph_init,
+        cc_graph_free,
+        cc_graph_add);
+
+    print_benchmark(
+        "graph_remove",
+        c_graph_init,
+        c_graph_free,
+        c_graph_remove,
+        cc_graph_init,
+        cc_graph_free,
+        cc_graph_remove);
+
     // benchmark heap module
     print_benchmark(
         "heap_top",
