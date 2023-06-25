@@ -2,6 +2,7 @@
 
 int main() {
     test_deque();
+    test_graph();
     test_heap();
     test_list();
     test_map();
