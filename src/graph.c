@@ -66,6 +66,7 @@ long double graph_dijkstra(const graph *g, size_t src, size_t dst) {
         visited[i] = false;
         distances[i] = INFINITY;
     }
+    distances[src] = 0;
 
     long double cost = 0;
     pair *source = pair_init(&cost, &src, sizeof(long double), sizeof(size_t));
@@ -77,7 +78,6 @@ long double graph_dijkstra(const graph *g, size_t src, size_t dst) {
         pair *top = (pair*) heap_top(pq);
         heap_pop(pq);
 
-        long double cur_cost = *(long double*) pair_first(top);
         size_t cur_node = *(size_t*) pair_second(top);
 
         if (visited[cur_node]) {
@@ -86,16 +86,18 @@ long double graph_dijkstra(const graph *g, size_t src, size_t dst) {
         visited[cur_node] = true;
 
         for (size_t i = 0; i < g->size; i++) {
-            long double alt = distances[cur_node] + cur_cost;
+            long double alt = distances[cur_node] + g->matrix[cur_node * g->size + i];
             if (alt < distances[i]) {
                 distances[i] = alt;
             }
-            heap_push(pq, pair_init(distances + i, &i, sizeof(long double), sizeof(size_t)));
+
+            pair *to_explore = pair_init(distances + i, &i, sizeof(long double), sizeof(size_t));
+            heap_push(pq, to_explore);
         }
     }
 
-    for (size_t i = 0; i < g->size; i++) printf("%Lf, ", distances[i]);
-    printf("\n");
+    heap_free(pq);
+    pair_free(source);
 
     return distances[dst];
 }

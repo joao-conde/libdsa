@@ -90,7 +90,7 @@ void test_graph_dijkstra() {
     graph_add(g, 1, 0, 2);
     graph_add(g, 1, 3, 5);
 
-    graph_add(g, 2, 1, 6);
+    graph_add(g, 2, 0, 6);
     graph_add(g, 2, 3, 8);
 
     graph_add(g, 3, 1, 5);
@@ -110,19 +110,17 @@ void test_graph_dijkstra() {
     graph_add(g, 6, 5, 6);
 
     assert(graph_dijkstra(g, 0, 0) == 0);
-    assert(graph_dijkstra(g, 0, 1) == 2); 
-    assert(graph_dijkstra(g, 0, 2) == 6); 
-    assert(graph_dijkstra(g, 0, 3) == 7); 
-    assert(graph_dijkstra(g, 0, 4) == 17); 
-    assert(graph_dijkstra(g, 0, 5) == 22); 
-    assert(graph_dijkstra(g, 0, 6) == 19); 
+    assert(graph_dijkstra(g, 0, 1) == 2);
+    assert(graph_dijkstra(g, 0, 2) == 6);
+    assert(graph_dijkstra(g, 0, 3) == 7);
+    assert(graph_dijkstra(g, 0, 4) == 17);
+    assert(graph_dijkstra(g, 0, 5) == 22);
+    assert(graph_dijkstra(g, 0, 6) == 19);
 
     graph_free(g);
 }
 
-void test_graph_load() {
-
-}
+void test_graph_load() {}
 
 void test_graph() {
     test_graph_init();
