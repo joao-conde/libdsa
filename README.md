@@ -41,7 +41,7 @@ $ make release
 $ make install
 ```
 
-Import:
+Include:
 
 ```c
 #include <dsa.h>
