@@ -11,6 +11,6 @@
 #include "stack.h"
 #include "vector.h"
 
-#define DSA_VERSION "0.11.0"
+#define DSA_VERSION "1.0.0"
 
 #endif // INCLUDE_DSA_H_
