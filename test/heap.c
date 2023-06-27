@@ -69,28 +69,44 @@ void test_heap_clear() {
 
 void test_heap_top() {
     int values[5] = {51, 12, -123, 1000, -1};
-    heap *h = heap_init(sizeof(int), lt_int);
+    heap *max_heap = heap_init(sizeof(int), lt_int);
+    heap *min_heap = heap_init(sizeof(int), gt_int);
 
-    for (int i = 0; i < 5; i++) heap_push(h, values + i);
+    for (int i = 0; i < 5; i++) {
+        heap_push(max_heap, values + i);
+        heap_push(min_heap, values + i);
+    }
 
-    assert(*(int*)heap_top(h) == 1000);
+    assert(*(int*)heap_top(max_heap) == 1000);
+    assert(*(int*)heap_top(min_heap) == -123);
 
-    heap_pop(h);
-    assert(*(int*)heap_top(h) == 51);
+    heap_pop(max_heap);
+    heap_pop(min_heap);
+    assert(*(int*)heap_top(max_heap) == 51);
+    assert(*(int*)heap_top(min_heap) == -1);
 
-    heap_pop(h);
-    assert(*(int*)heap_top(h) == 12);
+    heap_pop(max_heap);
+    heap_pop(min_heap);
+    assert(*(int*)heap_top(max_heap) == 12);
+    assert(*(int*)heap_top(min_heap) == 12);
 
-    heap_pop(h);
-    assert(*(int*)heap_top(h) == -1);
+    heap_pop(max_heap);
+    heap_pop(min_heap);
+    assert(*(int*)heap_top(max_heap) == -1);
+    assert(*(int*)heap_top(min_heap) == 51);
 
-    heap_pop(h);
-    assert(*(int*)heap_top(h) == -123);
+    heap_pop(max_heap);
+    heap_pop(min_heap);
+    assert(*(int*)heap_top(max_heap) == -123);
+    assert(*(int*)heap_top(min_heap) == 1000);
 
-    heap_pop(h);
-    assert(heap_top(h) == NULL);
+    heap_pop(max_heap);
+    heap_pop(min_heap);
+    assert(heap_top(max_heap) == NULL);
+    assert(heap_top(min_heap) == NULL);
 
-    heap_free(h);
+    heap_free(max_heap);
+    heap_free(min_heap);
 }
 
 void test_heap_push() {

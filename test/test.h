@@ -22,6 +22,7 @@ size_t hash_str(const void *value);
 size_t hash_size_t(const void *value);
 size_t hash_terribly(const void *value);
 
+bool gt_int(const void *a, const void *b);
 bool lt_int(const void *a, const void *b);
 bool lt_float(const void *a, const void *b);
 bool lt_size_t(const void *a, const void *b);

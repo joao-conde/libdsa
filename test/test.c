@@ -23,6 +23,10 @@ size_t hash_terribly(const void *value) {
     return hash_str(value) % 4;
 }
 
+bool gt_int(const void *a, const void *b) {
+    return *(int*) a > *(int*) b;
+}
+
 bool lt_int(const void *a, const void *b) {
     return *(int*) a < *(int*) b;
 }
