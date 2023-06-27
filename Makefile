@@ -23,7 +23,7 @@ COVS = $(patsubst %.c, %.gcno, $(foreach src, $(SRCS), $(lastword $(subst /, , $
 
 LIB_FLAGS = -fPIC -shared
 DEBUG_FLAGS = -g -Wall -Werror -Wextra -Wpedantic
-RELEASE_FLAGS = -O3 -s -finline-functions
+RELEASE_FLAGS = -O3 -s -finline-functions -flto
 SANITIZER_FLAGS = -fno-sanitize-recover=all -fsanitize=address -fsanitize=leak -fsanitize=undefined
 COVERAGE_FLAGS = --coverage
 COVERAGE_REPORT_FLAGS = --function-summaries --use-colors --stdout
