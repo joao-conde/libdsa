@@ -14,7 +14,7 @@ This library has been written for educational purposes. Consider using productio
 - Checked with [Google's Sanitizers](https://github.com/google/sanitizers)
 - Compliant with [Google's C/C++ style](https://github.com/cpplint/cpplint)
 - Benchmarks versus the C++ STL
-- 100% code coverage
+- 100% test coverage
 
 ## Examples
 
